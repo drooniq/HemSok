@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+/*
+ Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
+ */
 namespace HemSok.Data
 {
     public class Repository<Tentity> : IRepository<Tentity> where Tentity : class

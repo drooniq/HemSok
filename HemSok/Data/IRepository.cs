@@ -1,4 +1,7 @@
-﻿namespace HemSok.Data
+﻿/*
+ Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
+ */
+namespace HemSok.Data
 {
     public interface IRepository<Tentity>  
     {
