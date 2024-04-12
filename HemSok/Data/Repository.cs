@@ -19,7 +19,7 @@ namespace HemSok.Data
             await dbContext.AddAsync(entity);
         }
 
-        public async Task DeleteAsync(Tentity entity)
+        public void Delete(Tentity entity)
         {
             dbContext.Remove(entity);
         }

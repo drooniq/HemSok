@@ -7,7 +7,7 @@ namespace HemSok.Data
     {
         public Task AddAsync(Tentity entity);
 
-        public Task DeleteAsync(Tentity entity);
+        public void Delete(Tentity entity);
 
         public void Update(Tentity entity);
 
