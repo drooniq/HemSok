@@ -1,4 +1,9 @@
+using HemSok.Data;
+using Microsoft.EntityFrameworkCore;
 
+/*
+ Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
+ */
 namespace HemSok
 {
     public class Program
@@ -8,6 +13,10 @@ namespace HemSok
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("Default");
+            builder.Services.AddDbContext<HemSokDbContext>(options => options.UseSqlServer(connectionString));
+
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
