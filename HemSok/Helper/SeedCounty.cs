@@ -1,8 +1,10 @@
 ﻿using HemSok.Data;
 using HemSok.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
 
+/*
+ Author: Emil Waara
+ */
 namespace HemSok.Helper
 {
     public static class SeedCounty

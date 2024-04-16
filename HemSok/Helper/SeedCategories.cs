@@ -2,6 +2,9 @@
 using HemSok.Models;
 using Microsoft.EntityFrameworkCore;
 
+/*
+ Author: Emil Waara
+ */
 namespace HemSok.Helper
 {
     public static class SeedCategories
