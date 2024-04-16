@@ -1,4 +1,7 @@
 using HemSok.Data;
+using HemSok.Helper;
+using HemSok.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 /*
@@ -36,8 +39,42 @@ namespace HemSok
 
             app.UseAuthorization();
 
-
             app.MapControllers();
+
+            // Seed Data
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var dbContext = services.GetRequiredService<HemSokDbContext>();
+                dbContext.Database.Migrate();
+
+                var countySeedData = SeedCounty.Seed(dbContext);
+                var municipalitySeedData = SeedMunicipalities.Seed(dbContext, countySeedData);
+                var categorySeedData = SeedCategories.Seed(dbContext);
+                var agencySeedData = SeedAgencies.Seed(dbContext);
+                var agentSeedData = SeedAgent.Seed(dbContext, agencySeedData);
+                var ResidenceSeedData = SeedResidences.Seed(dbContext, agentSeedData, municipalitySeedData, categorySeedData);
+            }
+
+            //// Seed Roles
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            //    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            //    var roles = new[] { SD.SuperAdmin, SD.Admin, SD.Customer };
+
+            //    foreach (var role in roles)
+            //    {
+            //        if (!await roleManager.RoleExistsAsync(role))
+            //        {
+            //            await roleManager.CreateAsync(new IdentityRole(role));
+            //        }
+            //    }
+
+            //    // Seed users only if they don't exist
+            //    await SeedUsers.CreateUsers(userManager, roleManager, 25);
+            //}
 
             app.Run();
         }

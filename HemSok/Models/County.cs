@@ -12,6 +12,5 @@ namespace HemSok.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public List<Municipality>? Municipalities { get; set;}
     }
 }
