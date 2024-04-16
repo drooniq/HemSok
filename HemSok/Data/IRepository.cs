@@ -1,6 +1,9 @@
 ﻿/*
  Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
  */
+using HemSok.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace HemSok.Data
 {
     public interface IRepository<Tentity>  
@@ -17,6 +20,9 @@ namespace HemSok.Data
         public Task<IEnumerable<Tentity>> GetAllAsync();
 
         public IQueryable<Tentity> Queryable();
+
+        //public void Entry(Tentity entity, EntityState state);
+        public void SavedResidance(Residence residence);
 
         public Task SaveChangesAsync();
     }
