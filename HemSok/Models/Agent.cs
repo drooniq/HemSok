@@ -18,6 +18,6 @@ namespace HemSok.Models
         public string? ImagePath { get; set; }
         [Required]
         public Agency Agency { get; set; }
-        public Agent() {}
+        public Agent() { }
     }
 }
