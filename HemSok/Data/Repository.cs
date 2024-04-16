@@ -24,12 +24,12 @@ namespace HemSok.Data
             dbContext.Remove(entity);
         }
 
-        public async Task<Tentity> Get(int id)
+        public async Task<Tentity> GetAsync(int id)
         {
             return await dbContext.FindAsync<Tentity>(id);
         }
 
-        public async Task<IEnumerable<Tentity>> GetAll()
+        public async Task<IEnumerable<Tentity>> GetAllAsync()
         {
             return await dbContext.Set<Tentity>().ToListAsync();
         }
