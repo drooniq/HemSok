@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HemSok.Models;
+using Microsoft.EntityFrameworkCore;
 
 /*
  Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
@@ -47,6 +48,17 @@ namespace HemSok.Data
         public async Task SaveChangesAsync()
         {
             await dbContext.SaveChangesAsync();
+        }
+        //public void Entry(Tentity entity, EntityState state)
+        //{
+        //    dbContext.Entry(entity).State = state;
+        //}
+        public async void SavedResidance(Residence residence)
+        {
+            dbContext.Entry(residence).Reference(s => s.Agent).IsModified = false;
+            dbContext.Entry(residence).Reference(s => s.Municipality).IsModified = false;
+            dbContext.Entry(residence).Reference(s => s.Category).IsModified = false;
+            dbContext.SaveChanges();
         }
     }
 }
