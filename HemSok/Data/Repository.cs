@@ -28,6 +28,10 @@ namespace HemSok.Data
         {
             return await dbContext.FindAsync<Tentity>(id);
         }
+        public async Task<Tentity> GetAsync(Guid id)
+        {
+            return await dbContext.FindAsync<Tentity>(id);
+        }
 
         public async Task<IEnumerable<Tentity>> GetAllAsync()
         {

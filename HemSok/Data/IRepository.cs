@@ -12,6 +12,7 @@ namespace HemSok.Data
         public void Update(Tentity entity);
 
         public Task<Tentity> GetAsync(int id);
+        public Task<Tentity> GetAsync(Guid id);
 
         public Task<IEnumerable<Tentity>> GetAllAsync();
 
