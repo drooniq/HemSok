@@ -39,6 +39,14 @@ namespace HemSok
             }
 
             app.UseHttpsRedirection();
+         
+            // Add CORS policy
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
 
             app.UseAuthorization();
 
