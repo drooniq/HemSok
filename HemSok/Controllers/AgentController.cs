@@ -84,24 +84,19 @@ namespace HemSok.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutAgent([FromBody] AgentDTO agentDTO)
+        [HttpPut]
+        public async Task<ActionResult> PutAgent([FromBody] Agent agent)
         {
-            var agent = _mapper.Map<Agent>(agentDTO);
-
             if (agent == null)
                 return NotFound();
 
-            //agentRepository.Update(agent);
+            agentRepository.Update(agent);
 
             //agencyRepository.Entry(agent.Agency, EntityState.Unchanged);
 
-            //await agentRepository.SaveChangesAsync();
+            await agentRepository.SaveChangesAsync();
 
             return Ok();
         }
-
-
-        // var newAgent = _mapper.Map<AgentDTO>(agent);
     }
 }
