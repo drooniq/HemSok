@@ -9,6 +9,8 @@ namespace HemSok.Mappings
         {
             CreateMap<Agent, AgentDTO>();
             CreateMap<AgentDTO, Agent>();
+            CreateMap<Residence, ResidenceDTO>();
+            CreateMap<ResidenceDTO, Residence>();
         }
     }
 }
