@@ -1,0 +1,25 @@
+﻿@page "/agent"
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>Agents</PageTitle>
+<h3>AgentComponent</h3>
+
+<button @onclick="GetAgent">Get Data</button>
+
+@if(agents != null)
+{
+    <p>@agents.Count</p>
+    
+}
+
+@code {
+    public List<Agent> agents;
+
+    public HttpClient httpClient = new HttpClient();
+
+    public async Task GetAgent()
+    {
+        agents = await httpClient.GetFromJsonAsync<List<Agent>>("https://localhost:7069/api/Agent");
+    }
+
+}
