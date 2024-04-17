@@ -1,5 +1,6 @@
 using HemSok.Data;
 using HemSok.Helper;
+using HemSok.Mappings;
 using HemSok.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,8 @@ namespace HemSok
             builder.Services.AddDbContext<HemSokDbContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

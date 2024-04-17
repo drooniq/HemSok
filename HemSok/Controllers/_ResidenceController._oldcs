@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 /*
  Author: Marcus Karlsson
- */
+ 
 namespace HemSok.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ResidenceController : ControllerBase
+    public class _ResidenceController : ControllerBase
     {
         private readonly IRepository<Residence> residenceRepo;
 
@@ -133,3 +133,4 @@ namespace HemSok.Controllers
         }
     }
 }
+*/

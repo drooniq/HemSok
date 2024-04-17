@@ -29,7 +29,7 @@ namespace HemSok.Data
         {
             return await dbContext.FindAsync<Tentity>(id);
         }
-        public async Task<Tentity> GetAsync(Guid id)
+        public async Task<Tentity> GetAsync(string id)
         {
             return await dbContext.FindAsync<Tentity>(id);
         }
@@ -53,16 +53,10 @@ namespace HemSok.Data
         {
             await dbContext.SaveChangesAsync();
         }
-        //public void Entry(Tentity entity, EntityState state)
-        //{
-        //    dbContext.Entry(entity).State = state;
-        //}
-        public async void SavedResidance(Residence residence)
+
+        public void Entry(Tentity entity, EntityState state)
         {
-            dbContext.Entry(residence).Reference(s => s.Agent).IsModified = false;
-            dbContext.Entry(residence).Reference(s => s.Municipality).IsModified = false;
-            dbContext.Entry(residence).Reference(s => s.Category).IsModified = false;
-            dbContext.SaveChanges();
+            dbContext.Entry(entity).State = state;
         }
     }
 }

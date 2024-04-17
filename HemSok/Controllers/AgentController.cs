@@ -1,86 +1,107 @@
-﻿using HemSok.Data;
+﻿using AutoMapper;
+using HemSok.Data;
 using HemSok.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 
 /*
-Author: Fredrik Blixt
-*/
-
+ Author: Fredrik Blixt, Emil Waara
+ */
 namespace HemSok.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AgentController : ControllerBase
     {
-        private readonly IRepository<Agent> agentRepo;
+        private readonly IRepository<Agent> agentRepository;
+        private readonly IRepository<Agency> agencyRepository;
+        private readonly IMapper _mapper;
 
-        public AgentController(IRepository<Agent> agentRepo)
+        public AgentController(IRepository<Agent> agentRepository, IRepository<Agency> agencyRepository, IMapper mapper)
         {
-            this.agentRepo = agentRepo;
+            this.agentRepository = agentRepository;
+            this.agencyRepository = agencyRepository;
+            _mapper = mapper;
         }
 
-        // GET: api/<AgentController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Agent>>> GetAllAsync()
+        public async Task<IActionResult> GetAllAgents()
         {
-            var agent = agentRepo.Queryable().Include( a => a.Agency);
-            return Ok(agent);
-        }
+            var agents = await agentRepository
+                .Queryable()
+                .Include(a => a.Agency)
+                .ToListAsync();
 
-        // GET api/<AgentController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Agent>> GetAsync(string id)
-        {
-            var agent = agentRepo.Queryable().Include(a => a.Agency).Where(a => a.Id == id);
-            return Ok(agent);
-        }
-
-        // POST api/<AgentController>
-        [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] Agent agent)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await agentRepo.AddAsync(agent);
-            await agentRepo.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAsync), new { id = agent.Id }, agent);
-        }
-
-        // PUT api/<AgentController>/5
-        [HttpPut("{Guid}")]
-        public IActionResult Put(string guid, [FromBody] Agent agent)
-        {
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-            if (agent == null)
-            {
+            if (agents == null)
                 return NotFound();
-            }
-            agentRepo.Update(agent);
-            agentRepo.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAsync), new { id = agent.Id }, agent);
+
+            return Ok(agents);
         }
 
-        // DELETE api/<AgentController>/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Agent>> GetAgent(string id)
         {
-            Guid idet = Guid.Parse(id);
-            //int idet = int.Parse(id);
-            var agent = await agentRepo.GetAsync(idet);
-            //var agent = agentRepo.Queryable().Include(a => a.Agency).Where(a => a.Id == id);
-            agentRepo.Delete(agent);
-            await agentRepo.SaveChangesAsync();
-            return NoContent();
+            var agent = await agentRepository
+                .Queryable()
+                .Include(a => a.Agency)
+                .FirstOrDefaultAsync(a => a.Id == id);
+            
+            if (agent == null)
+                return NotFound();
+
+            return Ok(agent);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAgent(string id)
+        {
+            var agent = await agentRepository.GetAsync(id);
+
+            if (agent == null)
+                return NotFound();
+
+            agentRepository.Delete(agent);
+            await agentRepository.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PostAgent([FromBody] AgentDTO agentDTO)
+        {
+            var agent = _mapper.Map<Agent>(agentDTO);
+
+            if (agent == null)
+                return NotFound();
+
+            await agentRepository.AddAsync(agent);
+
+            agencyRepository.Entry(agent.Agency, EntityState.Unchanged);
+
+            await agentRepository.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> PutAgent([FromBody] AgentDTO agentDTO)
+        {
+            var agent = _mapper.Map<Agent>(agentDTO);
+
+            if (agent == null)
+                return NotFound();
+
+            //agentRepository.Update(agent);
+
+            //agencyRepository.Entry(agent.Agency, EntityState.Unchanged);
+
+            //await agentRepository.SaveChangesAsync();
+
+            return Ok();
+        }
+
+
+        // var newAgent = _mapper.Map<AgentDTO>(agent);
     }
 }
