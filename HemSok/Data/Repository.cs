@@ -27,11 +27,15 @@ namespace HemSok.Data
 
         public async Task<Tentity> GetAsync(int id)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await dbContext.FindAsync<Tentity>(id);
+#pragma warning restore CS8603 // Possible null reference return.
         }
         public async Task<Tentity> GetAsync(string id)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await dbContext.FindAsync<Tentity>(id);
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task<IEnumerable<Tentity>> GetAllAsync()
