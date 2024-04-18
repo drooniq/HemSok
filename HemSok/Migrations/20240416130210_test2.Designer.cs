@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HemSok.Migrations
 {
     [DbContext(typeof(HemSokDbContext))]
-    [Migration("20240416130210_test2")]
-    partial class test2
+    [Migration("20240416130210_Test2")]
+    partial class Test2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
