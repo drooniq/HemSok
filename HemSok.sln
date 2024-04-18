@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HemSok", "HemSok\HemSok.csproj", "{CEB8CF93-EBAA-4E5D-8E9F-6846D06C5A95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSokClient", "HemSokClient\HemSokClient\HemSokClient.csproj", "{43B72E61-BA49-4522-B89F-269C8B661D24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HemSokClient", "HemSokClient\HemSokClient\HemSokClient.csproj", "{43B72E61-BA49-4522-B89F-269C8B661D24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
