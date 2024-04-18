@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HemSok.Migrations
 {
     [DbContext(typeof(HemSokDbContext))]
-    [Migration("20240416103918_changed agent model prop")]
-    partial class changedagentmodelprop
+    [Migration("20240416103918_Changed agent model prop")]
+    partial class Changedagentmodelprop
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

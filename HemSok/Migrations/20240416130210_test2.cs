@@ -5,7 +5,7 @@
 namespace HemSok.Migrations
 {
     /// <inheritdoc />
-    public partial class test2 : Migration
+    public partial class Test2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -13,7 +13,7 @@ namespace HemSok.Migrations
 {
     [DbContext(typeof(HemSokDbContext))]
     [Migration("20240415105343_initial")]
-    partial class initial
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

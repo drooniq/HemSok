@@ -5,7 +5,7 @@
 namespace HemSok.Migrations
 {
     /// <inheritdoc />
-    public partial class changedagentmodelprop : Migration
+    public partial class Changedagentmodelprop : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

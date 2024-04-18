@@ -5,7 +5,7 @@
 namespace HemSok.Migrations
 {
     /// <inheritdoc />
-    public partial class removinglistinagencies : Migration
+    public partial class Removinglistinagencies : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

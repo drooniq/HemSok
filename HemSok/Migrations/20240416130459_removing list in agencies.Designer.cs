@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HemSok.Migrations
 {
     [DbContext(typeof(HemSokDbContext))]
-    [Migration("20240416130459_removing list in agencies")]
-    partial class removinglistinagencies
+    [Migration("20240416130459_Removing list in agencies")]
+    partial class Removinglistinagencies
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
