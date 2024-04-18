@@ -1,0 +1,32 @@
+﻿@page "/createagent"
+@using System.ComponentModel.DataAnnotations
+@using System.Threading.Tasks
+@inject HttpClient httpClient
+
+<PageTitle>CreateAgents</PageTitle>
+
+<h1>Lägg till ny mäklare</h1>
+
+<form>
+    <label>Namn:</label>
+    <input type="text" @bind="agentName" />
+
+
+
+    <button @onclick="SaveAgent">Lägg till</button>
+</form>
+
+}
+else
+{
+    <p>Mäklarna kommer vid midnatt</p>
+}
+
+@code {
+    private string agentName;
+
+    private async Task SaveAgent()
+    {
+        
+    }
+}

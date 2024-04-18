@@ -1,0 +1,77 @@
+﻿@page "/agent"
+@using System.ComponentModel.DataAnnotations
+@using System.Threading.Tasks
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+<PageTitle>Agents</PageTitle>
+<h1>Agenter</h1>
+
+<button class="btn btn-primary" @onclick="FetchAgentsAsync">Visa mäklare</button>
+<button class="btn btn-primary" @onclick="GoToCreateAgentPage">Lägg till ny mäklare</button>
+
+@if (agents != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Förnamn</th>
+                <th>Smeknamn</th>
+                <th>Efternamn</th>
+                <th>Profilbild</th>
+                <th>Mäklarfirma</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var agent in agents)
+            {
+                <tr>
+                    <td>@agent.FirstName</td>
+                    <td>@agent.Nickname</td>
+                    <td>@agent.LastName</td>
+                    <td><img src="@agent.ImagePath" alt="Profilbild" style="max-width: 100px; max-height: 100px;" /></td>
+                    <td>@agent.Agency.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <p>Mäklarna kommer vid midnatt</p>
+}
+
+@code {
+    public List<Agent> agents;
+
+    public async Task FetchAgentsAsync()
+    {
+        var response = await httpClient.GetAsync("api/agent");
+        if (response.IsSuccessStatusCode)
+        {
+            agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+        }
+        else
+        {
+            agents = null;
+        }
+    }
+
+    private void GoToCreateAgentPage()
+    {
+        NavigationManager.NavigateTo("/createagent");
+    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var response = await httpClient.GetAsync("api/agent");
+    //     if (response.IsSuccessStatusCode)
+    //     {
+    //         agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+    //     }
+    //     else
+    //     {
+    //         agents = null;
+    //     }
+    // }
+}
