@@ -45,7 +45,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine($"Id: {Id}");
         if (!string.IsNullOrEmpty(Id))
         {
             var response = await httpClient.GetAsync($"api/agent/{Id}");

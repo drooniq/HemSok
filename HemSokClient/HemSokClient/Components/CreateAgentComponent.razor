@@ -5,17 +5,46 @@
 
 <PageTitle>CreateAgents</PageTitle>
 
-<h1>Lägg till ny mäklare</h1>
+<h3>Lägg till ny mäklare</h3>
 
-<form>
-    <label>Namn:</label>
-    <input type="text" @bind="agentName" />
+@if(agencies != null)
+{
+    <EditForm Model="@agent" OnValidSubmit="SaveAgent">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+        <div class="form-group">
+            <label for="firstName">Förnamn:</label>
+            <InputText id="firstName" class="form-control" @bind-Value="agent.FirstName" />
+        </div>
 
+        <div class="form-group">
+            <label for="lastName">Efternamn:</label>
+            <InputText id="lastName" class="form-control" @bind-Value="agent.LastName" />
+        </div>
 
+        <div class="form-group">
+            <label for="nickname">Smeknamn:</label>
+            <InputText id="nickname" class="form-control" @bind-Value="agent.Nickname" />
+        </div>
 
-    <button @onclick="SaveAgent">Lägg till</button>
-</form>
+        <div class="form-group">
+            <label for="imagePath">Bildens sökväg:</label>
+            <InputText id="imagePath" class="form-control" @bind-Value="agent.ImagePath" />
+        </div>
 
+        <div class="form-group">
+            <label for="agency">Mäklarfirma:</label>
+            <select id="agency" class="form-control" @onchange="OnAgencySelected">
+                <option >Välj mäklare</option>
+                @foreach (var agency in agencies)
+                {
+                    <option value="@agency.Id">@agency.Name</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem">Spara</button>
+    </EditForm>  
 }
 else
 {
@@ -23,10 +52,42 @@ else
 }
 
 @code {
-    private string agentName;
+    public Agent? agent = new Agent();
+    public List<Agency>? agencies;
 
-    private async Task SaveAgent()
+    protected override async Task OnInitializedAsync()
     {
-        
+        try
+        {
+            var response = await httpClient.GetAsync("api/agency");
+            if (response.IsSuccessStatusCode)
+            {
+                agencies = await response.Content.ReadFromJsonAsync<List<Agency>>();
+            }
+            else
+            {
+                agencies = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ett undantag inträffade: {ex.Message}");
+        }
+
+    }
+
+    private async Task SaveAgent(EditContext editContext)
+    {
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync("api/agent", agent);
+        if (response.IsSuccessStatusCode)
+        {
+            agent = new Agent(); // Clear the form after successful submission
+        }
+    }
+
+    private void OnAgencySelected(ChangeEventArgs e)
+    {
+        var selectedAgencyId = Convert.ToInt32(e.Value);
+        agent.Agency = agencies.FirstOrDefault(a => a.Id == selectedAgencyId);
     }
 }

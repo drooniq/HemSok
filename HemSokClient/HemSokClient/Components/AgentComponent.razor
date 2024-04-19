@@ -12,7 +12,7 @@
 
 @if (agents != null)
 {
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Förnamn</th>
@@ -25,11 +25,11 @@
         <tbody>
             @foreach (var agent in agents)
             {
-                <tr>
+                <tr class="row-hover" @onclick="() => GoToDetailsAgentPage(agent.Id)">
                     <td>@agent.FirstName</td>
                     <td>@agent.Nickname</td>
                     <td>@agent.LastName</td>
-                    <td><img src="@agent.ImagePath" alt="Profilbild" style="max-width: 100px; max-height: 100px;" /></td>
+                    <td><img src="@agent.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
                     <td>@agent.Agency.Name</td>
                 </tr>
             }
@@ -43,7 +43,8 @@ else
 }
 
 @code {
-    public List<Agent> agents;
+    public List<Agent>? agents;
+    public Agent? agent;
 
     public async Task FetchAgentsAsync()
     {
@@ -56,6 +57,10 @@ else
         {
             agents = null;
         }
+    }
+    private void GoToDetailsAgentPage(string id)
+    {
+        NavigationManager.NavigateTo($"/detailsagent/{id}");
     }
 
     private void GoToCreateAgentPage()
