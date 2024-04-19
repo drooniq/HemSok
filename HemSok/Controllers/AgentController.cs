@@ -68,9 +68,9 @@ namespace HemSok.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostAgent([FromBody] AgentDTO agentDTO)
+        public async Task<ActionResult> PostAgent([FromBody] Agent agent)
         {
-            var agent = _mapper.Map<Agent>(agentDTO);
+            //var agent = _mapper.Map<Agent>(agentDTO);
 
             if (agent == null)
                 return NotFound();
