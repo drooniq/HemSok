@@ -1,0 +1,53 @@
+﻿@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@page "/deleteresidence/{id}"
+
+@* Author: Marcus Karlsson*@
+
+<h3>Ta bort bostad!</h3>
+
+Är du säker på att du vill ta bort denna bostad?
+@if (residence != null)
+{
+    <EditForm Model="@residence">
+        <button class="btn btn-danger" @onclick="DeleteResidence">Ta bort</button>
+    </EditForm>
+   
+}
+else
+{
+    <p>Bostaden kunde inte hittas.</p>
+}
+
+@code {
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    private Residence? residence;
+
+    private async Task DeleteResidence()
+    {
+        var post = await httpClient.DeleteAsync($"api/Residence/{residence.Id}");
+        if (post.IsSuccessStatusCode)
+        {
+            navigationManager.NavigateTo("/residence");
+        }
+        else
+        {
+
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Id))
+        {
+            var response = await httpClient.GetAsync($"api/residence/{Id}");
+            if (response.IsSuccessStatusCode)
+            {
+                residence = await response.Content.ReadFromJsonAsync<Residence>();
+            }
+        }
+    }
+}

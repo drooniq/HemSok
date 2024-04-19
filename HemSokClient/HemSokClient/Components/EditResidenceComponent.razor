@@ -1,0 +1,143 @@
+﻿@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@page "/editresidence/{id}"
+
+@* Author: Marcus Karlsson*@
+<h3>Fyll i all information om bostaden</h3>
+
+<EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+    <label for="StreetName">Address: </label>
+    <InputText id="StreetName" @bind-Value="@residence.StreetName"></InputText>
+    <br /> <br />
+    <label for="City">Stad: </label>
+    <InputText id="City" @bind-Value="@residence.City"></InputText>
+    <br /> <br />
+    <label for="ZipCode">Post Nummer: </label>
+    <InputText id="ZipCode" @bind-Value="@residence.ZipCode"></InputText>
+    <br />
+    <label for="ListingPrice">Utgångspris: </label>
+    <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice"></InputNumber>
+    <br /> <br />
+    <label>Välj Kategori: </label>
+    <InputSelect @bind-Value="CategoryId">
+        @foreach (var c in Categories)
+        {
+            <option value="@c.Id">@c.Name</option>
+        }
+    </InputSelect>
+    <br /> <br />
+    <label>Välj Mäklare: </label>
+    <InputSelect @bind-Value="AgentId">
+        @foreach (var c in Agents)
+        {
+            <option value="@c.Id">@c.FirstName @c.LastName</option>
+        }
+    </InputSelect>
+    <br /> <br />
+    <label>Välj Kommun: </label>
+    <InputSelect @bind-Value="MunicipalityId">
+        @foreach (var c in Municipalities)
+        {
+            <option value="@c.Id">@c.Name</option>
+        }
+    </InputSelect>
+    <br /> <br />
+    <label for="Rooms">Antal Rum: </label>
+    <InputNumber id="Rooms" @bind-Value="@residence.Rooms"></InputNumber>
+    <br /> <br />
+    <label for="ConstructionYear">Byggår: </label>
+    <InputNumber id="ConstructionYear" @bind-Value="@residence.ConstructionYear"></InputNumber>
+    <br /> <br />
+    <label for="LivingArea">Boarea: </label>
+    <InputNumber id="LivingArea" @bind-Value="@residence.LivingArea"></InputNumber>
+    <br /> <br />
+    <label for="BiArea">Biarea: </label>
+    <InputNumber id="BiArea" @bind-Value="@residence.BiArea"></InputNumber>
+    <br /> <br />
+    <label for="PlotArea">Tomtarea: </label>
+    <InputNumber id="PlotArea" @bind-Value="@residence.PlotArea"></InputNumber>
+    <br /> <br />
+    <label for="MonthlyFee">Månadskostnad: </label>
+    <InputNumber id="MonthlyFee" @bind-Value="@residence.MonthlyFee"></InputNumber>
+    <br /> <br />
+    <label for="OperationCost">Driftkostnad: </label>
+    <InputNumber id="OperationCost" @bind-Value="@residence.OperationCost"></InputNumber>
+    <br /> <br />
+    <label for="Description">Beskrivning: </label>
+    <InputText id="Description" @bind-Value="@residence.Description"></InputText>
+    <br /> <br />
+    <button type="submit">Submit</button>
+
+</EditForm>
+
+
+
+@code {
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    private Residence residence;
+    List<Category> Categories = new();
+    public int CategoryId { get; set; }
+    List<Agent> Agents = new();
+    public string AgentId { get; set; }
+    List<Municipality> Municipalities = new();
+    public int MunicipalityId { get; set; }
+
+    private async Task HandleFormSubmit(EditContext context)
+    {
+        residence.Agent = Agents.FirstOrDefault(s => s.Id == AgentId);
+        residence.Category = Categories.FirstOrDefault(s => s.Id == CategoryId);
+        residence.Municipality = Municipalities.FirstOrDefault(s => s.Id == MunicipalityId);
+
+        var post = await httpClient.PutAsJsonAsync("api/Residence", residence);
+        if (post.IsSuccessStatusCode)
+        {
+            navigationManager.NavigateTo("/residence");
+        }
+        else
+        {
+
+        }
+
+        //Redirecta till edit sida, för att fylla ut fullständig information!
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Id))
+        {
+            var resp = await httpClient.GetAsync($"api/residence/{Id}");
+            if (resp.IsSuccessStatusCode)
+            {
+                residence = await resp.Content.ReadFromJsonAsync<Residence>();
+            }
+        }
+        var response = await httpClient.GetAsync("api/Category");
+        if (response.IsSuccessStatusCode)
+        {
+            Categories = await response.Content.ReadFromJsonAsync<List<Category>>();
+            CategoryId = Categories[0].Id;
+        }
+        else { Categories = null; }
+
+        response = await httpClient.GetAsync("api/Agent");
+        if (response.IsSuccessStatusCode)
+        {
+            Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+            AgentId = Agents[0].Id;
+        }
+        else { Agents = null; }
+
+        response = await httpClient.GetAsync("api/Municipality");
+        if (response.IsSuccessStatusCode)
+        {
+            Municipalities = await response.Content.ReadFromJsonAsync<List<Municipality>>();
+            MunicipalityId = Municipalities[0].Id;
+        }
+        else { Municipalities = null; }
+    }
+}
