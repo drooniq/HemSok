@@ -1,0 +1,59 @@
+﻿@page "/detailsagent/{id}"
+@inject HttpClient httpClient
+
+<PageTitle>DetailsAgent</PageTitle>
+
+@if (agent != null)
+{
+    <h3>@agent.Nickname<img src="@agent.ImagePath" alt="Profilbild" style="max-width: 7rem; border-radius: 10%; margin: 1rem;" /></h3>
+
+    <table class="table ">
+        <thead>
+            <tr>
+                <td>Förnamn</td>
+                <td>Smeknamn</td>
+                <td>Efternamn</td>
+                <td>Profilbild</td>
+                <td>Mäklarfirma</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@agent.FirstName</td>
+                <td>@agent.Nickname</td>
+                <td>@agent.LastName</td>
+                <td><img src="@agent.ImagePath" alt="Profilbild" style="max-width: 7rem; border-radius: 10%;" /></td>
+                <td>@agent.Agency.Name</td>
+                <td><button class="btn btn-primary" >Redigera</button></td>
+                <td><button class="btn btn-primary" >Ta bort</button></td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Agenten kunde inte hittas.</p>
+}
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    private Agent? agent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine($"Id: {Id}");
+        if (!string.IsNullOrEmpty(Id))
+        {
+            var response = await httpClient.GetAsync($"api/agent/{Id}");
+            if (response.IsSuccessStatusCode)
+            {
+                agent = await response.Content.ReadFromJsonAsync<Agent>();
+            }
+        }
+    }
+}
+
