@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HemSok", "HemSok\HemSok.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HemSokClient", "HemSokClient\HemSokClient\HemSokClient.csproj", "{43B72E61-BA49-4522-B89F-269C8B661D24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSok.Console", "HemSok.Console\HemSok.Console.csproj", "{E77510E1-C080-4228-9B66-F6BD5D0937BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HemSok.Console", "HemSok.Console\HemSok.Console.csproj", "{E77510E1-C080-4228-9B66-F6BD5D0937BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

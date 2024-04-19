@@ -3,36 +3,85 @@
 @using System.Net.Http.Json
 @using System.Text.Json
 @inject HttpClient httpclient
+@inject NavigationManager NavigationManager
 
+@* Author: Marcus Karlsson*@
 
-<h3>See Houses</h3>
-<button @onclick="GetHouses">Click Me for House Data</button>
-@if(list!= null)
+<h3>Dina Bostäder</h3>
+<button class="btn btn-primary" @onclick="GoToCreateResidencePage">Lägg till ny bostad</button>
+
+@if (residences != null)
 {
-   foreach (var i in list)
-    {
-        <p> @i.StreetName i @i.City är en @i.Category.Name </p>
-    }
-
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Startpris</th>
+                <th>Address</th>
+                <th>Postnummer</th>
+                <th>Stad</th>
+                <th>Kategori</th>
+                <th>Kommun</th>
+                <th>Län</th>
+                <th>Ansvarig mäklare</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var residence in residences)
+            {
+                <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
+                    <td><img src="@residence.ImagePaths" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    <td>@residence.ListingPrice</td>
+                    <td>@residence.StreetName</td>
+                    <td>@residence.ZipCode</td>
+                    <td>@residence.City</td>
+                    <td>@residence.Category.Name</td>
+                    <td>@residence.Municipality.Name</td>
+                    <td>@residence.Municipality.County.Name</td>
+                    <td>@residence.Agent.FirstName @residence.Agent.LastName</td>                                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Husen hemsöks just nu, försök igen senare!</p>
 }
 
 
 @code {
 
-    public List<Residence> list;
+    public List<Residence> residences;
 
     public async Task GetHouses()
     {       
         var response = await httpclient.GetAsync("api/Residence");      
         if (response.IsSuccessStatusCode)
         {
-            list = await response.Content.ReadFromJsonAsync<List<Residence>>();
+            residences = await response.Content.ReadFromJsonAsync<List<Residence>>();
         }
-        else{ list = null; }
+        else{ residences = null; }
     }
-    
 
-   
+    private void GoToDetailsResidencePage(int id)
+    {       
+        NavigationManager.NavigateTo($"/residencedetails/{id.ToString()}");
+    }
 
+    private void GoToCreateResidencePage()
+    {
+        NavigationManager.NavigateTo("/createresidence");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await httpclient.GetAsync("api/Residence");
+        if (response.IsSuccessStatusCode)
+        {
+            residences = await response.Content.ReadFromJsonAsync<List<Residence>>();
+        }
+        else { residences = null; }
+    }
 }
 

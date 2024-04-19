@@ -1,0 +1,93 @@
+﻿@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+@* Author: Marcus Karlsson*@
+
+@page "/residencedetails/{id}"
+<h3>Detaljer kring bostaden</h3>
+
+@if (residence != null)
+{
+    <h3>@residence.StreetName<img src="@residence.ImagePaths" alt="Profilbild" style="max-width: 7rem; border-radius: 10%; margin: 1rem;" /></h3>
+
+    <table class="table ">
+        <thead>
+            <tr>
+                <th>Startpris</th>
+                <th>Address</th>
+                <th>Postnummer</th>
+                <th>Stad</th>
+                <th>Kategori</th>
+                <th>Kommun</th>
+                <th>Län</th>
+                <th>Ansvarig Mäklare</th>
+                <th>Antal Rum</th>
+                <th>Byggnadsår</th>
+                <th>Boarea</th>
+                <th>Biarea</th>
+                <th>Tomtarea</th>
+                <th>Månadskostnad</th>
+                <th>Driftkostnad</th>
+                <th>Beskrivning</th>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@residence.ListingPrice</td>
+                <td>@residence.StreetName</td>
+                <td>@residence.ZipCode</td>
+                <td>@residence.City</td>
+                <td>@residence.Category.Name</td>
+                <td>@residence.Municipality.Name</td>
+                <td>@residence.Municipality.County.Name</td>
+                <td>@residence.Agent.FirstName @residence.Agent.LastName</td>
+                <td>@residence.Rooms</td>
+                <td>@residence.ConstructionYear</td>
+                <td>@residence.LivingArea</td>
+                <td>@residence.BiArea</td>
+                <td>@residence.PlotArea</td>
+                <td>@residence.MonthlyFee</td>
+                <td>@residence.OperationCost</td>
+                <td>@residence.Description</td>
+                <td><button class="btn btn-primary" @onclick="()=>GoToEditResidence(residence.Id)">Redigera</button></td>
+                <td><button class="btn btn-danger" @onclick="()=>GoToDeleteResidence(residence.Id)">Ta bort</button></td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Agenten kunde inte hittas.</p>
+}
+
+@code {
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    private Residence? residence;
+
+    private void GoToDeleteResidence(int id)
+    {
+        NavigationManager.NavigateTo($"/deleteresidence/{id.ToString()}");
+    }
+
+    private void GoToEditResidence(int id)
+    {
+        NavigationManager.NavigateTo($"/editresidence/{id.ToString()}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Id))
+        {
+            var response = await httpClient.GetAsync($"api/residence/{Id}");
+            if (response.IsSuccessStatusCode)
+            {
+                residence = await response.Content.ReadFromJsonAsync<Residence>();
+            }
+        }
+    }
+}

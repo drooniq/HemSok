@@ -3,9 +3,12 @@
 @using System.Text.Json
 @using System.Text
 @inject HttpClient httpclient
+@inject NavigationManager navigationManager
+
+@* Author: Marcus Karlsson*@
 
 @page "/createresidence"
-<h3>Fill out the neccesary information to create the residence to be created</h3>
+<h3>Fyll i nyckel informationen</h3>
 
 
 <EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
@@ -24,19 +27,19 @@
  <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice"></InputNumber>
     <br />
 <label>Välj Kategori: </label>
-<InputSelect @bind-Value="CategoryId">
+<InputSelect @bind-Value="CategoryId">       
     @foreach (var c in Categories)
         {<option value="@c.Id">@c.Name</option>}
 </InputSelect>
     <br />
     <label>Välj Mäklare: </label>
-    <InputSelect @bind-Value="AgentId">
+    <InputSelect @bind-Value="AgentId">       
         @foreach (var c in Agents)
         {<option value="@c.Id">@c.FirstName @c.LastName</option>}
     </InputSelect>
     <br />
     <label>Välj Kommun: </label>
-    <InputSelect @bind-Value="MunicipalityId">
+    <InputSelect @bind-Value="MunicipalityId">       
         @foreach (var c in Municipalities)
         {<option value="@c.Id">@c.Name</option>}
     </InputSelect>
@@ -62,35 +65,34 @@
     List<Municipality> Municipalities = new();
     public int MunicipalityId { get; set; }
     public string OK { get; set; }
+   
 
     private async Task HandleFormSubmit(EditContext context)
-    {
-        residence.City = ((Residence)context.Model).City;
-        ResidenceDTO res1 = new();    
-        res1.Agent = Agents.FirstOrDefault(s=>s.Id == AgentId);           
-        res1.Category  = Categories.FirstOrDefault(s=>s.Id == CategoryId);         
-        res1.Municipality = Municipalities.FirstOrDefault(s=>s.Id == MunicipalityId);
-       
-        res1.StreetName = ((Residence)context.Model).StreetName;
-        res1.City = ((Residence)context.Model).City;
-        res1.ZipCode = ((Residence)context.Model).ZipCode;
-        res1.ListingPrice = ((Residence)context.Model).ListingPrice;
-        // HttpContent content = new StringContent(JsonSerializer.Serialize(res1), Encoding.UTF8, "application/json");
-        // var post = await httpclient.PostAsync("/api/residence", content);
-        var post = await httpclient.PostAsJsonAsync("api/residence",res1);
-        Console.WriteLine("stop");
-        Console.ReadKey();
-        OK = $"du kom ner hit ";
+    {              
+        residence.Agent = Agents.FirstOrDefault(s => s.Id == AgentId);
+        residence.Category = Categories.FirstOrDefault(s => s.Id == CategoryId);
+        residence.Municipality = Municipalities.FirstOrDefault(s => s.Id == MunicipalityId);
+
+        var post = await httpclient.PostAsJsonAsync("api/Residence", residence);
+        if (post.IsSuccessStatusCode)
+        {
+            navigationManager.NavigateTo("/residence");
+        }
+        else
+        {     
+           
+        }
         
+        //Redirecta till edit sida, för att fylla ut fullständig information!
     }
 
     protected override async Task OnInitializedAsync()
     {      
-
         var response = await httpclient.GetAsync("api/Category");
         if (response.IsSuccessStatusCode)
         {
-           Categories  = await response.Content.ReadFromJsonAsync<List<Category>>();
+            Categories  = await response.Content.ReadFromJsonAsync<List<Category>>();
+            CategoryId = Categories[0].Id;
         }
         else { Categories = null; }
 
@@ -98,6 +100,7 @@
         if (response.IsSuccessStatusCode)
         {
             Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+            AgentId = Agents[0].Id;
         }
         else { Agents = null; }
 
@@ -105,6 +108,7 @@
         if (response.IsSuccessStatusCode)
         {
             Municipalities = await response.Content.ReadFromJsonAsync<List<Municipality>>();
+            MunicipalityId = Municipalities[0].Id;
         }
         else { Municipalities = null; }
     }
