@@ -6,23 +6,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HemSok.Data
 {
-    public interface IRepository<Tentity>  
+    public interface IRepository<TEntity>  
     {
-        public Task AddAsync(Tentity entity);
+        public Task AddAsync(TEntity entity);
 
-        public void Delete(Tentity entity);
+        public void Delete(TEntity entity);
 
-        public void Update(Tentity entity);
+        public void Update(TEntity entity);
 
-        public Task<Tentity> GetAsync(int id);
+        public Task<TEntity> GetAsync(int id);
 
-        public Task<Tentity> GetAsync(string id);
+        public Task<TEntity> GetAsync(string id);
 
-        public Task<IEnumerable<Tentity>> GetAllAsync();
+        public Task<IEnumerable<TEntity>> GetAllAsync();
 
-        public IQueryable<Tentity> Queryable();
+        public IQueryable<TEntity> Queryable();
 
-        public void Entry(Tentity entity, EntityState state);
+        public void Entry(TEntity entity, EntityState state);
 
         public Task SaveChangesAsync();
     }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
  */
 namespace HemSok.Data
 {
-    public class Repository<Tentity> : IRepository<Tentity> where Tentity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly HemSokDbContext dbContext;
 
@@ -15,40 +15,40 @@ namespace HemSok.Data
             this.dbContext = dbContext;
         }
 
-        public async Task AddAsync(Tentity entity)
+        public async Task AddAsync(TEntity entity)
         {
             await dbContext.AddAsync(entity);
         }
 
-        public void Delete(Tentity entity)
+        public void Delete(TEntity entity)
         {
             dbContext.Remove(entity);
         }
 
-        public async Task<Tentity> GetAsync(int id)
+        public async Task<TEntity> GetAsync(int id)
         {
 #pragma warning disable CS8603 // Possible null reference return.
-            return await dbContext.FindAsync<Tentity>(id);
+            return await dbContext.FindAsync<TEntity>(id);
 #pragma warning restore CS8603 // Possible null reference return.
         }
-        public async Task<Tentity> GetAsync(string id)
+        public async Task<TEntity> GetAsync(string id)
         {
 #pragma warning disable CS8603 // Possible null reference return.
-            return await dbContext.FindAsync<Tentity>(id);
+            return await dbContext.FindAsync<TEntity>(id);
 #pragma warning restore CS8603 // Possible null reference return.
         }
 
-        public async Task<IEnumerable<Tentity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await dbContext.Set<Tentity>().ToListAsync();
+            return await dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public IQueryable<Tentity> Queryable()
+        public IQueryable<TEntity> Queryable()
         {
-            return dbContext.Set<Tentity>();
+            return dbContext.Set<TEntity>();
         }
 
-        public void Update(Tentity entity)
+        public void Update(TEntity entity)
         {
             dbContext.Update(entity);
         }
@@ -58,7 +58,7 @@ namespace HemSok.Data
             await dbContext.SaveChangesAsync();
         }
 
-        public void Entry(Tentity entity, EntityState state)
+        public void Entry(TEntity entity, EntityState state)
         {
             dbContext.Entry(entity).State = state;
         }
