@@ -28,15 +28,15 @@ namespace HemSok.Console
 
         public async Task runAPITests<T>() where T : class
         {
-            List<T> responses;
-            T response;
+            List<T>? responses;
+            T? response;
 
             // Run GET (all) test
             responses = await _client.GetFromJsonAsync<List<T>>("/api/" + typeof(T).Name);
             System.Console.WriteLine("GetAll Test = " + typeof(T).Name + JsonSerializer.Serialize(responses, new JsonSerializerOptions { WriteIndented = true }));
 
             // Run GET (id) test
-            if (tryToGetId<T>(responses[0], out string id))
+            if (responses != null && tryToGetId<T>(responses[0], out string? id))
             {
                 response = await _client.GetFromJsonAsync<T>("/api/" + typeof(T).Name + "/" + id);
                 System.Console.WriteLine("Get id Test = " + typeof(T).Name + JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
@@ -54,10 +54,10 @@ namespace HemSok.Console
 
             foreach (PropertyInfo property in properties)
             {
-                object value = property.GetValue(obj);
+                object? value = property.GetValue(obj);
                 if (property.Name == "Id")
                 {
-                    id = value.ToString();
+                    id = (value != null) ? value.ToString() : "";
                     return true;
                 }
             }
