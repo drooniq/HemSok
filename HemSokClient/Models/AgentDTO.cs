@@ -9,10 +9,10 @@ namespace HemSokClient.Models
     public class AgentDTO
     {
         [Required]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = String.Empty;
         [Required]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = String.Empty;
         [Required]
-        public Agency Agency { get; set; }
+        public Agency Agency { get; set; } = new Agency();
     }
 }
