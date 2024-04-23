@@ -24,13 +24,14 @@ namespace HemSokClient.Data
             this.Client = Client;
         }
 
+        // string uri = "api/Residence/" + residence.Id;
         public async Task<bool> DeleteFromApiAsync<T>(string uri, T modelData) where T : class
         {
-            // $"api/Residence/{residence.Id}
             var response = await Client.DeleteAsync(uri);
             return response.IsSuccessStatusCode;
         }
 
+        // string uri = "api/Residence/" + residence.Id;
         public async Task<T> GetFromApiAsync<T>(string uri) where T : class
         {
             var response = await Client.GetAsync(uri);
@@ -38,6 +39,7 @@ namespace HemSokClient.Data
             return modelData;
         }
 
+        // var lista = await GetAllFromApiAsync<Residence>();
         public async Task<List<T>> GetAllFromApiAsync<T>() where T : class
         {
             var response = await Client.GetAsync("api/" + typeof(T));
@@ -45,12 +47,14 @@ namespace HemSokClient.Data
             return modelData;
         }
 
+        // skapa ny bostad
         public async Task<bool> PostToApiAsync<T>(T modelData) where T : class
         {
             var response = await Client.PostAsJsonAsync("api/" + typeof(T), modelData);
             return response.IsSuccessStatusCode;
         }
 
+        // string uri = "api/Residence/" + residence.Id   modelData = den förändrade residence 
         public async Task<bool> PutToApiAsync<T>(string uri, T modelData) where T : class
         {
             var response = await Client.PutAsJsonAsync(uri, modelData);
