@@ -12,12 +12,12 @@ namespace HemSokClient.Data
     {
         public HttpClient Client { get; }
 
-        public List<Agency> Agencies { get; set; }
-        public List<Agent> Agents { get; set; }
-        public List<Category> Categories { get; set; }
-        public List<County> Counties { get; set; }
-        public List<Municipality> Municipality { get; set; }
-        public List<Residence> Residences { get; set; }
+        public List<Agency>? Agencies { get; set; }
+        public List<Agent>? Agents { get; set; }
+        public List<Category>? Categories { get; set; }
+        public List<County>? Counties { get; set; }
+        public List<Municipality>? Municipality { get; set; }
+        public List<Residence>? Residences { get; set; }
 
         public APIService(HttpClient Client)
         {
@@ -32,18 +32,18 @@ namespace HemSokClient.Data
         }
 
         // string uri = "api/Residence/" + residence.Id;
-        public async Task<T> GetFromApiAsync<T>(string uri) where T : class
+        public async Task<T?> GetFromApiAsync<T>(string uri) where T : class
         {
             var response = await Client.GetAsync(uri);
-            T modelData = (response.IsSuccessStatusCode) ? await response.Content.ReadFromJsonAsync<T>() : null;
+            T? modelData = (response.IsSuccessStatusCode) ? await response.Content.ReadFromJsonAsync<T>() : null;
             return modelData;
         }
 
         // var lista = await GetAllFromApiAsync<Residence>();
-        public async Task<List<T>> GetAllFromApiAsync<T>() where T : class
+        public async Task<List<T>?> GetAllFromApiAsync<T>() where T : class
         {
             var response = await Client.GetAsync("api/" + typeof(T));
-            List<T> modelData = (response.IsSuccessStatusCode) ? await response.Content.ReadFromJsonAsync<List<T>>() : null;
+            List<T>? modelData = (response.IsSuccessStatusCode) ? await response.Content.ReadFromJsonAsync<List<T>>() : null;
             return modelData;
         }
 
