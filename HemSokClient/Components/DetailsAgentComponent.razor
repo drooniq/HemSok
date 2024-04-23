@@ -1,47 +1,48 @@
 ﻿@page "/detailsagent/{id}"
 @inject HttpClient httpClient
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
 
 <PageTitle>DetailsAgent</PageTitle>
 
-@if (agent != null)
+@if (Agent != null)
 {
-    <h3>@agent.Nickname<img src="@agent.ImagePath" alt="Profilbild" style="max-width: 7rem; border-radius: 10%; margin: 1rem;" /></h3>
+    <h3>@Agent.Nickname<img src="@Agent.ImagePath" alt="Profilbild" style="max-width: 7rem; border-radius: 10%; margin: 1rem;" /></h3>
 
     <table class="table ">
         <thead>
             <tr>
-                <td>Förnamn</td>
-                <td>Smeknamn</td>
-                <td>Efternamn</td>
-                <td>Profilbild</td>
-                <td>Mäklarfirma</td>
+                <th>Förnamn</th>
+                <th>Smeknamn</th>
+                <th>Efternamn</th>
+                <th>Mäklarfirma</th>
                 <td></td>
                 <td></td>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>@agent.FirstName</td>
-                <td>@agent.Nickname</td>
-                <td>@agent.LastName</td>
-                <td><img src="@agent.ImagePath" alt="Profilbild" style="max-width: 7rem; border-radius: 10%;" /></td>
-                <td>@agent.Agency.Name</td>
-                <td><button class="btn btn-primary" >Redigera</button></td>
-                <td><button class="btn btn-primary" >Ta bort</button></td>
+                <td>@Agent.FirstName</td>
+                <td>@Agent.Nickname</td>
+                <td>@Agent.LastName</td>
+                <td>@Agent.Agency.Name</td>
+                <td><button class="btn btn-primary" @onclick="() => GoToEditAgentPage(Agent.Id)">Redigera</button></td>
+                <td><button class="btn btn-primary" @onclick="() => DeleteAgent(Agent.Id)">Ta bort</button></td>
             </tr>
         </tbody>
     </table>
 }
 else
 {
-    <p>Agenten kunde inte hittas.</p>
+    <p>Mäklaren kunde inte hittas.</p>
 }
-
+<button @onclick="GoBack" class="btn btn-primary" style="margin-top: 1rem">Tillbaka</button>
 @code {
     [Parameter]
     public string? Id { get; set; }
 
-    private Agent? agent;
+    private Agent? Agent = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -50,9 +51,34 @@ else
             var response = await httpClient.GetAsync($"api/agent/{Id}");
             if (response.IsSuccessStatusCode)
             {
-                agent = await response.Content.ReadFromJsonAsync<Agent>();
+                Agent = await response.Content.ReadFromJsonAsync<Agent>();
             }
         }
+    }
+    public async Task DeleteAgent(string id)
+    {
+        bool isConfirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Är du säker på att du vill ta bort mäklaren?");
+        if (isConfirmed)
+        {
+            var response = await httpClient.DeleteAsync($"api/agent/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Mäklaren har tagits bort.");
+                NavigationManager.NavigateTo("/agent");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", $"Ett fel uppstod: {response.StatusCode}");
+            }
+        }
+    }
+    private void GoToEditAgentPage(string id)
+    {
+        NavigationManager.NavigateTo($"/editagent/{id}");
+    }
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/agent");
     }
 }
 

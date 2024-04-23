@@ -84,11 +84,16 @@ namespace HemSok.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public async Task<ActionResult> PutAgent([FromBody] Agent agent)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> PutAgent(string id, [FromBody] Agent agent)
         {
             if (agent == null)
                 return NotFound();
+
+            //if (id != agent.Id)
+            //{
+            //    return BadRequest();
+            //}
 
             agentRepository.Update(agent);
 
