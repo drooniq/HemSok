@@ -46,7 +46,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary" style="margin-top: 1rem">Spara</button>
-        <button @onclick="GoBack" class="btn btn-primary" style="margin-top: 1rem">Avbryt</button>
+        <button @onclick="@(() => NavigationManager.NavigateTo("/agent"))" class="btn btn-primary" style="margin-top: 1rem">Avbryt</button>
     </EditForm>  
 }
 else
@@ -95,8 +95,8 @@ else
             }
         }
     }
-    private void GoBack()
-    {
-        NavigationManager.NavigateTo("/agent");
-    }
+    // private void GoBack()
+    // {
+    //     NavigationManager.NavigateTo("/agent");
+    // }
 }

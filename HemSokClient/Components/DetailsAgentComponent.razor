@@ -27,7 +27,7 @@
                 <td>@Agent.Nickname</td>
                 <td>@Agent.LastName</td>
                 <td>@Agent.Agency.Name</td>
-                <td><button class="btn btn-primary" @onclick="() => GoToEditAgentPage(Agent.Id)">Redigera</button></td>
+                <td><button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/editagent/{Agent.Id}"))">Redigera</button></td>
                 <td><button class="btn btn-primary" @onclick="() => DeleteAgent(Agent.Id)">Ta bort</button></td>
             </tr>
         </tbody>
@@ -37,7 +37,7 @@ else
 {
     <p>Mäklaren kunde inte hittas.</p>
 }
-<button @onclick="GoBack" class="btn btn-primary" style="margin-top: 1rem">Tillbaka</button>
+<button @onclick="@(() => NavigationManager.NavigateTo("/agent"))" class="btn btn-primary" style="margin-top: 1rem">Tillbaka</button>
 @code {
     [Parameter]
     public string? Id { get; set; }
@@ -72,13 +72,13 @@ else
             }
         }
     }
-    private void GoToEditAgentPage(string id)
-    {
-        NavigationManager.NavigateTo($"/editagent/{id}");
-    }
-    private void GoBack()
-    {
-        NavigationManager.NavigateTo("/agent");
-    }
+    // private void GoToEditAgentPage(string id)
+    // {
+    //     NavigationManager.NavigateTo($"/editagent/{id}");
+    // }
+    // private void GoBack()
+    // {
+    //     NavigationManager.NavigateTo("/agent");
+    // }
 }
 

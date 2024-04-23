@@ -76,6 +76,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+
+
+
         var response = await httpclient.GetAsync("api/Residence");
         if (response.IsSuccessStatusCode)
         {

@@ -8,7 +8,7 @@
 <h3>Mäklare(spöken)</h3>
 
 @* <button class="btn btn-primary" @onclick="FetchAgentsAsync">Visa mäklare</button> *@
-<button class="btn btn-primary" @onclick="GoToCreateAgentPage">Lägg till ny mäklare</button>
+<button class="btn btn-primary" @onclick="@(() =>NavigationManager.NavigateTo("/createagent"))">Lägg till ny mäklare</button>
 
 @if (Agents != null)
 {
@@ -25,7 +25,7 @@
         <tbody>
             @foreach (var agent in Agents)
             {
-                <tr class="row-hover" @onclick="() => GoToDetailsAgentPage(agent.Id)">
+                <tr class="row-hover" @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{agent.Id}"))">
                     <td><img src="@agent.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
                     <td>@agent.Nickname</td>
                     <td>@agent.FirstName</td>
@@ -58,15 +58,17 @@ else
     //         agents = null;
     //     }
     // }
-    private void GoToDetailsAgentPage(string id)
-    {
-        NavigationManager.NavigateTo($"/detailsagent/{id}");
-    }
 
-    private void GoToCreateAgentPage()
-    {
-        NavigationManager.NavigateTo("/createagent");
-    }
+    // private void GoToDetailsAgentPage(string id)
+    // {
+    //     NavigationManager.NavigateTo($"/detailsagent/{id}");
+    // }
+
+    // private void GoToCreateAgentPage()
+    // {
+    //     NavigationManager.NavigateTo("/createagent");
+    // }
+
     protected override async Task OnInitializedAsync()
     {
         var response = await httpClient.GetAsync("api/agent");

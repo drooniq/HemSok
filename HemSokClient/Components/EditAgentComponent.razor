@@ -52,7 +52,7 @@ else
 {
     <p>Väntar på tolvslaget...</p>
 }
-<button @onclick="GoBack" class="btn btn-primary" style="margin-top: 1rem">Ångra</button>
+<button @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{Id}"))" class="btn btn-primary" style="margin-top: 1rem">Ångra</button>
 @code {
     [Parameter]
     public string? Id { get; set; }
@@ -100,9 +100,9 @@ else
         }
     }
 
-    private void GoBack()
-    {
-        NavigationManager.NavigateTo($"/detailsagent/{Id}");
-    }
+    // private void GoBack()
+    // {
+    //     NavigationManager.NavigateTo($"/detailsagent/{Id}");
+    // }
 }
 
