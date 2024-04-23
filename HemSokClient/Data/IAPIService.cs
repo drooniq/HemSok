@@ -1,5 +1,8 @@
 ﻿using HemSokClient.Models;
 
+/*
+author: Emil Waara
+*/
 namespace HemSokClient.Data
 {
     public interface IAPIService
