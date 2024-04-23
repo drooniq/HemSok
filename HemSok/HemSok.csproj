@@ -7,16 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Controllers\_AgentController._oldcs" />
-    <None Remove="Controllers\_ResidenceController._oldcs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Controllers\_AgentController._oldcs" />
-    <Compile Include="Controllers\_ResidenceController._oldcs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />

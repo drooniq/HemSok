@@ -3,7 +3,7 @@
 @using System.Net.Http.Json
 @using System.Text.Json
 @inject HttpClient httpclient
-@inject APIService apiService
+@inject IAPIService apiService
 @inject NavigationManager NavigationManager
 
 @* Author: Marcus Karlsson*@
@@ -77,9 +77,14 @@ else
     }
 
     protected override async Task OnInitializedAsync()
-    {       
-        apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();
-       
+    {
+        try
+        {
+            apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();
+        }
+        catch(Exception e){
+            Console.WriteLine(e.Message);
+        }
     }
 }
 

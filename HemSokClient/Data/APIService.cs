@@ -10,7 +10,7 @@ namespace HemSokClient.Data
 {
     public class APIService : IAPIService
     {
-        public HttpClient Client { get; }
+        public HttpClient Client { get; set; }
 
         public List<Agency>? Agencies { get; set; }
         public List<Agent>? Agents { get; set; }
@@ -42,7 +42,7 @@ namespace HemSokClient.Data
         // var lista = await GetAllFromApiAsync<Residence>();
         public async Task<List<T>?> GetAllFromApiAsync<T>() where T : class
         {
-            var response = await Client.GetAsync("api/" + typeof(T));
+            var response = await Client.GetAsync("api/" + typeof(T).Name);
             List<T>? modelData = (response.IsSuccessStatusCode) ? await response.Content.ReadFromJsonAsync<List<T>>() : null;
             return modelData;
         }
@@ -50,7 +50,7 @@ namespace HemSokClient.Data
         // skapa ny bostad
         public async Task<bool> PostToApiAsync<T>(T modelData) where T : class
         {
-            var response = await Client.PostAsJsonAsync("api/" + typeof(T), modelData);
+            var response = await Client.PostAsJsonAsync("api/" + typeof(T).Name, modelData);
             return response.IsSuccessStatusCode;
         }
 
