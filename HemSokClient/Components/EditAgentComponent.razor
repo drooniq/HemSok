@@ -1,4 +1,4 @@
-﻿@page "/createagent"
+﻿@page "/editagent/{id}"
 @using System.ComponentModel.DataAnnotations
 @using System.Threading.Tasks
 @inject HttpClient httpClient
@@ -6,11 +6,11 @@
 @inject NavigationManager NavigationManager
 
 
-<PageTitle>CreateAgent</PageTitle>
+<PageTitle>Edit Agent</PageTitle>
 
-<h3>Lägg till ny mäklare</h3>
+<h3>Redigera mäklare</h3>
 
-@if (Agencies != null)
+@if (Agent != null && Agencies != null)
 {
     <EditForm Model="@Agent" OnValidSubmit="SaveAgent">
         <DataAnnotationsValidator></DataAnnotationsValidator>
@@ -40,63 +40,69 @@
             <InputSelect id="agency" class="form-control" @bind-Value="AgencyId">
                 @foreach (var agency in Agencies)
                 {
-                    <option value="@agency.Id">@agency.Name</option>
+                    <option value="@agency.Id" >@agency.Name</option>
                 }
             </InputSelect>
         </div>
 
         <button type="submit" class="btn btn-primary" style="margin-top: 1rem">Spara</button>
-        <button @onclick="GoBack" class="btn btn-primary" style="margin-top: 1rem">Avbryt</button>
-    </EditForm>  
+    </EditForm>
 }
 else
 {
-    <p>Mäklarna kommer vid midnatt</p>
+    <p>Väntar på tolvslaget...</p>
 }
-
+<button @onclick="GoBack" class="btn btn-primary" style="margin-top: 1rem">Ångra</button>
 @code {
-    private Agent? Agent = new();
-    private Agency? Agency = new();
+    [Parameter]
+    public string? Id { get; set; }
+
+    private Agent? Agent;
     private List<Agency>? Agencies;
-    private int AgencyId { get; set; }
+    private int AgencyId;
+
+    private bool IsAgencySelected(int agencyId)
+    {
+        return Agent.Agency != null && Agent.Agency.Id == agencyId;
+    }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var response = await httpClient.GetAsync("api/agency");
+            var response = await httpClient.GetAsync($"api/agent/{Id}");
+            if (response.IsSuccessStatusCode)
+            {
+                Agent = await response.Content.ReadFromJsonAsync<Agent>();
+            }
+
+            response = await httpClient.GetAsync("api/agency");
             if (response.IsSuccessStatusCode)
             {
                 Agencies = await response.Content.ReadFromJsonAsync<List<Agency>>();
-                AgencyId = Agencies[0].Id;
-            }
-            else
-            {
-                await JSRuntime.InvokeVoidAsync("alert", "Mäklaren gick inte att lägga till.");
+                AgencyId = Agent.Agency.Id;
             }
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $"Ett undantag inträffade: {ex.Message}");
+            Console.WriteLine($"Ett undantag inträffade: {ex.Message}");
         }
-
     }
 
     private async Task SaveAgent(EditContext editContext)
     {
-        if (Agent != null && Agencies != null)
+        Agent.Agency = Agencies.FirstOrDefault(a => a.Id == AgencyId);
+        HttpResponseMessage response = await httpClient.PutAsJsonAsync($"api/agent/{Id}", Agent);
+        if (response.IsSuccessStatusCode)
         {
-            Agent.Agency = Agencies.FirstOrDefault(s => s.Id == AgencyId) ?? new Agency();
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("api/agent", Agent);
-            if (response.IsSuccessStatusCode)
-            {
-                await JSRuntime.InvokeVoidAsync("alert", "Mäklaren är tillagd.");
-                NavigationManager.NavigateTo("/agent");
-            }
+            await JSRuntime.InvokeVoidAsync("alert", "Mäklaren är uppdaterad.");
+            NavigationManager.NavigateTo("/agent");
         }
     }
+
     private void GoBack()
     {
-        NavigationManager.NavigateTo("/agent");
+        NavigationManager.NavigateTo($"/detailsagent/{Id}");
     }
 }
+

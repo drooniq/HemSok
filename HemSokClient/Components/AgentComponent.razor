@@ -5,31 +5,31 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Agents</PageTitle>
-<h1>Agenter</h1>
+<h3>Mäklare(spöken)</h3>
 
-<button class="btn btn-primary" @onclick="FetchAgentsAsync">Visa mäklare</button>
+@* <button class="btn btn-primary" @onclick="FetchAgentsAsync">Visa mäklare</button> *@
 <button class="btn btn-primary" @onclick="GoToCreateAgentPage">Lägg till ny mäklare</button>
 
-@if (agents != null)
+@if (Agents != null)
 {
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Förnamn</th>
-                <th>Smeknamn</th>
-                <th>Efternamn</th>
                 <th>Profilbild</th>
+                <th>Smeknamn</th>
+                <th>Förnamn</th>
+                <th>Efternamn</th>
                 <th>Mäklarfirma</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var agent in agents)
+            @foreach (var agent in Agents)
             {
                 <tr class="row-hover" @onclick="() => GoToDetailsAgentPage(agent.Id)">
-                    <td>@agent.FirstName</td>
-                    <td>@agent.Nickname</td>
-                    <td>@agent.LastName</td>
                     <td><img src="@agent.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    <td>@agent.Nickname</td>
+                    <td>@agent.FirstName</td>
+                    <td>@agent.LastName</td>
                     <td>@agent.Agency.Name</td>
                 </tr>
             }
@@ -43,31 +43,10 @@ else
 }
 
 @code {
-    public List<Agent>? agents;
-    public Agent? agent;
+    private List<Agent>? Agents;
+    private Agent? Agent;
 
-    public async Task FetchAgentsAsync()
-    {
-        var response = await httpClient.GetAsync("api/agent");
-        if (response.IsSuccessStatusCode)
-        {
-            agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
-        }
-        else
-        {
-            agents = null;
-        }
-    }
-    private void GoToDetailsAgentPage(string id)
-    {
-        NavigationManager.NavigateTo($"/detailsagent/{id}");
-    }
-
-    private void GoToCreateAgentPage()
-    {
-        NavigationManager.NavigateTo("/createagent");
-    }
-    // protected override async Task OnInitializedAsync()
+    // public async Task FetchAgentsAsync()
     // {
     //     var response = await httpClient.GetAsync("api/agent");
     //     if (response.IsSuccessStatusCode)
@@ -79,4 +58,25 @@ else
     //         agents = null;
     //     }
     // }
+    private void GoToDetailsAgentPage(string id)
+    {
+        NavigationManager.NavigateTo($"/detailsagent/{id}");
+    }
+
+    private void GoToCreateAgentPage()
+    {
+        NavigationManager.NavigateTo("/createagent");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await httpClient.GetAsync("api/agent");
+        if (response.IsSuccessStatusCode)
+        {
+            Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+        }
+        else
+        {
+            Agents = null;
+        }
+    }
 }
