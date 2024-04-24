@@ -14,7 +14,7 @@ namespace HemSokClient
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7069/") });
-            builder.Services.AddSingleton<IAPIService, APIService>();
+            builder.Services.AddScoped<IAPIService, APIService>();
 
             await builder.Build().RunAsync();
         }
