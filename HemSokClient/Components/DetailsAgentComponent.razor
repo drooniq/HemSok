@@ -2,6 +2,7 @@
 @inject HttpClient httpClient
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+@inject IAPIService apiService
 
 
 <PageTitle>DetailsAgent</PageTitle>
@@ -27,7 +28,7 @@
                 <td>@Agent.Nickname</td>
                 <td>@Agent.LastName</td>
                 <td>@Agent.Agency.Name</td>
-                <td><button class="btn btn-primary" @onclick="() => GoToEditAgentPage(Agent.Id)">Redigera</button></td>
+                <td><button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/editagent/{Agent.Id}"))">Redigera</button></td>
                 <td><button class="btn btn-primary" @onclick="() => DeleteAgent(Agent.Id)">Ta bort</button></td>
             </tr>
         </tbody>
@@ -37,22 +38,23 @@ else
 {
     <p>Mäklaren kunde inte hittas.</p>
 }
-<button @onclick="GoBack" class="btn btn-primary" style="margin-top: 1rem">Tillbaka</button>
+<button @onclick="@(() => NavigationManager.NavigateTo("/agent"))" class="btn btn-primary" style="margin-top: 1rem">Tillbaka</button>
 @code {
     [Parameter]
     public string? Id { get; set; }
 
-    private Agent? Agent = new();
+    private Agent? Agent;
 
     protected override async Task OnInitializedAsync()
     {
         if (!string.IsNullOrEmpty(Id))
         {
-            var response = await httpClient.GetAsync($"api/agent/{Id}");
-            if (response.IsSuccessStatusCode)
-            {
-                Agent = await response.Content.ReadFromJsonAsync<Agent>();
-            }
+            Agent = await apiService.GetFromApiAsync<Agent>($"api/agent/{Id}");
+            // var response = await httpClient.GetAsync($"api/agent/{Id}");
+            // if (response.IsSuccessStatusCode)
+            // {
+            //     Agent = await response.Content.ReadFromJsonAsync<Agent>();
+            // }
         }
     }
     public async Task DeleteAgent(string id)
@@ -60,25 +62,27 @@ else
         bool isConfirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Är du säker på att du vill ta bort mäklaren?");
         if (isConfirmed)
         {
-            var response = await httpClient.DeleteAsync($"api/agent/{id}");
-            if (response.IsSuccessStatusCode)
+            var response = apiService.DeleteFromApiAsync<Agent>($"api/agent/{Id}", Agent);
+            // var response = await httpClient.DeleteAsync($"api/agent/{id}");
+            // if (response.IsSuccessStatusCode)
+            if (response != null)
             {
                 await JSRuntime.InvokeVoidAsync("alert", "Mäklaren har tagits bort.");
                 NavigationManager.NavigateTo("/agent");
             }
             else
             {
-                await JSRuntime.InvokeVoidAsync("alert", $"Ett fel uppstod: {response.StatusCode}");
+                await JSRuntime.InvokeVoidAsync("alert", $"Ett fel uppstod: {id}");
             }
         }
     }
-    private void GoToEditAgentPage(string id)
-    {
-        NavigationManager.NavigateTo($"/editagent/{id}");
-    }
-    private void GoBack()
-    {
-        NavigationManager.NavigateTo("/agent");
-    }
+    // private void GoToEditAgentPage(string id)
+    // {
+    //     NavigationManager.NavigateTo($"/editagent/{id}");
+    // }
+    // private void GoBack()
+    // {
+    //     NavigationManager.NavigateTo("/agent");
+    // }
 }
 

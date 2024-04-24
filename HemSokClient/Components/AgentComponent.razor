@@ -3,12 +3,14 @@
 @using System.Threading.Tasks
 @inject HttpClient httpClient
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IAPIService apiService
 
 <PageTitle>Agents</PageTitle>
 <h3>Mäklare(spöken)</h3>
 
 @* <button class="btn btn-primary" @onclick="FetchAgentsAsync">Visa mäklare</button> *@
-<button class="btn btn-primary" @onclick="GoToCreateAgentPage">Lägg till ny mäklare</button>
+<button class="btn btn-primary" @onclick="@(() =>NavigationManager.NavigateTo("/createagent"))">Lägg till ny mäklare</button>
 
 @if (Agents != null)
 {
@@ -25,7 +27,7 @@
         <tbody>
             @foreach (var agent in Agents)
             {
-                <tr class="row-hover" @onclick="() => GoToDetailsAgentPage(agent.Id)">
+                <tr class="row-hover" @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{agent.Id}"))">
                     <td><img src="@agent.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
                     <td>@agent.Nickname</td>
                     <td>@agent.FirstName</td>
@@ -44,7 +46,7 @@ else
 
 @code {
     private List<Agent>? Agents;
-    private Agent? Agent;
+    // private Agent? Agent;    
 
     // public async Task FetchAgentsAsync()
     // {
@@ -58,25 +60,36 @@ else
     //         agents = null;
     //     }
     // }
-    private void GoToDetailsAgentPage(string id)
-    {
-        NavigationManager.NavigateTo($"/detailsagent/{id}");
-    }
 
-    private void GoToCreateAgentPage()
-    {
-        NavigationManager.NavigateTo("/createagent");
-    }
+    // private void GoToDetailsAgentPage(string id)
+    // {
+    //     NavigationManager.NavigateTo($"/detailsagent/{id}");
+    // }
+
+    // apiServiceiServiceivate void GoToCreateAgentPage()
+    // {
+    //     NavigationManager.NavigateTo("/createagent");
+    // }
+
     protected override async Task OnInitializedAsync()
     {
-        var response = await httpClient.GetAsync("api/agent");
-        if (response.IsSuccessStatusCode)
+        try
         {
-            Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+            Agents = await apiService.GetAllFromApiAsync<Agent>();
         }
-        else
+        catch (Exception ex)
         {
-            Agents = null;
+            await JSRuntime.InvokeVoidAsync("alert", $"Ett undantag inträffade: {ex.Message}");
         }
+
+        // var response = await httpClient.GetAsync("api/agent");
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+        // }
+        // else
+        // {
+        //     Agents = null;
+        // }
     }
 }
