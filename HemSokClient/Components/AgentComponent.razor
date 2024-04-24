@@ -3,6 +3,8 @@
 @using System.Threading.Tasks
 @inject HttpClient httpClient
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IAPIService apiService
 
 <PageTitle>Agents</PageTitle>
 <h3>Mäklare(spöken)</h3>
@@ -44,7 +46,7 @@ else
 
 @code {
     private List<Agent>? Agents;
-    private Agent? Agent;
+    // private Agent? Agent;    
 
     // public async Task FetchAgentsAsync()
     // {
@@ -64,21 +66,30 @@ else
     //     NavigationManager.NavigateTo($"/detailsagent/{id}");
     // }
 
-    // private void GoToCreateAgentPage()
+    // apiServiceiServiceivate void GoToCreateAgentPage()
     // {
     //     NavigationManager.NavigateTo("/createagent");
     // }
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await httpClient.GetAsync("api/agent");
-        if (response.IsSuccessStatusCode)
+        try
         {
-            Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+            Agents = await apiService.GetAllFromApiAsync<Agent>();
         }
-        else
+        catch (Exception ex)
         {
-            Agents = null;
+            await JSRuntime.InvokeVoidAsync("alert", $"Ett undantag inträffade: {ex.Message}");
         }
+
+        // var response = await httpClient.GetAsync("api/agent");
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
+        // }
+        // else
+        // {
+        //     Agents = null;
+        // }
     }
 }

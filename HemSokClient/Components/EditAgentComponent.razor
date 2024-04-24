@@ -4,6 +4,7 @@
 @inject HttpClient httpClient
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+@inject IAPIService apiService
 
 
 <PageTitle>Edit Agent</PageTitle>
@@ -70,18 +71,21 @@ else
     {
         try
         {
-            var response = await httpClient.GetAsync($"api/agent/{Id}");
-            if (response.IsSuccessStatusCode)
-            {
-                Agent = await response.Content.ReadFromJsonAsync<Agent>();
-            }
+            Agent = await apiService.GetFromApiAsync<Agent>($"api/agent/{Id}");
+            Agencies = await apiService.GetAllFromApiAsync<Agency>();
+            AgencyId = Agent.Agency.Id;
+            // var response = await httpClient.GetAsync($"api/agent/{Id}");
+            // if (response.IsSuccessStatusCode)
+            // {
+            //     Agent = await response.Content.ReadFromJsonAsync<Agent>();
+            // }
 
-            response = await httpClient.GetAsync("api/agency");
-            if (response.IsSuccessStatusCode)
-            {
-                Agencies = await response.Content.ReadFromJsonAsync<List<Agency>>();
-                AgencyId = Agent.Agency.Id;
-            }
+            // response = await httpClient.GetAsync("api/agency");
+            // if (response.IsSuccessStatusCode)
+            // {
+            //     Agencies = await response.Content.ReadFromJsonAsync<List<Agency>>();
+            //     AgencyId = Agent.Agency.Id;
+            // }
         }
         catch (Exception ex)
         {
@@ -92,8 +96,10 @@ else
     private async Task SaveAgent(EditContext editContext)
     {
         Agent.Agency = Agencies.FirstOrDefault(a => a.Id == AgencyId);
-        HttpResponseMessage response = await httpClient.PutAsJsonAsync($"api/agent/{Id}", Agent);
-        if (response.IsSuccessStatusCode)
+        // HttpResponseMessage response = await httpClient.PutAsJsonAsync($"api/agent/{Id}", Agent);
+        // if (response.IsSuccessStatusCode)
+        var response = apiService.PutToApiAsync<Agent>($"api/agent/{Id}", Agent);
+        if (response != null) ;
         {
             await JSRuntime.InvokeVoidAsync("alert", "Mäklaren är uppdaterad.");
             NavigationManager.NavigateTo("/agent");

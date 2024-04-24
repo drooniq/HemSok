@@ -4,6 +4,7 @@
 @inject HttpClient httpClient
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+@inject IAPIService apiService
 
 
 <PageTitle>CreateAgent</PageTitle>
@@ -64,22 +65,19 @@ else
     {
         try
         {
-            var response = await httpClient.GetAsync("api/agency");
-            if (response.IsSuccessStatusCode)
-            {
-                Agencies = await response.Content.ReadFromJsonAsync<List<Agency>>();
-                AgencyId = Agencies[0].Id;
-            }
-            else
-            {
-                await JSRuntime.InvokeVoidAsync("alert", "Mäklaren gick inte att lägga till.");
-            }
+            Agencies = await apiService.GetAllFromApiAsync<Agency>();
+            AgencyId = Agencies[0].Id;
+            // var response = await httpClient.GetAsync("api/agency");
+            // if (response.IsSuccessStatusCode)
+            // {
+            //     Agencies = await response.Content.ReadFromJsonAsync<List<Agency>>();
+            //     AgencyId = Agencies[0].Id;
+            // }
         }
         catch (Exception ex)
         {
             await JSRuntime.InvokeVoidAsync("alert", $"Ett undantag inträffade: {ex.Message}");
         }
-
     }
 
     private async Task SaveAgent(EditContext editContext)
@@ -87,8 +85,9 @@ else
         if (Agent != null && Agencies != null)
         {
             Agent.Agency = Agencies.FirstOrDefault(s => s.Id == AgencyId) ?? new Agency();
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("api/agent", Agent);
-            if (response.IsSuccessStatusCode)
+            // HttpResponseMessage response = await httpClient.PostAsJsonAsync("api/agent", Agent);
+            var response = apiService.PostToApiAsync<Agent>(Agent);
+            if (response != null);
             {
                 await JSRuntime.InvokeVoidAsync("alert", "Mäklaren är tillagd.");
                 NavigationManager.NavigateTo("/agent");
