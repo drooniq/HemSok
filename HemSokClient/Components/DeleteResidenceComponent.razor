@@ -1,5 +1,5 @@
-﻿@inject HttpClient httpClient
-@inject NavigationManager navigationManager
+﻿@inject NavigationManager navigationManager
+@inject IAPIService apiService
 @page "/deleteresidence/{id}"
 
 @* Author: Marcus Karlsson*@
@@ -27,27 +27,23 @@ else
     private Residence? residence;
 
     private async Task DeleteResidence()
-    {
-        var post = await httpClient.DeleteAsync($"api/Residence/{residence.Id}");
-        if (post.IsSuccessStatusCode)
-        {
-            navigationManager.NavigateTo("/residence");
-        }
-        else
-        {
+    {     
+        // var post = await httpClient.DeleteAsync($"api/Residence/{residence.Id}");
+        if (await apiService.DeleteFromApiAsync<Residence>("api/Residence/" + residence.Id, residence))
+         {
+             navigationManager.NavigateTo("/residence");
+         }
+        // else
+        // {
 
-        }
+        // }
     }
 
     protected override async Task OnInitializedAsync()
     {
         if (!string.IsNullOrEmpty(Id))
         {
-            var response = await httpClient.GetAsync($"api/residence/{Id}");
-            if (response.IsSuccessStatusCode)
-            {
-                residence = await response.Content.ReadFromJsonAsync<Residence>();
-            }
+            residence = await apiService.GetFromApiAsync<Residence>("api/residence/" + Id);
         }
     }
 }

@@ -54,10 +54,10 @@ namespace HemSokClient.Data
             return response.IsSuccessStatusCode;
         }
 
-        // string uri = "api/Residence/" + residence.Id   modelData = den förändrade residence 
-        public async Task<bool> PutToApiAsync<T>(string uri, T modelData) where T : class
+        // string uri = "api/" + typeof(T).Name, modelData   modelData = den förändrade residence 
+        public async Task<bool> PutToApiAsync<T>(T modelData) where T : class
         {
-            var response = await Client.PutAsJsonAsync(uri, modelData);
+            var response = await Client.PutAsJsonAsync("api/" + typeof(T).Name, modelData);
             return response.IsSuccessStatusCode;
         }
     }
