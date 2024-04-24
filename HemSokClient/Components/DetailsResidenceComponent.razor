@@ -1,5 +1,5 @@
-﻿@inject HttpClient httpClient
-@inject NavigationManager NavigationManager
+﻿@inject NavigationManager NavigationManager
+@inject IAPIService apiService
 
 @* Author: Marcus Karlsson*@
 
@@ -83,11 +83,7 @@ else
     {
         if (!string.IsNullOrEmpty(Id))
         {
-            var response = await httpClient.GetAsync($"api/residence/{Id}");
-            if (response.IsSuccessStatusCode)
-            {
-                residence = await response.Content.ReadFromJsonAsync<Residence>();
-            }
+            residence = await apiService.GetFromApiAsync<Residence>("api/residence/" + Id);
         }
     }
 }

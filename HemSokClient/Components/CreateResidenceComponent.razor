@@ -2,8 +2,8 @@
 @using System.Net.Http.Json
 @using System.Text.Json
 @using System.Text
-@inject HttpClient httpclient
 @inject NavigationManager navigationManager
+@inject IAPIService apiService
 
 @* Author: Marcus Karlsson*@
 
@@ -26,31 +26,32 @@
 <label for="ListingPrice">Utgångspris: </label>
  <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice"></InputNumber>
     <br />
-<label>Välj Kategori: </label>
-<InputSelect @bind-Value="CategoryId">       
-    @foreach (var c in Categories)
+    @if (apiService.Categories != null)
+    {<label>Välj Kategori: </label>
+      <InputSelect @bind-Value="CategoryId">
+        @foreach (var c in apiService.Categories)
         {<option value="@c.Id">@c.Name</option>}
-</InputSelect>
+        </InputSelect>
+    }
     <br />
-    <label>Välj Mäklare: </label>
-    <InputSelect @bind-Value="AgentId">       
-        @foreach (var c in Agents)
+    @if (apiService.Agents != null)
+    {<label>Välj Mäklare: </label>
+      <InputSelect @bind-Value="AgentId">
+        @foreach (var c in apiService.Agents)
         {<option value="@c.Id">@c.FirstName @c.LastName</option>}
-    </InputSelect>
+      </InputSelect>
+    }
     <br />
-    <label>Välj Kommun: </label>
-    <InputSelect @bind-Value="MunicipalityId">       
-        @foreach (var c in Municipalities)
-        {<option value="@c.Id">@c.Name</option>}
-    </InputSelect>
-<button type="submit">Submit</button>
+    @if (apiService.Municipality != null)
+    {<label>Välj Kommun: </label>
+     <InputSelect @bind-Value="MunicipalityId">
+      @foreach (var c in apiService.Municipality)
+       {<option value="@c.Id">@c.Name</option>}
+     </InputSelect>
+    }
+    <button type="submit">Submit</button>
 
 </EditForm>
-
-@if(OK != null)
-{
-    <p>@OK</p>
-}
 
 
 
@@ -58,59 +59,35 @@
 @code {
 
     public Residence residence = new();
-    List<Category> Categories = new();
     public int CategoryId{ get; set; }
-    List<Agent> Agents = new();
     public string AgentId { get; set; }
-    List<Municipality> Municipalities = new();
     public int MunicipalityId { get; set; }
-    public string OK { get; set; }
    
 
     private async Task HandleFormSubmit(EditContext context)
     {              
-        residence.Agent = Agents.FirstOrDefault(s => s.Id == AgentId);
-        residence.Category = Categories.FirstOrDefault(s => s.Id == CategoryId);
-        residence.Municipality = Municipalities.FirstOrDefault(s => s.Id == MunicipalityId);
-
-        var post = await httpclient.PostAsJsonAsync("api/Residence", residence);
-        if (post.IsSuccessStatusCode)
+        residence.Agent = apiService.Agents.FirstOrDefault(s => s.Id == AgentId);
+        residence.Category = apiService.Categories.FirstOrDefault(s => s.Id == CategoryId);
+        residence.Municipality = apiService.Municipality.FirstOrDefault(s => s.Id == MunicipalityId);
+      
+        if (await apiService.PostToApiAsync<Residence>(residence))
         {
             navigationManager.NavigateTo("/residence");
-        }
-        else
-        {     
-           
-        }
-        
+        }     
         //Redirecta till edit sida, för att fylla ut fullständig information!
     }
 
     protected override async Task OnInitializedAsync()
     {      
-        var response = await httpclient.GetAsync("api/Category");
-        if (response.IsSuccessStatusCode)
-        {
-            Categories  = await response.Content.ReadFromJsonAsync<List<Category>>();
-            CategoryId = Categories[0].Id;
-        }
-        else { Categories = null; }
+       
+        apiService.Categories = await apiService.GetAllFromApiAsync<Category>();
+        CategoryId = apiService.Categories[0].Id;
 
-        response = await httpclient.GetAsync("api/Agent");
-        if (response.IsSuccessStatusCode)
-        {
-            Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
-            AgentId = Agents[0].Id;
-        }
-        else { Agents = null; }
+        apiService.Agents = await apiService.GetAllFromApiAsync<Agent>();
+        AgentId = apiService.Agents[0].Id;
 
-        response = await httpclient.GetAsync("api/Municipality");
-        if (response.IsSuccessStatusCode)
-        {
-            Municipalities = await response.Content.ReadFromJsonAsync<List<Municipality>>();
-            MunicipalityId = Municipalities[0].Id;
-        }
-        else { Municipalities = null; }
+        apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
+        MunicipalityId = apiService.Municipality[0].Id;
     }
 
   
