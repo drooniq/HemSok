@@ -1,0 +1,97 @@
+﻿@inject IAPIService apiService
+@inject NavigationManager NavigationManager
+
+<div>
+    <SearchResidenceComponent Items="apiService.Residences" OnSearch="FilterResidences"></SearchResidenceComponent>
+</div>
+
+@if (filteredResidences != null)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Address</th>            
+                <th>Stad</th>
+                <th>Kommun</th>
+                <th>Startpris</th>
+                <th>Kategori</th>
+                <th>Rum</th>
+                <th>Boarea kvm</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var residence in filteredResidences)
+            {
+                <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
+                    <td><img src="@residence.ImagePaths" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    <td>@residence.StreetName</td>
+                    <td>@residence.City</td>
+                    <td>@residence.Municipality.Name</td>
+                    <td>@residence.ListingPrice</td>
+                    <td>@residence.Category.Name</td>
+                    <td>@residence.Rooms</td>
+                    <td>@residence.LivingArea</td>
+             
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    IEnumerable<Residence> filteredResidences;
+
+    private void GoToDetailsResidencePage(int id)
+    {
+        NavigationManager.NavigateTo($"/residencedetails/{id.ToString()}");
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();          
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+    public void FilterResidences(SearchModel searchModel)
+    {
+        if (!string.IsNullOrEmpty(searchModel.StreetSearch) 
+        && string.IsNullOrEmpty(searchModel.CountySearch) 
+        && string.IsNullOrEmpty(searchModel.MunSearch))
+        {
+            filteredResidences = apiService.Residences.Where(s => s.StreetName.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));          
+        }
+        if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        && !string.IsNullOrEmpty(searchModel.CountySearch)
+        && string.IsNullOrEmpty(searchModel.MunSearch))
+        {
+            int id = int.Parse(searchModel.CountySearch);
+            filteredResidences = apiService.Residences.Where(s => s.Municipality.County.Id == id);
+        }
+        if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        && string.IsNullOrEmpty(searchModel.CountySearch)
+        && !string.IsNullOrEmpty(searchModel.MunSearch))
+        {
+            int id = int.Parse(searchModel.MunSearch);
+            filteredResidences = apiService.Residences.Where(s => s.Municipality.Id == id);
+        }
+        if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        && string.IsNullOrEmpty(searchModel.CountySearch)
+        && string.IsNullOrEmpty(searchModel.MunSearch))
+        {
+            filteredResidences = apiService.Residences;
+        }
+
+    }
+   
+
+}

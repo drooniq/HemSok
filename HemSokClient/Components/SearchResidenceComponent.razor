@@ -1,0 +1,59 @@
+﻿@inject IAPIService apiService
+@typeparam TEntity
+
+<input class="form-control" placeholder="Sök bostad.."
+ @bind="searchModel.StreetSearch"/>
+<br />
+    @if (apiService.Municipality!=null)
+    {
+<label>Välj Kommun: </label>
+<InputSelect @bind-Value="searchModel.MunSearch">
+    <option value="">Sök kommun..</option>
+    @foreach (var c in apiService.Municipality.OrderBy(s=>s.Name))
+    {
+        <option value="@c.Id">@c.Name</option>
+    }
+</InputSelect>}
+<br />
+<br />
+  @if (apiService.Counties!=null)
+    {
+<label>Välj Län: </label>
+<InputSelect @bind-Value="searchModel.CountySearch">
+        <option value="">Sök län..</option>
+        @foreach (var c in apiService.Counties.OrderBy(s => s.Name))
+    {
+        <option value="@c.Id">@c.Name</option>
+    }
+</InputSelect>}
+<br />
+<br />
+<button class="form-control" @onclick="OnSearchClicked">
+    Sök
+ </button>
+
+@code {
+
+    [Parameter]
+    public List<TEntity> Items { get; set; }
+
+    [Parameter]
+    public EventCallback<SearchModel> OnSearch { get; set; }
+
+
+    public SearchModel searchModel = new();
+
+    private async Task OnSearchClicked()
+    {
+        await OnSearch.InvokeAsync(searchModel);
+ 
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        apiService.Counties = await apiService.GetAllFromApiAsync<County>();
+        apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
+
+
+    }
+}

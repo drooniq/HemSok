@@ -46,7 +46,7 @@
     {
         <label>Välj Kommun: </label>
         <InputSelect @bind-Value="MunicipalityId">
-            @foreach (var c in apiService.Municipality)
+            @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
             {
                 <option value="@c.Id">@c.Name</option>
             }

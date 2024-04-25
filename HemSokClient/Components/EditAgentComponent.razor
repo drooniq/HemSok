@@ -98,7 +98,7 @@ else
         Agent.Agency = Agencies.FirstOrDefault(a => a.Id == AgencyId);
         // HttpResponseMessage response = await httpClient.PutAsJsonAsync($"api/agent/{Id}", Agent);
         // if (response.IsSuccessStatusCode)
-        var response = apiService.PutToApiAsync<Agent>($"api/agent/{Id}", Agent);
+        var response = apiService.PutToApiAsync<Agent>(Agent);
         if (response != null) ;
         {
             await JSRuntime.InvokeVoidAsync("alert", "Mäklaren är uppdaterad.");
