@@ -84,16 +84,18 @@ namespace HemSok.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutAgent(string id, [FromBody] Agent agent)
+        [HttpPut]
+        public async Task<ActionResult> PutAgent([FromBody] Agent agent)
         {
             if (agent == null)
-                return NotFound();
+            {
+                return BadRequest();
+            }
 
-            //if (id != agent.Id)
-            //{
-            //    return BadRequest();
-            //}
+            if (!AgentExists(agent.Id))
+            {
+                return NotFound();
+            }
 
             agentRepository.Update(agent);
 
@@ -102,6 +104,10 @@ namespace HemSok.Controllers
             await agentRepository.SaveChangesAsync();
 
             return Ok();
+        }
+        private bool AgentExists(string id)
+        {
+            return agentRepository.Queryable().Any(e => e.Id == id);
         }
     }
 }
