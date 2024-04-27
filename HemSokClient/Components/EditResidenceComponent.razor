@@ -77,6 +77,9 @@
     <label for="Description">Beskrivning: </label>
     <InputText id="Description" @bind-Value="@residence.Description"></InputText>
     <br /> <br />
+    <CascadingValue Value="@residence">
+        <AddImageComponent></AddImageComponent>
+    </CascadingValue>
     <button type="submit">Submit</button>
 
 </EditForm>
