@@ -30,7 +30,7 @@
             @foreach (var residence in apiService.Residences)
             {
                 <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
-                    <td><img src="@residence.ImagePaths" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    <td><img src="@residence.ImagePaths[0]" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
                     <td>@residence.ListingPrice</td>
                     <td>@residence.StreetName</td>
                     <td>@residence.ZipCode</td>
