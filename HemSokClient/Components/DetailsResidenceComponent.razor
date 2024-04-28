@@ -8,7 +8,11 @@
 
 @if (residence != null)
 {
-    <h3>@residence.StreetName<img src="@residence.ImagePaths[0]" alt="Profilbild" style="max-width: 7rem; border-radius: 10%; margin: 1rem;" /></h3>
+    <h3>@residence.StreetName</h3>
+    
+    <CascadingValue Value="@residence.ImagePaths">
+        <ImagesDisplayComponent></ImagesDisplayComponent>
+    </CascadingValue>
 
     <table class="table ">
         <thead>
@@ -66,8 +70,7 @@ else
 
     [Parameter]
     public string? Id { get; set; }
-
-    private Residence? residence;
+    private Residence residence = new();
 
     private void GoToDeleteResidence(int id)
     {
