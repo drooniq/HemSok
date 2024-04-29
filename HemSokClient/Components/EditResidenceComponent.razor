@@ -115,13 +115,13 @@
             residence = await apiService.GetFromApiAsync<Residence>("api/residence/" + Id);     
         }
         apiService.Categories = await apiService.GetAllFromApiAsync<Category>();
-        CategoryId = apiService.Categories[0].Id;
+        CategoryId = residence.Category.Id;
 
         apiService.Agents = await apiService.GetAllFromApiAsync<Agent>();
-        AgentId = apiService.Agents[0].Id;
+        AgentId = residence.Agent.Id;
 
         apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
-        MunicipalityId = apiService.Municipality[0].Id;
+        MunicipalityId = residence.Municipality.Id;
  
     }
 }

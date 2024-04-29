@@ -1,0 +1,161 @@
+﻿@page "/starting5"
+@using System.ComponentModel.DataAnnotations
+@inject IAPIService apiService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+@if (apiService.Residences != null && apiService.Residences.Any())
+{
+    <div class="container">
+        <div class="image-container">
+            <button class="arrow left" @onclick="PreviousResidence">❮</button>
+            <img id="startPic" src="@apiService.Residences?[CurrentResidenceIndex].ImagePaths?.FirstOrDefault()" alt="Residence Image" class="img-fluid" />
+            <button class="arrow right" @onclick="NextResidence">❯</button>
+            <div class="info-container">
+                <p><span id="address">@apiService.Residences?[CurrentResidenceIndex].StreetName </span></p>
+            </div>
+            <div class="prize-container">
+                <p><span id="prize">@apiService.Residences?[CurrentResidenceIndex].ListingPrice kr</span></p>
+            </div>
+            <div class="description-container">
+                <p><span id="description">@apiService.Residences?[CurrentResidenceIndex].Description</span></p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Husen hemsöks just nu, försök igen senare!</p>
+}
+@code {
+    private List<Residence>? Residences;
+    private int CurrentResidenceIndex = 0;
+    private Timer? tempo;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        tempo = new Timer(PicIndex, null, 5000, 5000);
+        try
+        {
+            apiService.Residences = (await apiService.GetAllFromApiAsync<Residence>()).TakeLast(5).ToList();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Ett undantag inträffade: {ex.Message}");
+        }
+    }
+    private void PicIndex(object? state)
+    {
+        if (CurrentResidenceIndex == 4)
+        {
+            CurrentResidenceIndex = 0;
+        }
+        else
+        {
+            CurrentResidenceIndex++;
+        }
+        StateHasChanged();
+    }
+    public void Dispose()
+    {
+        tempo?.Dispose();
+    }
+
+    private void NextResidence()
+    {
+        // CurrentResidenceIndex = (CurrentResidenceIndex + 1) % Residences.Count;
+        if (CurrentResidenceIndex == 4)
+        {
+            CurrentResidenceIndex = 0;
+        }
+        else
+        {            
+            CurrentResidenceIndex++;
+        }
+    }
+
+    private void PreviousResidence()
+    {
+        // CurrentResidenceIndex = (CurrentResidenceIndex - 1 + Residences.Count) % Residences.Count;
+        if (CurrentResidenceIndex == 0)
+        {
+            CurrentResidenceIndex = 4;
+        }
+        else
+        {
+            CurrentResidenceIndex--;
+        }
+    }
+
+}
+
+<style>
+    #startPic {
+        width: 100%;
+        height: auto;
+    }
+
+    .container {
+        display: block;
+    }
+
+    .image-container {
+        position: relative;
+        width: 60%;
+    }
+
+    .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2em;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+    }
+
+        .arrow.left {
+            left: 10px;
+        }
+
+        .arrow.right {
+            right: 10px;
+        }
+
+    .info-container {
+        bottom: 20%;
+        left: 1%;
+        max-width: 50%;
+    }
+
+    .prize-container {
+        bottom: 20%;
+        right: 1%;
+        max-width: 50%;
+    }
+
+    .description-container {
+        bottom: 0%;
+        left: 1%;
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
+
+    .info-container, .prize-container, .description-container {
+        position: absolute;
+        color: white;
+        font-size: 1.5vw;
+        padding: 1px;
+        font-weight: bolder;
+        line-height: 1.0;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+    /* Media query for screens smaller than 600px */
+    media (max-width: 600px) {
+        .info-container, .description-container {
+            width: 100%;
+        }
+
+    }
+</style>
