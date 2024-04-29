@@ -8,8 +8,8 @@
     {
 <label>Välj Kommun: </label>
 <InputSelect @bind-Value="searchModel.MunSearch">
-    <option value="">Sök kommun..</option>
-    @foreach (var c in apiService.Municipality.OrderBy(s=>s.Name))
+        <option value="">Sök på kommun...</option>
+        @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
     {
         <option value="@c.Id">@c.Name</option>
     }
@@ -20,7 +20,14 @@
     {
 <label>Välj Län: </label>
 <InputSelect @bind-Value="searchModel.CountySearch">
-        <option value="">Sök län..</option>
+        @if (chosenCounty != "")
+        {
+            <option value=@chosenCounty>@chosenCounty</option>
+        }
+        else
+        {
+            <option value="">Sök på län...</option>
+        }
         @foreach (var c in apiService.Counties.OrderBy(s => s.Name))
     {
         <option value="@c.Id">@c.Name</option>
@@ -43,10 +50,12 @@
 
     public SearchModel searchModel = new();
 
+    public string chosenCounty { get; set; } = string.Empty;
+
     private async Task OnSearchClicked()
     {
         await OnSearch.InvokeAsync(searchModel);
- 
+
     }
 
     protected async override Task OnInitializedAsync()
@@ -55,5 +64,11 @@
         apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
 
 
+    }
+
+    protected void OnChangeMunicipality()
+    {
+        // sätt rätt län i dropdown (sedan disable).
+        chosenCounty = apiService.Municipality.FirstOrDefault(s => s.Id == int.Parse(searchModel.MunSearch)).County.Name;
     }
 }

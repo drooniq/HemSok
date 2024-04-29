@@ -64,32 +64,61 @@
     }
     public void FilterResidences(SearchModel searchModel)
     {
-        if (!string.IsNullOrEmpty(searchModel.StreetSearch) 
-        && string.IsNullOrEmpty(searchModel.CountySearch) 
-        && string.IsNullOrEmpty(searchModel.MunSearch))
+        IEnumerable<Residence> filteredResidences = apiService.Residences;
+
+        // ifall vi matat in en söksträng kör detta.
+        if (searchModel.StreetSearch != "")
         {
-            filteredResidences = apiService.Residences.Where(s => s.StreetName.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));          
+            //kolla om söksträng är en län
+            //kolla om söksträng är en kommun
+            //kolla om söksträng är en gata
+            if (filteredResidences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count>0);
+            {
+                filteredResidences = apiService.Residences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));
+            }
+            // if (filteredResidences.Where(s => s.County.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count > 0) ;
+            // {
+            //     filteredResidences = apiService.Residences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));
+            // }
+            // if (filteredResidences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count > 0) ;
+            // {
+            //     filteredResidences = apiService.Residences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));
+            // }
         }
-        if (string.IsNullOrEmpty(searchModel.StreetSearch)
-        && !string.IsNullOrEmpty(searchModel.CountySearch)
-        && string.IsNullOrEmpty(searchModel.MunSearch))
-        {
-            int id = int.Parse(searchModel.CountySearch);
-            filteredResidences = apiService.Residences.Where(s => s.Municipality.County.Id == id);
-        }
-        if (string.IsNullOrEmpty(searchModel.StreetSearch)
-        && string.IsNullOrEmpty(searchModel.CountySearch)
-        && !string.IsNullOrEmpty(searchModel.MunSearch))
-        {
-            int id = int.Parse(searchModel.MunSearch);
-            filteredResidences = apiService.Residences.Where(s => s.Municipality.Id == id);
-        }
-        if (string.IsNullOrEmpty(searchModel.StreetSearch)
-        && string.IsNullOrEmpty(searchModel.CountySearch)
-        && string.IsNullOrEmpty(searchModel.MunSearch))
-        {
-            filteredResidences = apiService.Residences;
-        }
+
+        if (searchModel.MunSearch != "") 
+            filteredResidences = apiService.Residences.Where(s => s.Municipality.County.Id == int.Parse(searchModel.CountySearch));
+
+        if (searchModel.CountySearch != "")
+            filteredResidences = apiService.Residences.Where(s => s.Municipality.County.Id == int.Parse(searchModel.CountySearch));
+
+
+        // if (!string.IsNullOrEmpty(searchModel.StreetSearch) 
+        // && string.IsNullOrEmpty(searchModel.CountySearch) 
+        // && string.IsNullOrEmpty(searchModel.MunSearch))
+        // {
+        //     filteredResidences = apiService.Residences.Where(s => s.StreetName.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));          
+        // }
+        // if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        // && !string.IsNullOrEmpty(searchModel.CountySearch)
+        // && string.IsNullOrEmpty(searchModel.MunSearch))
+        // {
+        //     int id = int.Parse(searchModel.CountySearch);
+        //     filteredResidences = apiService.Residences.Where(s => s.Municipality.County.Id == id);
+        // }
+        // if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        // && string.IsNullOrEmpty(searchModel.CountySearch)
+        // && !string.IsNullOrEmpty(searchModel.MunSearch))
+        // {
+        //     int id = int.Parse(searchModel.MunSearch);
+        //     filteredResidences = apiService.Residences.Where(s => s.Municipality.Id == id);
+        // }
+        // if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        // && string.IsNullOrEmpty(searchModel.CountySearch)
+        // && string.IsNullOrEmpty(searchModel.MunSearch))
+        // {
+        //     filteredResidences = apiService.Residences;
+        // }
 
     }
    

@@ -100,6 +100,7 @@ namespace HemSok.Controllers
         public async Task<ActionResult<Residence>> PostResidence(ResidenceDTO residenceDTO)
         {
             var residence = mapper.Map<Residence>(residenceDTO);
+            residence.ImagePaths = new List<string>();
 
             if (residence == null)
                 return NotFound();
