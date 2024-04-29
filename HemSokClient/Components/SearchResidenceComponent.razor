@@ -1,43 +1,87 @@
 ﻿@inject IAPIService apiService
 @typeparam TEntity
-
-<input class="form-control" placeholder="Sök bostad.."
+@* Author: Marcus Karlsson *@
+<input class="form-control" placeholder="Sök bostad med address.."
  @bind="searchModel.StreetSearch"/>
 <br />
     @if (apiService.Municipality!=null)
     {
 <label>Välj Kommun: </label>
-<InputSelect @bind-Value="searchModel.MunSearch">
-        <option value="">Sök på kommun...</option>
-        @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
-    {
-        <option value="@c.Id">@c.Name</option>
-    }
-</InputSelect>}
+<InputSelect ValueChanged="@((string value)=>ChooseMun(value))" ValueExpression="@(()=>searchModel.MunSearch)" Value="searchModel.MunSearch">
+        @if(searchModel.CountySearch != "")
+        {
+            <option value="">Sök på kommun...</option>
+            @foreach (var c in apiService.Municipality.Where(s => s.County.Id == int.Parse(searchModel.CountySearch))
+                                                      .OrderBy(s => s.Name))
+            {
+                <option value="@c.Id">@c.Name</option>
+            }                 
+        }
+        else
+        {
+            <option value="">Sök på kommun...</option>
+            @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+        }                
+    </InputSelect>}
 <br />
 <br />
-  @if (apiService.Counties!=null)
+@if (apiService.Counties != null)
     {
 <label>Välj Län: </label>
-<InputSelect @bind-Value="searchModel.CountySearch">
-        @if (chosenCounty != "")
+    <InputSelect ValueChanged="@((string value)=>ChooseCounty(value))" ValueExpression="@(()=>searchModel.CountySearch)" Value="searchModel.CountySearch">
+        @if (searchModel.MunSearch != "")
         {
-            <option value=@chosenCounty>@chosenCounty</option>
+            var mun = apiService.Municipality.FirstOrDefault(s => s.Id == int.Parse(searchModel.MunSearch));
+            <option value=@apiService.Counties.FirstOrDefault(s =>s.Id == mun.County.Id)>
+                @apiService.Counties.FirstOrDefault(s => s.Id == mun.County.Id).Name
+            </option>
+        }
+        else
+        {
+            @if (searchModel.CountySearch != "")
+            {
+                <option value="@searchModel.CountySearch">
+                    @apiService.Counties.First(s => s.Id == int.Parse(searchModel.CountySearch)).Name
+                </option>
+                <option value="">Nollställ filter</option>
+            }
+            else
+            {
+                <option value="">Sök på län...</option>
+                @foreach (var c in apiService.Counties.OrderBy(s => s.Name))
+                {
+                    <option value="@c.Id">@c.Name</option>
+                }
+            }
+        }                
+    </InputSelect>
+@* <InputSelect @bind-Value="searchModel.CountySearch">
+        @if (searchModel.MunSearch != "")
+        {
+            var mun = apiService.Municipality.FirstOrDefault(s => s.Id == int.Parse(searchModel.MunSearch));
+            <option value=@apiService.Counties.FirstOrDefault(s =>s.Id == mun.County.Id)>
+                @apiService.Counties.FirstOrDefault(s => s.Id == mun.County.Id).Name
+            </option>
         }
         else
         {
             <option value="">Sök på län...</option>
+            @foreach (var c in apiService.Counties.OrderBy(s => s.Name))
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
         }
-        @foreach (var c in apiService.Counties.OrderBy(s => s.Name))
-    {
-        <option value="@c.Id">@c.Name</option>
-    }
-</InputSelect>}
+    
+</InputSelect> *@}
 <br />
 <br />
 <button class="form-control" @onclick="OnSearchClicked">
     Sök
  </button>
+
 
 @code {
 
@@ -46,16 +90,20 @@
 
     [Parameter]
     public EventCallback<SearchModel> OnSearch { get; set; }
-
-
     public SearchModel searchModel = new();
-
-    public string chosenCounty { get; set; } = string.Empty;
 
     private async Task OnSearchClicked()
     {
         await OnSearch.InvokeAsync(searchModel);
 
+    }
+    private void ChooseMun(string munId)
+    {       
+        searchModel.MunSearch = munId;
+    }
+    private void ChooseCounty(string countyId)
+    {
+        searchModel.CountySearch = countyId;
     }
 
     protected async override Task OnInitializedAsync()
@@ -66,9 +114,4 @@
 
     }
 
-    protected void OnChangeMunicipality()
-    {
-        // sätt rätt län i dropdown (sedan disable).
-        chosenCounty = apiService.Municipality.FirstOrDefault(s => s.Id == int.Parse(searchModel.MunSearch)).County.Name;
-    }
 }
