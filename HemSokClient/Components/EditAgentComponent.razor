@@ -6,6 +6,7 @@
 @inject NavigationManager NavigationManager
 @inject IAPIService apiService
 
+@* Author: Fredrik Blixt*@
 
 <PageTitle>Edit Agent</PageTitle>
 
@@ -98,8 +99,8 @@ else
         Agent.Agency = Agencies.FirstOrDefault(a => a.Id == AgencyId);
         // HttpResponseMessage response = await httpClient.PutAsJsonAsync($"api/agent/{Id}", Agent);
         // if (response.IsSuccessStatusCode)
-        var response = apiService.PutToApiAsync<Agent>(Agent);
-        if (response != null) ;
+        var response = await apiService.PutToApiAsync<Agent>(Agent);
+        if (response != null)
         {
             await JSRuntime.InvokeVoidAsync("alert", "Mäklaren är uppdaterad.");
             NavigationManager.NavigateTo("/agent");
