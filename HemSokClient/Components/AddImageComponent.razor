@@ -7,18 +7,6 @@
 <input type="text" @bind="inputText" />
 <button type="button" class="btn btn-primary" @onclick:preventDefault @onclick="AddToList">Lägg till</button>
 
-@* <ul style="list-style-type:none">
-    @foreach (var item in residence.ImagePaths)
-    {
-        <li>
-            <div style="position: relative; display: inline-block;                                                                                                                              ">
-                <img src="@item" alt="Thumbnail" style="max-width: 200px; max-height: 200px; margin: 5px" />
-                <button type="button" class="btn btn-danger btn-sm" style="position: absolute; top: 5px; right: 5px;" @onclick="() => RemoveFromList(item)">X</button>
-            </div>
-        </li>
-    }
-</ul>
- *@
 <div style="display: flex; flex-wrap: wrap;">
     @foreach (var picture in residence.ImagePaths)
     {
