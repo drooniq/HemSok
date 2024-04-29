@@ -1,4 +1,4 @@
-﻿@page "/agency"
+﻿@page "/agencylisting"
 @using System.Net.Http
 @using System.Net.Http.Json
 @using System.Text.Json
@@ -37,9 +37,9 @@
                     <td>@agency.Website</td>
                     <td><img src="@agency.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="a">Edit</a>
-                        <a class="btn btn-secondary btn-sm" href="b">Details</a>
-                        <a class="btn btn-danger btn-sm" href="c">Delete</a>
+                        <a class="btn btn-primary btn-sm" href="/editagency/@agency.Id">Edit</a>
+                        <a class="btn btn-secondary btn-sm" href="/agencydetails/@agency.Id">Details</a>
+                        <a class="btn btn-danger btn-sm" href="/deleteagency/@agency.Id">Delete</a>
                     </td>
                 </tr>
             }
@@ -60,12 +60,12 @@ else
 
     private void GoToDetailsAgencyPage(int id)
     {       
-        //NavigationManager.NavigateTo($"/residencedetails/{id.ToString()}");
+        NavigationManager.NavigateTo($"/agencydetails/{id.ToString()}");
     }
 
     private void GoToCreateAgencyPage()
     {
-        //NavigationManager.NavigateTo("/createresidence");
+        NavigationManager.NavigateTo("/addagency");
     }
 
 

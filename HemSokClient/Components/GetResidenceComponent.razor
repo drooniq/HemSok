@@ -1,11 +1,8 @@
 ﻿@page "/residence"
-@using System.Net.Http
-@using System.Net.Http.Json
-@using System.Text.Json
 @inject IAPIService apiService
 @inject NavigationManager NavigationManager
 
-@* Author: Marcus Karlsson*@
+@* Author: Marcus Karlsson *@
 
 <h3>Dina Bostäder</h3>
 <button class="btn btn-primary" @onclick="GoToCreateResidencePage">Lägg till ny bostad</button>
@@ -30,7 +27,13 @@
             @foreach (var residence in apiService.Residences)
             {
                 <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
-                    <td><img src="@residence.ImagePaths[0]" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    @if (residence.ImagePaths != null && residence.ImagePaths.Count>0)
+                    {
+                        <td><img src="@residence.ImagePaths[0]" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    } else
+                    {
+                        <td></td>
+                    }
                     <td>@residence.ListingPrice</td>
                     <td>@residence.StreetName</td>
                     <td>@residence.ZipCode</td>

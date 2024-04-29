@@ -1,0 +1,62 @@
+﻿@page "/addimagecomponent"
+@inject NavigationManager NavigationManager
+@inject IAPIService apiService
+
+@* Author: Emil Waara *@
+
+<PageTitle>AddImage Component</PageTitle>
+<label for="inputText">Bilder: </label>
+<input type="text" @bind="inputText" />
+<button type="button" class="btn btn-primary" @onclick:preventDefault @onclick="AddToList">Lägg till</button>
+
+<div style="display: flex; flex-wrap: wrap;">
+    @foreach (var picture in residence.ImagePaths)
+    {
+        <div style="position: relative; margin-right: 10px;">
+            <img src="@picture" alt="Picture" style="max-width: 200px; max-height: 200px;" />
+            <button type="button" class="btn btn-danger btn-sm" style="position: absolute; top: 2px; right: 2px;" @onclick="() => RemoveFromList(picture)">X</button>
+        </div>
+    }
+</div>
+
+
+@code {
+    private string inputText;
+
+    [CascadingParameter]
+    public Residence residence { get; set; }
+
+    private void AddToList()
+    {
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(inputText))
+            {
+                residence.ImagePaths.Add(inputText);
+                inputText = string.Empty; // Clear the input field after adding
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void RemoveFromList(string item)
+    {
+        residence.ImagePaths.Remove(item);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (residence == null)
+        {
+            residence = new();
+        }
+
+        if (residence.ImagePaths == null)
+        {
+            residence.ImagePaths = new List<string>();
+        }
+    }
+}

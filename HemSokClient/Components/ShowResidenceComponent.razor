@@ -1,0 +1,140 @@
+﻿@inject IAPIService apiService
+@inject NavigationManager NavigationManager
+@* Author: Marcus Karlsson *@
+<div>
+    <SearchResidenceComponent Items="apiService.Residences" OnSearch="FilterResidences"></SearchResidenceComponent>
+</div>
+
+@if (filteredResidences != null)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Address</th>            
+                <th>Stad</th>
+                <th>Kommun</th>
+                <th>Startpris</th>
+                <th>Kategori</th>
+                <th>Rum</th>
+                <th>Boarea kvm</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var residence in filteredResidences)
+            {
+                <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
+                    <td><img src="@residence.ImagePaths" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    <td>@residence.StreetName</td>
+                    <td>@residence.City</td>
+                    <td>@residence.Municipality.Name</td>
+                    <td>@residence.ListingPrice</td>
+                    <td>@residence.Category.Name</td>
+                    <td>@residence.Rooms</td>
+                    <td>@residence.LivingArea</td>
+             
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Inga hus matchade sökningen</p>
+}
+
+
+
+@code {
+    IEnumerable<Residence> filteredResidences;
+
+    private void GoToDetailsResidencePage(int id)
+    {
+        NavigationManager.NavigateTo($"/residencedetails/{id.ToString()}");
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();          
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+    public void FilterResidences(SearchModel searchModel)
+    {
+        IEnumerable<Residence> newFilteredList  = apiService.Residences;
+
+        if (searchModel.MunSearch != "") 
+            newFilteredList = apiService.Residences.Where(s => s.Municipality.Id == int.Parse(searchModel.MunSearch));
+
+        if (searchModel.CountySearch != "")
+            newFilteredList = apiService.Residences.Where(s => s.Municipality.County.Id == int.Parse(searchModel.CountySearch));
+
+        if (searchModel.MunSearch != "" && searchModel.CountySearch != "")
+            newFilteredList = apiService.Residences.Where(s => s.Municipality.Id == int.Parse(searchModel.MunSearch));
+
+        // ifall vi matat in en söksträng kör detta.
+        if (searchModel.StreetSearch != "")
+        {
+            //kolla om söksträng är en län
+            //kolla om söksträng är en kommun
+            //kolla om söksträng är en gata
+            if (newFilteredList.Where(s => s.StreetName.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count > 0)
+            {
+                newFilteredList = apiService.Residences.Where(s => s.StreetName.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));
+            }
+            // if (filteredResidences.Where(s => s.County.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count > 0) ;
+            // {
+            //     filteredResidences = apiService.Residences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));
+            // }
+            // if (filteredResidences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count > 0) ;
+            // {
+            //     filteredResidences = apiService.Residences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));
+            // }
+        }
+
+        if(newFilteredList.Count()>0)
+        {
+            filteredResidences = newFilteredList;
+        }
+        else
+        {
+            filteredResidences = apiService.Residences;
+        }
+        // if (!string.IsNullOrEmpty(searchModel.StreetSearch) 
+        // && string.IsNullOrEmpty(searchModel.CountySearch) 
+        // && string.IsNullOrEmpty(searchModel.MunSearch))
+        // {
+        //     filteredResidences = apiService.Residences.Where(s => s.StreetName.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));          
+        // }
+        // if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        // && !string.IsNullOrEmpty(searchModel.CountySearch)
+        // && string.IsNullOrEmpty(searchModel.MunSearch))
+        // {
+        //     int id = int.Parse(searchModel.CountySearch);
+        //     filteredResidences = apiService.Residences.Where(s => s.Municipality.County.Id == id);
+        // }
+        // if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        // && string.IsNullOrEmpty(searchModel.CountySearch)
+        // && !string.IsNullOrEmpty(searchModel.MunSearch))
+        // {
+        //     int id = int.Parse(searchModel.MunSearch);
+        //     filteredResidences = apiService.Residences.Where(s => s.Municipality.Id == id);
+        // }
+        // if (string.IsNullOrEmpty(searchModel.StreetSearch)
+        // && string.IsNullOrEmpty(searchModel.CountySearch)
+        // && string.IsNullOrEmpty(searchModel.MunSearch))
+        // {
+        //     filteredResidences = apiService.Residences;
+        // }
+
+    }
+   
+
+}

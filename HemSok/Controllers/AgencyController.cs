@@ -54,15 +54,18 @@ namespace HemSok.Controllers
 
         // PUT: api/Agency/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAgency(int id, Agency agency)
+        [HttpPut]
+        public async Task<IActionResult> PutAgency(Agency agency)
         {
-            if (id != agency.Id)
+            if(agency == null)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(agency).State = EntityState.Modified;
+            if (!AgencyExists(agency.Id))
+            {
+                return NotFound();
+            }
 
             try
             {
@@ -71,14 +74,6 @@ namespace HemSok.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AgencyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
             }
 
             return Ok();

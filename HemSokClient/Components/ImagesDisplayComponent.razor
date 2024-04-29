@@ -1,0 +1,51 @@
+﻿@page "/imagesdisplaycomponent"
+@inject NavigationManager NavigationManager
+@inject IAPIService apiService
+
+@* Author: Emil Waara *@
+
+<PageTitle>ImagesDisplay Component</PageTitle>
+
+<div style="display: flex; flex-wrap: wrap;">
+    <div style="position: relative; margin-right: 10px;">
+        @if( imagePaths != null && imagePaths.Count == 0)
+        {
+            <img src="https://via.placeholder.com/200" alt="Picture" style="max-width: 400px; max-height: 400px;" />
+        }
+        else
+        {
+            <img src="@imagePaths[position]" alt="Picture" style="max-width: 400px; max-height: 400px;" />
+        }
+
+        @if (position > 0 && imagePaths.Count > 1)
+        {
+            <button type="button" class="btn btn-danger btn-sm" style="position: absolute; top: 150px; left: 10px;" @onclick="() => ChangePosition(-1)">L</button>
+        }
+
+        @if (position < imagePaths.Count - 1 && imagePaths.Count > 1)
+        {
+            <button type="button" class="btn btn-danger btn-sm" style="position: absolute; top: 150px; right: 10px;" @onclick="() => ChangePosition(+1)">R</button>
+        }
+    </div>
+</div>
+
+
+@code {
+    private int position = 0;
+
+    [CascadingParameter]
+    public List<string> imagePaths { get; set; }
+
+    private void ChangePosition(int newPosition)
+    {
+        position += newPosition;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (imagePaths == null)
+        {
+            imagePaths = new();
+        }
+    }
+}

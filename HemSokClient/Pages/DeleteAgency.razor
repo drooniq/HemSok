@@ -1,0 +1,72 @@
+﻿@page "/deleteagency/{id:int}"
+@inject IAPIService apiService
+@inject NavigationManager NavigationManager
+
+@* Author: Emil Waara*@
+
+@if (agency != null)
+{
+    <h3>Are you sure you want to delete:</h3>
+
+    <table class="table table-hover">
+        <tr>
+            <td><strong>Description:</strong></td>
+            <td>@agency.Description</td>
+        </tr>
+        <tr>
+            <td><strong>Adress:</strong></td>
+            <td>@agency.Address</td>
+        </tr>
+        <tr>
+            <td><strong>Telefonnummer:</strong></td>
+            <td>@agency.PhoneNumber</td>
+        </tr>
+        <tr>
+            <td><strong>Email:</strong></td>
+            <td>@agency.Email</td>
+        </tr>
+
+        <tr>
+            <td><strong>Webbsida:</strong></td>
+            <td>@agency.Website</td>
+        </tr>
+
+        <tr>
+            <td><strong>Logo:</strong></td>
+            <td><img src="@agency.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
+        </tr>
+    </table>
+
+    <button class="btn btn-danger" @onclick="HandleValidSubmit">Delete</button>
+    <button class="btn btn-secondary" @onclick="CancelDeletion">Cancel</button>
+}
+else
+{
+    <p>Hittar ej mäklarfirma som har det IDt</p>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Agency agency { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        agency = await apiService.GetFromApiAsync<Agency>("api/agency/" + Id);
+    }
+
+    private async Task CancelDeletion()
+    {
+        NavigationManager.NavigateTo("/agencylisting");
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (await apiService.DeleteFromApiAsync<Agency>("api/agency/" + Id, agency))
+        {
+            NavigationManager.NavigateTo("/agencylisting");
+        }
+    }
+}

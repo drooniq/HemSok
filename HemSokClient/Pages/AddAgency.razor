@@ -1,0 +1,85 @@
+﻿@page "/addagency"
+@inject IAPIService apiService
+@inject NavigationManager NavigationManager
+
+@* Author: Emil Waara*@
+
+@if (agency != null)
+{
+    <h3>Mäklarfirman: @agency.Name</h3>
+
+    <EditForm Model="@agency" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <InputText id="name" class="form-control" @bind-Value="@agency.Name" />
+            <ValidationMessage For="@(() => agency.Name)" />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <InputText id="description" class="form-control" @bind-Value="@agency.Description" />
+            <ValidationMessage For="@(() => agency.Description)" />
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <InputText id="address" class="form-control" @bind-Value="@agency.Address" />
+            <ValidationMessage For="@(() => agency.Address)" />
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number:</label>
+            <InputText id="phoneNumber" class="form-control" @bind-Value="@agency.PhoneNumber" />
+            <ValidationMessage For="@(() => agency.PhoneNumber)" />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <InputText id="email" class="form-control" @bind-Value="@agency.Email" />
+            <ValidationMessage For="@(() => agency.Email)" />
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website:</label>
+            <InputText id="website" class="form-control" @bind-Value="@agency.Website" />
+            <ValidationMessage For="@(() => agency.Website)" />
+        </div>
+
+        <div class="form-group">
+            <label for="imagePath">Image Path:</label>
+            <InputText id="imagePath" class="form-control" @bind-Value="@agency.ImagePath" />
+            <ValidationMessage For="@(() => agency.ImagePath)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn btn-secondary" href="/agencylisting">Cancel</a>
+    </EditForm>
+}
+else
+{
+    <p>Hittar ej mäklarfirma som har det IDt</p>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Agency agency { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        agency = new Agency();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (await apiService.PostToApiAsync<Agency>(agency))
+        {
+            NavigationManager.NavigateTo("/agencylisting");
+        }
+    }
+}
