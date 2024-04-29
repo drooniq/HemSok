@@ -1,6 +1,6 @@
 ﻿@inject IAPIService apiService
 @inject NavigationManager NavigationManager
-
+@* Author: Marcus Karlsson *@
 <div>
     <SearchResidenceComponent Items="apiService.Residences" OnSearch="FilterResidences"></SearchResidenceComponent>
 </div>
@@ -39,6 +39,10 @@
         </tbody>
     </table>
 }
+else
+{
+    <p>Inga hus matchade sökningen</p>
+}
 
 
 
@@ -64,7 +68,16 @@
     }
     public void FilterResidences(SearchModel searchModel)
     {
-        IEnumerable<Residence> filteredResidences = apiService.Residences;
+        IEnumerable<Residence> newFilteredList  = apiService.Residences;
+
+        if (searchModel.MunSearch != "") 
+            newFilteredList = apiService.Residences.Where(s => s.Municipality.Id == int.Parse(searchModel.MunSearch));
+
+        if (searchModel.CountySearch != "")
+            newFilteredList = apiService.Residences.Where(s => s.Municipality.County.Id == int.Parse(searchModel.CountySearch));
+
+        if (searchModel.MunSearch != "" && searchModel.CountySearch != "")
+            newFilteredList = apiService.Residences.Where(s => s.Municipality.Id == int.Parse(searchModel.MunSearch));
 
         // ifall vi matat in en söksträng kör detta.
         if (searchModel.StreetSearch != "")
@@ -72,9 +85,9 @@
             //kolla om söksträng är en län
             //kolla om söksträng är en kommun
             //kolla om söksträng är en gata
-            if (filteredResidences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count>0);
+            if (newFilteredList.Where(s => s.StreetName.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count > 0)
             {
-                filteredResidences = apiService.Residences.Where(s => s.Municipality.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));
+                newFilteredList = apiService.Residences.Where(s => s.StreetName.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase));
             }
             // if (filteredResidences.Where(s => s.County.Name.StartsWith(searchModel.StreetSearch, StringComparison.OrdinalIgnoreCase)).ToList().Count > 0) ;
             // {
@@ -86,13 +99,14 @@
             // }
         }
 
-        if (searchModel.MunSearch != "") 
-            filteredResidences = apiService.Residences.Where(s => s.Municipality.County.Id == int.Parse(searchModel.CountySearch));
-
-        if (searchModel.CountySearch != "")
-            filteredResidences = apiService.Residences.Where(s => s.Municipality.County.Id == int.Parse(searchModel.CountySearch));
-
-
+        if(newFilteredList.Count()>0)
+        {
+            filteredResidences = newFilteredList;
+        }
+        else
+        {
+            filteredResidences = apiService.Residences;
+        }
         // if (!string.IsNullOrEmpty(searchModel.StreetSearch) 
         // && string.IsNullOrEmpty(searchModel.CountySearch) 
         // && string.IsNullOrEmpty(searchModel.MunSearch))
