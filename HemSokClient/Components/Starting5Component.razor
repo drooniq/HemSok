@@ -10,17 +10,17 @@
         <div class="image-container">
             <button class="arrow left" @onclick="PreviousResidence">❮</button>
             <a @onclick="@(() => NavigationManager.NavigateTo($"/residencedetails/{Residences?[CurrentResidenceIndex].Id}"))">
-                <img id="startPic" src="@Residences?[CurrentResidenceIndex].ImagePaths?.FirstOrDefault()  alt="Residence Image" class="img-fluid" />
+                <img id="startPic" src="@Residences?[CurrentResidenceIndex].ImagePaths?.FirstOrDefault()" alt="Residence Image" class="img-fluid" style="cursor:pointer;" />
             </a>
             <button class="arrow right" @onclick="NextResidence">❯</button>
             @* <div class="info-container">
-                <p><span id="address">@apiService.Residences?[CurrentResidenceIndex].StreetName </span></p>
+                <p><span id="address">Residences?[CurrentResidenceIndex].StreetName </span></p>
             </div>
             <div class="prize-container">
-                <p><span id="prize">@apiService.Residences?[CurrentResidenceIndex].ListingPrice kr</span></p>
+                <p><span id="prize">Residences?[CurrentResidenceIndex].ListingPrice kr</span></p>
             </div>
             <div class="description-container">
-                <p><span id="description">@apiService.Residences?[CurrentResidenceIndex].Description</span></p>
+                <p><span id="description">Residences?[CurrentResidenceIndex].Description</span></p>
             </div> *@
         </div>
     </div>
@@ -54,14 +54,6 @@ else
     private void PicIndex(object? state)
     {
         CurrentResidenceIndex = (CurrentResidenceIndex + 1) % Residences.Count;
-        // if (CurrentResidenceIndex == numberOfObjects-1)
-        // {
-        //     CurrentResidenceIndex = 0;
-        // }
-        // else
-        // {
-        //     CurrentResidenceIndex++;
-        // }
         StateHasChanged();
     }
     public void Dispose()
@@ -72,32 +64,17 @@ else
     private void NextResidence()
     {
         CurrentResidenceIndex = (CurrentResidenceIndex + 1) % Residences.Count;
-        // if (CurrentResidenceIndex == numberOfObjects)
-        // {
-        //     CurrentResidenceIndex = 0;
-        // }
-        // else
-        // {            
-        //     CurrentResidenceIndex++;
-        // }
     }
 
     private void PreviousResidence()
     {
         CurrentResidenceIndex = (CurrentResidenceIndex - 1 + Residences.Count) % Residences.Count;
-        // if (CurrentResidenceIndex == 0)
-        // {
-        //     CurrentResidenceIndex = numberOfObjects-1;
-        // }
-        // else
-        // {
-        //     CurrentResidenceIndex--;
-        // }
     }
 
 }
 
 <style>
+
     #startPic {
         width: 100%;
         height: 100%;

@@ -1,0 +1,30 @@
+﻿@page "/agentresidences"
+@inject IAPIService APIService
+
+<h3> </h3>
+
+<button @onclick="ShowResidences" class="btn btn-primary mt-5 mb-1">Visa mina bostäder</button>
+
+@if (ShowComponent)
+{
+    <GetResidenceComponent ListResidences="@AgentResidences" />
+}
+
+@code {
+    [Parameter]
+    public string? AgentId { get; set; }
+
+    private bool ShowComponent = false;
+    private List<Residence>? AgentResidences;
+
+    private void ShowResidences()
+    {
+        if (AgentId != null)
+        {
+            AgentResidences = APIService.Residences?.Where(r => r.Agent.Id == AgentId).ToList();
+            ShowComponent = !ShowComponent;
+        }
+    }
+}
+
+
