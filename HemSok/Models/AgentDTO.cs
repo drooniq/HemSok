@@ -18,11 +18,13 @@ namespace HemSok.Models
         [Required]
         public Agency Agency { get; set; } = new Agency();
         [Required]
+        [EmailAddress]
         public string Email { get; set; } = String.Empty;
         [Required]
         public string Password { get; set; } = String.Empty;
         [Required]
         public string Username { get; set; } = String.Empty;
         public string? Role { get; set; }
+
     }
 }
