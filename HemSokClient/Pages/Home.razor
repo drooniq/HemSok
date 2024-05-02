@@ -1,10 +1,23 @@
 ﻿@page "/"
 @using HemSokClient.Data
+@inject APIService apiService
+
 <PageTitle>Home</PageTitle>
 <div class="container">
     <div class="row justify-content-center">
         <h1 style="font-family: Lobster" "text-align: center" ;>Välkommen till HemSök</h1>
     </div>
 </div>
-<Starting5Component numberOfObjects="5"></Starting5Component>
+
+@* <Starting5Component numberOfObjects="5"></Starting5Component>
 <ShowResidenceComponent></ShowResidenceComponent>
+ *@
+
+@code {
+    private List<Residence>? residences = new List<Residence>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        residences = await apiService.GetAllFromApiAsync<Residence>();
+    }
+}
