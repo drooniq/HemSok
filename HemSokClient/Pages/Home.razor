@@ -1,10 +1,67 @@
 ﻿@page "/"
 @using HemSokClient.Data
+@inject IAPIService apiService
+@inject NavigationManager NavigationManager
+
 <PageTitle>Home</PageTitle>
 <div class="container">
     <div class="row justify-content-center">
         <h1 style="font-family: Lobster" "text-align: center" ;>Välkommen till HemSök</h1>
     </div>
 </div>
-<Starting5Component numberOfObjects="5"></Starting5Component>
+
+@* <Starting5Component numberOfObjects="5"></Starting5Component>
 <ShowResidenceComponent></ShowResidenceComponent>
+ *@
+
+@if (filteredResidences?.Any() == true)
+{
+    <h4>Antal hus som matchade sökningen: @filteredResidences.Count()</h4>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Address</th>
+                <th>Stad</th>
+                <th>Kommun</th>
+                <th>Startpris</th>
+                <th>Kategori</th>
+                <th>Rum</th>
+                <th>Boarea kvm</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var residence in filteredResidences)
+            {
+                <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
+                    <td><img src="@residence.ImagePaths" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    <td>@residence.StreetName</td>
+                    <td>@residence.City</td>
+                    <td>@residence.Municipality.Name</td>
+                    <td>@residence.ListingPrice</td>
+                    <td>@residence.Category.Name</td>
+                    <td>@residence.Rooms</td>
+                    <td>@residence.LivingArea</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Inga hus matchade sökningen</p>
+}
+
+@code {
+    private List<Residence>? filteredResidences = new List<Residence>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        filteredResidences = await apiService.GetAllFromApiAsync<Residence>();
+    }
+
+    private void GoToDetailsResidencePage(int id)
+    {
+        NavigationManager.NavigateTo($"/residencedetails/{id.ToString()}");
+    }
+}

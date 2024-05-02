@@ -29,34 +29,61 @@ namespace HemSok.Helper
                     {
                         Firstname = "Super",
                         Lastname = "Admin",
-                        Agency = new Agency(),
+                        Agency = agencies[0],
                         Nickname = "Spökplumpen",
                         Email = "SuperAdmin@SuperAdmin.com",
                         Username = "SuperAdmin@SuperAdmin.com",
                         Password = "SuperAdmin@1234",
-                        Role = "SuperAdmin"
+                        Role = "SuperAdmin",
+                        ImagePath = "http://www.solidimagearts.com/Digital/Digital_Images/slimer.jpg"
                     },
                     new AgentDTO
                     {
-                        Firstname = "Bara",
-                        Lastname = "Admin",
-                        Agency = agencies[0],
-                        Nickname = "Plumpen",
-                        Email = "Admin@Admin.com",
-                        Username = "Admin@Admin.com",
-                        Password = "Admin@1234",
-                        Role = "Admin"
+                        Firstname = "Richard",
+                        Lastname = "Sörman",
+                        Agency = agencies[1],
+                        Nickname = "Ricardo",
+                        Email = "richard.sorman@widerlov.se",
+                        Username = "richard.sorman@widerlov.se",
+                        Password = "Ricardo@1",
+                        Role = "Admin",
+                        ImagePath = "https://bilder.hemnet.se/images/broker_profile_large/aa/50/aa5011334fddb7fc28af82f0fd9e3eb1.jpg"
                     },
                     new AgentDTO
                     {
-                        Firstname = "Bara",
-                        Lastname = "Mäklare",
-                        Agency = agencies[0],
-                        Nickname = "Stumpen",
-                        Email = "Agent@Agent.com",
-                        Username = "Agent@Agent.com",
-                        Password = "Agent@1234",
-                        Role = "Agent"
+                        Firstname = "Erik",
+                        Lastname = "Lundkvist",
+                        Agency = agencies[1],
+                        Nickname = "Erika",
+                        Email = "erik.lundkvist@widerlov.se",
+                        Username = "erik.lundkvist@widerlov.se",
+                        Password = "Erik@1",
+                        Role = "Agent",
+                        ImagePath = "https://bilder.hemnet.se/images/broker_profile_large/9f/5f/9f5f78fdc4a36a40edff23ef17a92e90.png"
+                    },
+                    new AgentDTO
+                    {
+                        Firstname = "Patrik",
+                        Lastname = "Lundberg",
+                        Agency = agencies[1],
+                        Nickname = "Patte",
+                        Email = "patrik.lundberg@widerlov.se",
+                        Username = "patrik.lundberg@widerlov.se",
+                        Password = "Patrik@1",
+                        Role = "Agent",
+                        ImagePath = "https://bilder.hemnet.se/images/broker_profile_large/53/47/53472eb67e182e2eb52ba36866950231.png"
+                    },
+                    new AgentDTO
+                    {
+                        Firstname = "Helen",
+                        Lastname = "Lindström",
+                        Agency = agencies[1],
+                        Nickname = "Ellen",
+                        Email = "helen.lindstrom@lansforsakringar.se",
+                        Username = "helen.lindstrom@lansforsakringar.se",
+                        Password = "Helen@1",
+                        Role = "Admin",
+                        ImagePath = "https://bilder.hemnet.se/images/broker_profile_large/7d/e0/7de0eceaf4b032a000cf86a9dabcb4af.jpg"
                     }
                 };
 
