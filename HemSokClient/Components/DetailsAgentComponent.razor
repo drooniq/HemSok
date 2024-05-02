@@ -39,23 +39,25 @@ else
 {
     <p>Mäklaren kunde inte hittas.</p>
 }
-<button @onclick="@(() => NavigationManager.NavigateTo("/agent"))" class="btn btn-primary" style="margin-top: 1rem">Tillbaka</button>
+
+<button @onclick="@(() => NavigationManager.NavigateTo("/agent"))" class="btn btn-primary mt-2" >Tillbaka</button>
+@if (Agent != null)
+{
+    <AgentResidencesComponent AgentId="@Agent.Id" />
+}
+
 @code {
     [Parameter]
     public string? Id { get; set; }
-
     private Agent? Agent;
+
+    
 
     protected override async Task OnInitializedAsync()
     {
         if (!string.IsNullOrEmpty(Id))
         {
             Agent = await apiService.GetFromApiAsync<Agent>($"api/agent/{Id}");
-            // var response = await httpClient.GetAsync($"api/agent/{Id}");
-            // if (response.IsSuccessStatusCode)
-            // {
-            //     Agent = await response.Content.ReadFromJsonAsync<Agent>();
-            // }
         }
     }
     public async Task DeleteAgent(string id)
@@ -64,8 +66,6 @@ else
         if (isConfirmed)
         {
             var response = apiService.DeleteFromApiAsync<Agent>($"api/agent/{Id}", Agent);
-            // var response = await httpClient.DeleteAsync($"api/agent/{id}");
-            // if (response.IsSuccessStatusCode)
             if (response != null)
             {
                 await JSRuntime.InvokeVoidAsync("alert", "Mäklaren har tagits bort.");
@@ -77,13 +77,5 @@ else
             }
         }
     }
-    // private void GoToEditAgentPage(string id)
-    // {
-    //     NavigationManager.NavigateTo($"/editagent/{id}");
-    // }
-    // private void GoBack()
-    // {
-    //     NavigationManager.NavigateTo("/agent");
-    // }
 }
 

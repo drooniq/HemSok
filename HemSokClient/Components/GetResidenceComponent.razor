@@ -7,7 +7,7 @@
 <h3>Dina Bostäder</h3>
 <button class="btn btn-primary" @onclick="GoToCreateResidencePage">Lägg till ny bostad</button>
 
-@if (apiService.Residences != null)
+@if (Residences != null)
 {
     <table class="table table-hover">
         <thead>
@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var residence in apiService.Residences)
+            @foreach (var residence in Residences)
             {
                 <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
                     @if (residence.ImagePaths != null && residence.ImagePaths.Count>0)
@@ -54,6 +54,10 @@ else
 
 
 @code {
+    [Parameter]
+    public List<Residence>? ListResidences { get; set; }
+
+    private List<Residence>? Residences;
 
     // public List<Residence> residences;
 
@@ -80,13 +84,21 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        try
+        if (ListResidences == null)
         {
-            apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();
+            Residences = await apiService.GetAllFromApiAsync<Residence>();
         }
-        catch(Exception e){
-            Console.WriteLine(e.Message);
+        else
+        {
+            Residences = ListResidences;
         }
+        // try
+        // {
+        //     apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();
+        // }
+        // catch(Exception e){
+        //     Console.WriteLine(e.Message);
+        // }
     }
 }
 
