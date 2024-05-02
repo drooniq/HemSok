@@ -3,6 +3,7 @@ using HemSok.Data;
 using HemSok.Helper;
 using HemSok.Mappings;
 using HemSok.Models;
+using HemSok.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace HemSok
             builder.Services.AddDbContext<HemSokDbContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
