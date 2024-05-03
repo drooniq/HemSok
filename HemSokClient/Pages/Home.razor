@@ -34,7 +34,7 @@
             @foreach (var residence in filteredResidences)
             {
                 <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
-                    <td><img src="@residence.ImagePaths" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    <td><img src="@residence.ImagePaths[0]" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
                     <td>@residence.StreetName</td>
                     <td>@residence.City</td>
                     <td>@residence.Municipality.Name</td>
