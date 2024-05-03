@@ -6,11 +6,11 @@
 @* Author: Marcus Karlsson, Emil Waara *@
 <PageTitle>Filter Residences</PageTitle>
 
-<input class="form-control" placeholder="Sök bostad med address.." @bind="searchModel.StreetSearch" />
-<br />
+<input style="width: 30%; display:inline" class="form-control" placeholder="Sök bostad med address.." @bind="searchModel.StreetSearch" />
+
 @if (apiService.Municipality != null)
 {
-    <label>Välj Kommun: </label>
+    <label>Kommun: </label>
     <InputSelect ValueChanged="@((string value)=>ChooseMun(value))" ValueExpression="@(()=>searchModel.MunSearch)" Value="searchModel.MunSearch">
         @if (searchModel.CountySearch != "")
         {
@@ -31,11 +31,10 @@
         }
     </InputSelect>
 }
-<br />
-<br />
+
 @if (apiService.Counties != null)
 {
-    <label>Välj Län: </label>
+    <label>Län: </label>
     <InputSelect ValueChanged="@((string value)=>ChooseCounty(value))" ValueExpression="@(()=>searchModel.CountySearch)" Value="searchModel.CountySearch">
         @if (searchModel.MunSearch != "")
         {
@@ -63,10 +62,8 @@
             }
         }
     </InputSelect>
-    <br />
-    <br />
 }
-<button class="form-control" @onclick="OnSearchClicked">
+<button type="button" class="btn btn-primary" @onclick="OnSearchClicked">
     Sök
 </button>
 
