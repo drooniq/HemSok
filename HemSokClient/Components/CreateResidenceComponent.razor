@@ -16,16 +16,16 @@
 <ValidationSummary></ValidationSummary>
 <label for="StreetName">Address: </label>
 <InputText id="StreetName" @bind-Value="@residence.StreetName"></InputText>
-<br />
+    <br />  <br />
 <label for="City">Stad: </label>
 <InputText id="City" @bind-Value="@residence.City"></InputText>
 <br />
 <label for="ZipCode">Post Nummer: </label>
 <InputText id="ZipCode" @bind-Value="@residence.ZipCode"></InputText>
-    <br />
+    <br />  <br />
 <label for="ListingPrice">Utgångspris: </label>
  <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice"></InputNumber>
-    <br />
+    <br />  <br />
     @if (apiService.Categories != null)
     {<label>Välj Kategori: </label>
       <InputSelect @bind-Value="CategoryId">
@@ -33,7 +33,7 @@
         {<option value="@c.Id">@c.Name</option>}
         </InputSelect>
     }
-    <br />
+    <br />  <br />
     @if (apiService.Agents != null)
     {<label>Välj Mäklare: </label>
       <InputSelect @bind-Value="AgentId">
@@ -41,14 +41,14 @@
         {<option value="@c.Id">@c.FirstName @c.LastName</option>}
       </InputSelect>
     }
-    <br />
+    <br />  <br />
     @if (apiService.Municipality != null)
     {<label>Välj Kommun: </label>
      <InputSelect @bind-Value="MunicipalityId">
       @foreach (var c in apiService.Municipality.OrderBy(s=>s.Name))
        {<option value="@c.Id">@c.Name</option>}
      </InputSelect>
-    }
+    }  <br />  <br />
     <button type="submit">Submit</button>
 
 </EditForm>

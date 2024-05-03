@@ -1,11 +1,90 @@
 ﻿@inject IAPIService apiService
 @inject NavigationManager NavigationManager
+@* Author: Emil Waara, Marcus Karlsson *@
 
-<h3>DisplayResidencesComponent</h3>
 
-@if (filteredResidences?.Any() == true)
+@if (Residence != null)
 {
-    <h4>Antal hus som matchade sökningen: @filteredResidences.Count()</h4>
+    <div class="containerres" @onclick="() => GoToDetailsResidencePage(Residence.Id)">
+        <div class="left">
+            @if (Residence.ImagePaths.Count > 0)
+            {
+                <img src="@Residence.ImagePaths[0]" alt="Bild" class="residenceImage" />
+            }
+            else
+            {
+                <img src="/images/ghost2.png" alt="Bild" class="residenceImage" />
+            }
+        </div>
+        <div class="right">
+            <div class="top">
+                <div class="top-left">
+                    <h3>@Residence.StreetName</h3>                   
+                </div>
+                <div class="top-right">
+                    @if (Residence.Agent.Agency.ImagePath != null)
+                    {
+                        <img src="@Residence.Agent.Agency.ImagePath" alt="Bild" class="residenceAgencypic" />
+                    }
+                    else
+                    {
+                        <img src="/images/ghost2.png" alt="Bild" class="residenceAgencypic" />
+                    }                   
+
+                    @if (Residence.Agent.ImagePath != null)
+                    {
+                        <img src="@Residence.Agent.ImagePath" alt="Bild" class="agentPic" />
+                    }
+                    else
+                    {
+                        <img src="/images/ghost2.png" alt="Bild" class="agentPic" />
+                    }
+                </div>
+            </div>
+            <div class="bottom">
+                <p>@Residence.City, @Residence.Municipality.Name Kommun</p>
+                <p>@Residence.ListingPrice KR</p>
+            </div>
+        </div>
+    </div>
+
+  @*   <div class="residenceContainer">
+    <div class="row-hover" @onclick="() => GoToDetailsResidencePage(Residence.Id)">           
+        @if (Residence.ImagePaths.Count > 0)
+            {
+                    <img src="@Residence.ImagePaths[0]" alt="Bild" class="residenceImage" />
+            }
+            else
+            {
+                    <img src="/images/ghost2.png" alt="Bild" class="residenceImage" />
+            } 
+            
+             @if (Residence.Agent.Agency.ImagePath != null)
+            {
+                    <img src="@Residence.Agent.Agency.ImagePath" alt="Bild" class="residenceAgencypic" />
+            }
+            else
+            {
+                    <img src="/images/ghost2.png" alt="Bild" class="residenceAgencypic" />
+            }         
+               
+            @if (Residence.Agent.ImagePath != null)
+            {
+                    <img src="@Residence.Agent.ImagePath" alt="Bild" class="agentPic" />
+            }
+            else
+            {
+                    <img src="/images/ghost2.png" alt="Bild" class="agentPic" />
+            }
+            <div class="residenceInfo">
+                <h3>@Residence.StreetName</h3>
+                <p>@Residence.City, @Residence.Municipality.Name</p>
+                <p>@Residence.ListingPrice KR</p>
+            </div>
+
+    </div>
+    </div> *@
+    @* <h4>Antal hus som matchade sökningen: @filteredResidences.Count()</h4>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -19,8 +98,8 @@
                 <th>Boarea kvm</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var residence in filteredResidences)
+        <tbody> *@
+          @*   @foreach (var residence in filteredResidences)
             {
                 <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
                     <td><img src="@residence.ImagePaths" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
@@ -32,18 +111,18 @@
                     <td>@residence.Rooms</td>
                     <td>@residence.LivingArea</td>
                 </tr>
-            }
-        </tbody>
-    </table>
+            } *@
+     @*    </tbody>
+    </table> *@
 }
 else
 {
-    <p>Inga hus matchade sökningen</p>
+    <p>Inga bostäder matchade sökningen</p>
 }
 
 @code {
-    [CascadingParameter]
-    public IEnumerable<Residence> filteredResidences { get; set; }
+    [Parameter]
+    public Residence Residence { get; set; }
 
     private void GoToDetailsResidencePage(int id)
     {

@@ -13,8 +13,17 @@
 @* <Starting5Component numberOfObjects="5"></Starting5Component>
 <ShowResidenceComponent></ShowResidenceComponent>
  *@
+@if (filteredResidences != null)
+@foreach (var residence in filteredResidences)
+{
+    <DisplayResidencesComponent Residence="@residence"></DisplayResidencesComponent>
+}
+else
+{
+    <p>Inga hus matchade sökningen</p>
+}
 
-@if (filteredResidences?.Any() == true)
+@* @if (filteredResidences?.Any() == true)
 {
     <h4>Antal hus som matchade sökningen: @filteredResidences.Count()</h4>
     <table class="table table-hover">
@@ -50,7 +59,7 @@
 else
 {
     <p>Inga hus matchade sökningen</p>
-}
+} *@
 
 @code {
     private List<Residence>? filteredResidences = new List<Residence>();
