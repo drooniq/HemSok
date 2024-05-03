@@ -67,8 +67,7 @@
     Sök
 </button>
 
-@if (filteredResidences?.Any() == true)
-{
+
     <table class="table table-hover">
         <thead>
             <tr>
@@ -82,34 +81,32 @@
                 <th>Boarea kvm</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var residence in filteredResidences)
-            {
-                <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
-                    @if (residence.ImagePaths.Count > 0)
-                    {
-                        <td><img src="@residence.ImagePaths[0]" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
-                    }
-                    else
-                    {
-                        <td><img src="/images/ghost2.png" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
-                    }
-                    <td>@residence.StreetName</td>
-                    <td>@residence.City</td>
-                    <td>@residence.Municipality.Name</td>
-                    <td>@residence.ListingPrice</td>
-                    <td>@residence.Category.Name</td>
-                    <td>@residence.Rooms</td>
-                    <td>@residence.LivingArea</td>
-                </tr>
-            }
+        @if (filteredResidences?.Any() == true)
+        {
+            <tbody>
+                @foreach (var residence in filteredResidences)
+                {
+                    <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
+                        @if (residence.ImagePaths.Count > 0)
+                        {
+                            <td><img src="@residence.ImagePaths[0]" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                        }
+                        else
+                        {
+                            <td><img src="/images/ghost2.png" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                        }
+                        <td>@residence.StreetName</td>
+                        <td>@residence.City</td>
+                        <td>@residence.Municipality.Name</td>
+                        <td>@residence.ListingPrice</td>
+                        <td>@residence.Category.Name</td>
+                        <td>@residence.Rooms</td>
+                        <td>@residence.LivingArea</td>
+                    </tr>
+                }
         </tbody>
+    }
     </table>
-}
-else
-{
-    <p>Inga hus matchade sökningen</p>
-}
 
 @code {
     private List<Residence>? filteredResidences = new List<Residence>();
@@ -133,8 +130,8 @@ else
         apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();
         apiService.Counties = await apiService.GetAllFromApiAsync<County>();
         apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
-        filteredResidences = apiService.Residences;
-        initResidences = filteredResidences;
+        //filteredResidences = apiService.Residences;
+        initResidences = apiService.Residences;
     }
 
     private void GoToDetailsResidencePage(int id)
@@ -144,15 +141,7 @@ else
 
     private void OnSearchClicked()
     {
-        stringOutput = $"Sökning: {searchModel.StreetSearch}, {searchModel.MunSearch}, {searchModel.CountySearch}";
-
-        if (filteredResidences != null && filteredResidences.Count() > 0)
-        {
-            stringOutput += $"\nAntal träffar: {filteredResidences.Count()}";
-        }
-
         filteredResidences = initResidences;
-
 
         if (filteredResidences != null)
         {

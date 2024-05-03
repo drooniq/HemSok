@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Div Layout</title>
+<style>
+    .container {
+        display: flex;
+        height: 300px; /* Adjust height as needed */
+    }
+    
+    .left {
+        width: 30%;
+        height: 100%;
+        background-color: #f0f0f0; /* Just for visualization */
+    }
+    
+    .right {
+        width: 70%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .top {
+        display: flex;
+        height: 20%;
+        background-color: #d3d3d3; /* Just for visualization */
+    }
+
+    .top-left {
+        width: 60%;
+        background-color: #d3d3d3; /* Just for visualization */
+    }    
+    .top-right {
+        width: 40%;
+        background-color: #855a5a; /* Just for visualization */
+    }    
+    
+    .bottom {
+        flex-grow: 1;
+        background-color: #a9a9a9; /* Just for visualization */
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="left">Left</div>
+    <div class="right">
+        <div class="top">
+            <div class="top-left">Top Left</div>
+            <div class="top-right">Top Right</div>
+        </div>
+        <div class="bottom">Bottom</div>
+    </div>
+</div>
+
+</body>
+</html>
