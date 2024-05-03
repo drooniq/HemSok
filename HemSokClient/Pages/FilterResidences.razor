@@ -1,0 +1,177 @@
+﻿@page "/filterresidences"
+@using HemSokClient.Data
+@inject IAPIService apiService
+@inject NavigationManager NavigationManager
+
+@* Author: Marcus Karlsson, Emil Waara *@
+<PageTitle>Filter Residences</PageTitle>
+
+<input class="form-control" placeholder="Sök bostad med address.." @bind="searchModel.StreetSearch" />
+<br />
+@if (apiService.Municipality != null)
+{
+    <label>Välj Kommun: </label>
+    <InputSelect ValueChanged="@((string value)=>ChooseMun(value))" ValueExpression="@(()=>searchModel.MunSearch)" Value="searchModel.MunSearch">
+        @if (searchModel.CountySearch != "")
+        {
+            <option value="">Sök på kommun...</option>
+            @foreach (var c in apiService.Municipality.Where(s => s.County.Id == int.Parse(searchModel.CountySearch))
+            .OrderBy(s => s.Name))
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+        }
+        else
+        {
+            <option value="">Sök på kommun...</option>
+            @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+        }
+    </InputSelect>
+}
+<br />
+<br />
+@if (apiService.Counties != null)
+{
+    <label>Välj Län: </label>
+    <InputSelect ValueChanged="@((string value)=>ChooseCounty(value))" ValueExpression="@(()=>searchModel.CountySearch)" Value="searchModel.CountySearch">
+        @if (searchModel.MunSearch != "")
+        {
+            var mun = apiService.Municipality.FirstOrDefault(s => s.Id == int.Parse(searchModel.MunSearch));
+            <option value=@apiService.Counties.FirstOrDefault(s =>s.Id == mun.County.Id)>
+                @apiService.Counties.FirstOrDefault(s => s.Id == mun.County.Id).Name
+            </option>
+        }
+        else
+        {
+            @if (searchModel.CountySearch != "")
+            {
+                <option value="@searchModel.CountySearch">
+                    @apiService.Counties.First(s => s.Id == int.Parse(searchModel.CountySearch)).Name
+                </option>
+                <option value="">Nollställ filter</option>
+            }
+            else
+            {
+                <option value="">Sök på län...</option>
+                @foreach (var c in apiService.Counties.OrderBy(s => s.Name))
+                {
+                    <option value="@c.Id">@c.Name</option>
+                }
+            }
+        }
+    </InputSelect>
+    <br />
+    <br />
+}
+<button class="form-control" @onclick="OnSearchClicked">
+    Sök
+</button>
+
+@if (filteredResidences?.Any() == true)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Address</th>
+                <th>Stad</th>
+                <th>Kommun</th>
+                <th>Startpris</th>
+                <th>Kategori</th>
+                <th>Rum</th>
+                <th>Boarea kvm</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var residence in filteredResidences)
+            {
+                <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
+                    @if (residence.ImagePaths.Count > 0)
+                    {
+                        <td><img src="@residence.ImagePaths[0]" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    }
+                    else
+                    {
+                        <td><img src="/images/ghost2.png" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    }
+                    <td>@residence.StreetName</td>
+                    <td>@residence.City</td>
+                    <td>@residence.Municipality.Name</td>
+                    <td>@residence.ListingPrice</td>
+                    <td>@residence.Category.Name</td>
+                    <td>@residence.Rooms</td>
+                    <td>@residence.LivingArea</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Inga hus matchade sökningen</p>
+}
+
+@code {
+    private List<Residence>? filteredResidences = new List<Residence>();
+
+    public List<Residence> initResidences { get; set; }
+    private SearchModel searchModel { get; set; } = new SearchModel();
+    private string stringOutput { get; set; } = "";
+
+    private void ChooseMun(string munId)
+    {
+        searchModel.MunSearch = munId;
+    }
+
+    private void ChooseCounty(string countyId)
+    {
+        searchModel.CountySearch = countyId;
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();
+        apiService.Counties = await apiService.GetAllFromApiAsync<County>();
+        apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
+        filteredResidences = apiService.Residences;
+        initResidences = filteredResidences;
+    }
+
+    private void GoToDetailsResidencePage(int id)
+    {
+        NavigationManager.NavigateTo($"/residencedetails/{id.ToString()}");
+    }
+
+    private void OnSearchClicked()
+    {
+        stringOutput = $"Sökning: {searchModel.StreetSearch}, {searchModel.MunSearch}, {searchModel.CountySearch}";
+
+        if (filteredResidences != null && filteredResidences.Count() > 0)
+        {
+            stringOutput += $"\nAntal träffar: {filteredResidences.Count()}";
+        }
+
+        filteredResidences = initResidences;
+
+
+        if (filteredResidences != null)
+        {
+            if (searchModel.MunSearch != "")
+            {
+                filteredResidences = filteredResidences.Where(s => s.Municipality.Id == int.Parse(searchModel.MunSearch)).ToList();
+            }
+            else if (searchModel.CountySearch != "")
+            {
+                filteredResidences = filteredResidences.Where(s => s.Municipality.County.Id == int.Parse(searchModel.CountySearch)).ToList();
+            }
+
+            if (searchModel.StreetSearch != "")
+            {
+                filteredResidences = filteredResidences.Where(s => s.StreetName.Contains(searchModel.StreetSearch)).ToList();
+            }
+        }
+    }
+}

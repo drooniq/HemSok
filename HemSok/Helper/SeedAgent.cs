@@ -77,7 +77,7 @@ namespace HemSok.Helper
                     {
                         Firstname = "Helen",
                         Lastname = "Lindström",
-                        Agency = agencies[1],
+                        Agency = agencies[2],
                         Nickname = "Ellen",
                         Email = "helen.lindstrom@lansforsakringar.se",
                         Username = "helen.lindstrom@lansforsakringar.se",
