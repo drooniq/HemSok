@@ -10,19 +10,36 @@
 <h3>Mäklarfirmor</h3>
 <button class="btn btn-primary" @onclick="GoToCreateAgencyPage">Lägg till ny mäklarfirma</button>
  
+<style>
+    body {
+        font-size: 0.7rem;
+    }
+
+    .btn {
+        font-size: 0.7rem;
+        padding: 5px;
+    }
+
+    .agencyLogo {
+        max-width: 6rem;
+        border-radius: 10%;
+        max-width: 4rem;
+    }
+</style>
+
 @if (apiService.Agencies != null)
 {
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Namn</th>
-                <th>Description</th>
-                <th>Adress</th>
-                <th>Telefonnummer</th>
-                <th>Email</th>
-                <th>Webbsida</th>
+                <th>Namn            <i class="fa-solid fa-sort" @onclick="() => SortTable(0)"></i></th>
+                <th>Beskrivning     <i class="fa-solid fa-sort" @onclick="() => SortTable(1)"></i></th>
+                <th>Address         <i class="fa-solid fa-sort" @onclick="() => SortTable(2)"></i></th>
+                <th>Telefonnummer   <i class="fa-solid fa-sort" @onclick="() => SortTable(3)"></i></th>
+                <th>Email           <i class="fa-solid fa-sort" @onclick="() => SortTable(4)"></i></th>
+                <th>Webbsida        <i class="fa-solid fa-sort" @onclick="() => SortTable(5)"></i></th>
                 <th>Logo</th>
-                <th>Actions</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -35,11 +52,11 @@
                     <td>@agency.PhoneNumber</td>
                     <td>@agency.Email</td>
                     <td>@agency.Website</td>
-                    <td><img src="@agency.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                    <td><img class="agencyLogo"src="@agency.ImagePath" alt="Profilbild" style="" /></td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="/editagency/@agency.Id">Edit</a>
-                        <a class="btn btn-secondary btn-sm" href="/agencydetails/@agency.Id">Details</a>
-                        <a class="btn btn-danger btn-sm" href="/deleteagency/@agency.Id">Delete</a>
+                        <a class="btn btn-primary btn-sm" href="/editagency/@agency.Id"><i class="fa-solid fa-pencil"></i></a>
+                        <a class="btn btn-secondary btn-sm" href="/agencydetails/@agency.Id"><i class="fa-solid fa-circle-info"></i></a>
+                        <a class="btn btn-danger btn-sm" href="/deleteagency/@agency.Id"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
             }
@@ -53,6 +70,33 @@ else
 
 
 @code {
+    private List<Residence> residences { get; set; }
+
+    protected void SortTable(int column)
+    {
+        switch(column)
+        {
+            case 0:
+                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Name).ToList();
+                break;
+            case 1:
+                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Description).ToList();
+                break;
+            case 2:
+                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Address).ToList();
+                break;
+            case 3:
+                apiService.Agencies = apiService.Agencies.OrderBy(x => x.PhoneNumber).ToList();
+                break;
+            case 4:
+                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Email).ToList();
+                break;
+            case 5:
+                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Website).ToList();
+                break;
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         apiService.Agencies = await apiService.GetAllFromApiAsync<Agency>();
