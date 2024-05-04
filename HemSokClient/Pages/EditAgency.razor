@@ -96,7 +96,7 @@
                     <InputText id="imagePath" class="form-control small" @bind-Value="@agency.ImagePath" @oninput="HandleChange" />
                 <ValidationMessage For="@(() => agency.ImagePath)" />
             </div>
-                @if (isChanged)
+                @if (formIsChanged)
                 {
                     <button type="submit" class="btn btn-success">Save</button>
                     <a class="btn btn-primary" href="/agencylisting">Cancel</a>
@@ -127,13 +127,13 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private bool isChanged = false;
+    private bool formIsChanged = false;
 
     private Agency agency { get; set; }
 
     private void HandleChange()
     {
-        isChanged = true;
+        formIsChanged = true;
     }
 
     protected override async Task OnInitializedAsync()
@@ -143,7 +143,7 @@ else
 
     private async Task HandleValidSubmit()
     {
-        if (isChanged)
+        if (formIsChanged)
         {
             if (await apiService.PutToApiAsync<Agency>(agency))
             {

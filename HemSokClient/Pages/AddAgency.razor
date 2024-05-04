@@ -4,82 +4,150 @@
 
 @* Author: Emil Waara*@
 
+<style>
+    body {
+        font-size: 0.7rem;
+    }
+
+    .btn {
+        font-size: 0.7rem;
+        padding: 5px;
+    }
+
+    .agencyLogo {
+        max-width: 16rem;
+        border-radius: 10%;
+    }
+
+    .form-control {
+        font-size: 0.7rem;
+    }
+
+    .small {
+        width: 100%;
+    }
+
+    .editContainer {
+        display: flex;
+    }
+
+    .leftColumn {
+        width: 40%;
+    }
+
+    .rightColumn {
+        width: 60%;
+        padding-left: 20px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+</style>
+
 @if (agency != null)
 {
-    <h3>Mäklarfirma</h3>
+    <h3>Mäklarfirman: @agency.Name</h3>
 
-    <EditForm Model="@agency" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+    <div class="editContainer">
+        <div class="leftColumn">
+            <EditForm Model="@agency" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
 
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <InputText id="name" class="form-control" @bind-Value="@agency.Name" />
-            <ValidationMessage For="@(() => agency.Name)" />
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <InputText id="name" class="form-control small" @bind-Value="@agency.Name" @oninput="HandleChange" />
+                    <ValidationMessage For="@(() => agency.Name)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <InputText id="description" class="form-control small" @bind-Value="@agency.Description" @oninput="HandleChange" />
+                    <ValidationMessage For="@(() => agency.Description)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <InputText id="address" class="form-control small" @bind-Value="@agency.Address" @oninput="HandleChange" />
+                    <ValidationMessage For="@(() => agency.Address)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <InputText id="phoneNumber" class="form-control small" @bind-Value="@agency.PhoneNumber" @oninput="HandleChange" />
+                    <ValidationMessage For="@(() => agency.PhoneNumber)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <InputText id="email" class="form-control small" @bind-Value="@agency.Email" @oninput="HandleChange" />
+                    <ValidationMessage For="@(() => agency.Email)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="website">Website:</label>
+                    <InputText id="website" class="form-control small" @bind-Value="@agency.Website" @oninput="HandleChange" />
+                    <ValidationMessage For="@(() => agency.Website)" />
+                </div>
+
+                <div class="form-group" style="margin-bottom: 10px">
+                    <label for="imagePath">Image Path:</label>
+                    <InputText id="imagePath" class="form-control small" @bind-Value="@agency.ImagePath" @oninput="HandleChange" />
+                    <ValidationMessage For="@(() => agency.ImagePath)" />
+                </div>
+                @if (formIsChanged)
+                {
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <a class="btn btn-primary" href="/agencylisting">Cancel</a>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-secondary">Save</button>
+                    <a class="btn btn-primary" href="/agencylisting">Cancel</a>
+                }
+
+            </EditForm>
         </div>
-
-        <div class="form-group">
-            <label for="description">Description:</label>
-            <InputText id="description" class="form-control" @bind-Value="@agency.Description" />
-            <ValidationMessage For="@(() => agency.Description)" />
+        <div class="rightColumn">
+            @if (agency.ImagePath != null)
+            {
+                <img class="agencyLogo" src="@agency.ImagePath" alt="Profilbild" />
+            }
         </div>
-
-        <div class="form-group">
-            <label for="address">Address:</label>
-            <InputText id="address" class="form-control" @bind-Value="@agency.Address" />
-            <ValidationMessage For="@(() => agency.Address)" />
-        </div>
-
-        <div class="form-group">
-            <label for="phoneNumber">Phone Number:</label>
-            <InputText id="phoneNumber" class="form-control" @bind-Value="@agency.PhoneNumber" />
-            <ValidationMessage For="@(() => agency.PhoneNumber)" />
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <InputText id="email" class="form-control" @bind-Value="@agency.Email" />
-            <ValidationMessage For="@(() => agency.Email)" />
-        </div>
-
-        <div class="form-group">
-            <label for="website">Website:</label>
-            <InputText id="website" class="form-control" @bind-Value="@agency.Website" />
-            <ValidationMessage For="@(() => agency.Website)" />
-        </div>
-
-        <div class="form-group">
-            <label for="imagePath">Image Path:</label>
-            <InputText id="imagePath" class="form-control" @bind-Value="@agency.ImagePath" />
-            <ValidationMessage For="@(() => agency.ImagePath)" />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a class="btn btn-secondary" href="/agencylisting">Cancel</a>
-    </EditForm>
+    </div>
 }
 else
 {
-    <p>Hittar ej mäklarfirma som har det IDt</p>
+    <p>Hittar ej någon mäklarfirma som har det IDt</p>
 }
-
 
 @code {
     [Parameter]
     public int Id { get; set; }
+
+    private bool formIsChanged = false;
 
     private Agency agency { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         agency = new Agency();
+        agency.ImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+    }
+
+    private void HandleChange()
+    {
+        formIsChanged = true;
     }
 
     private async Task HandleValidSubmit()
     {
-        if (await apiService.PostToApiAsync<Agency>(agency))
+        if (formIsChanged)
         {
-            NavigationManager.NavigateTo("/agencylisting");
+            if (await apiService.PostToApiAsync<Agency>(agency))
+            {
+                NavigationManager.NavigateTo("/agencylisting");
+            }
         }
     }
 }
