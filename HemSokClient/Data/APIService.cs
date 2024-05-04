@@ -35,7 +35,7 @@ namespace HemSokClient.Data
         public async Task<T?> GetFromApiAsync<T>(string uri) where T : class
         {
             var response = await Client.GetAsync(uri);
-            T? modelData = (response.IsSuccessStatusCode) ? await response.Content.ReadFromJsonAsync<T>() : null;
+            T? modelData = response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<T>() : null;
             return modelData;
         }
 
@@ -43,7 +43,7 @@ namespace HemSokClient.Data
         public async Task<List<T>?> GetAllFromApiAsync<T>() where T : class
         {
             var response = await Client.GetAsync("api/" + typeof(T).Name);
-            List<T>? modelData = (response.IsSuccessStatusCode) ? await response.Content.ReadFromJsonAsync<List<T>>() : null;
+            List<T>? modelData = response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<List<T>>() : null;
             return modelData;
         }
 
