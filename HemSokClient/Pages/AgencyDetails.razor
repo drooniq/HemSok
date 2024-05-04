@@ -4,35 +4,79 @@
 
 @* Author: Emil Waara*@
 
+<style>
+    body {
+        font-size: 0.7rem;
+    }
+
+    .btn {
+        font-size: 0.7rem;
+        padding: 5px;
+    }
+
+    .agencyLogo {
+        max-width: 16rem;
+        border-radius: 10%;
+    }
+
+    .form-control {
+        font-size: 0.7rem;
+    }
+
+    .small {
+        width: 100%;
+    }
+
+    .editContainer {
+        display: flex;
+    }
+
+    .leftColumn {
+        width: 40%;
+    }
+
+    .rightColumn {
+        width: 60%;
+        padding-left: 20px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+
+    .tdLabel {
+        width: 10%;
+    }
+</style>
+
 @if (agency != null)
 {
-    <h3>Mäklarfirman: @agency.Name</h3>
+    <h3>@agency.Name</h3>
 
     <table class="table table-hover">
         <tr>
-            <td><strong>Description:</strong></td>
+            <td class="tdLabel"><strong>Beskrivning:</strong></td>
             <td>@agency.Description</td>
         </tr>
         <tr>
-            <td><strong>Adress:</strong></td>
+            <td class="tdLabel"><strong>Adress:</strong></td>
             <td>@agency.Address</td>
         </tr>
         <tr>
-            <td><strong>Telefonnummer:</strong></td>
+            <td class="tdLabel"><strong>Telefonnummer:</strong></td>
             <td>@agency.PhoneNumber</td>
         </tr>
         <tr>
-            <td><strong>Email:</strong></td>
+            <td class="tdLabel"><strong>Email:</strong></td>
             <td>@agency.Email</td>
         </tr>
 
         <tr>
-            <td><strong>Webbsida:</strong></td>
+            <td class="tdLabel"><strong>Webbsida:</strong></td>
             <td>@agency.Website</td>
         </tr>
 
         <tr>
-            <td><strong>Logo:</strong></td>
+            <td class="tdLabel"><strong>Logo:</strong></td>
             <td><img src="@agency.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
         </tr>
     </table>
@@ -42,6 +86,7 @@ else
     <p>Hittar ej mäklarfirma som har det IDt</p>
 }
 
+<button class="btn btn-primary" @onclick="ReturnToAgencyListing">Gå Tillbaka</button>
 
 @code {
     [Parameter]
@@ -53,6 +98,11 @@ else
     {
         //apiService.Agencies = await apiService.GetAllFromApiAsync<Agency>();
         agency = await apiService.GetFromApiAsync<Agency>("api/agency/" + Id);
+    }
+
+    private void ReturnToAgencyListing()
+    {
+        NavigationManager.NavigateTo("/agencylisting");
     }
 }
 

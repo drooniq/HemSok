@@ -4,9 +4,49 @@
 
 @* Author: Emil Waara*@
 
+<style>
+    body {
+        font-size: 0.7rem;
+    }
+
+    .btn {
+        font-size: 0.7rem;
+        padding: 5px;
+    }
+
+    .agencyLogo {
+        max-width: 16rem;
+        border-radius: 10%;
+    }
+
+    .form-control {
+        font-size: 0.7rem;
+    }
+
+    .small {
+        width: 100%;
+    }
+
+    .editContainer {
+        display: flex;
+    }
+
+    .leftColumn {
+        width: 40%;
+    }
+
+    .rightColumn {
+        width: 60%;
+        padding-left: 20px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+</style>
+
 @if (agency != null)
 {
-    <h3>Are you sure you want to delete:</h3>
+    <h3>Are you sure you want to delete: @agency.Name</h3>
 
     <table class="table table-hover">
         <tr>
