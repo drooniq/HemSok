@@ -16,7 +16,57 @@
 
 @if (Agents != null)
 {
-    <table class="table table-hover">
+    @foreach (var agent in Agents)
+    {
+        var residencesCount = Residences?.Count(r => r.Agent.Id == agent.Id);
+        <div class="row">
+            <div class="card m-3 shadow rounded" style="width: 60%; cursor: pointer;" 
+                @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{agent.Id}"))">
+                <div class="row no-gutters d-flex justify-content-between align-items-center shadow rounded" >
+                    <div class="col-md-4" >
+                        <img src="@(string.IsNullOrEmpty(agent.ImagePath) ? 
+                            (string.IsNullOrEmpty(agent.Agency.ImagePath) ? 
+                            "images/ghost1.png" : agent.Agency.ImagePath) : agent.ImagePath)"
+                            alt="Profilbild"
+                            class="img-fluid m-2 shadow rounded"
+                            style="width: 40%;" />
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body">
+                            <h5>@agent.FirstName @agent.LastName</h5>
+                            <p class="card-text">"@agent.Nickname"</p>
+                            <div class="text-start">
+                                <small class="text-muted">@agent.Agency.Name</small>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body  ">
+                            @* <div class="btn-group mb-3 ">
+                                <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{agent.Id}"))">
+                                    @residencesCount objekt till salu
+                                </button>
+                            </div> *@
+                            <div class="text-start">
+                                <small class="text-muted">@residencesCount objekt till salu</small>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <img src="@(string.IsNullOrEmpty(agent.Agency.ImagePath) ?
+                                    "gif/floatingghost.png" : agent.Agency.ImagePath)"
+                                     alt="Mäklarfirma logga"
+                                     class="img-fluid"
+                                     style="height: 4rem;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* <table class="table table-hover">
         <thead>
             <tr>
                 <th>Profilbild</th>
@@ -38,7 +88,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </table> *@
 
 }
 else
@@ -48,50 +98,24 @@ else
 
 @code {
     private List<Agent>? Agents;
-    // private Agent? Agent;    
-
-    // public async Task FetchAgentsAsync()
-    // {
-    //     var response = await httpClient.GetAsync("api/agent");
-    //     if (response.IsSuccessStatusCode)
-    //     {
-    //         agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
-    //     }
-    //     else
-    //     {
-    //         agents = null;
-    //     }
-    // }
-
-    // private void GoToDetailsAgentPage(string id)
-    // {
-    //     NavigationManager.NavigateTo($"/detailsagent/{id}");
-    // }
-
-    // apiServiceiServiceivate void GoToCreateAgentPage()
-    // {
-    //     NavigationManager.NavigateTo("/createagent");
-    // }
+    private List<Residence>? Residences;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             Agents = await apiService.GetAllFromApiAsync<Agent>();
+            Residences = await apiService.GetAllFromApiAsync<Residence>();
         }
         catch (Exception ex)
         {
             await JSRuntime.InvokeVoidAsync("alert", $"Ett undantag inträffade: {ex.Message}");
         }
-
-        // var response = await httpClient.GetAsync("api/agent");
-        // if (response.IsSuccessStatusCode)
-        // {
-        //     Agents = await response.Content.ReadFromJsonAsync<List<Agent>>();
-        // }
-        // else
-        // {
-        //     Agents = null;
-        // }
     }
 }
+
+<style>
+    .card:hover {
+        background-color: lightgray;
+    }
+</style>

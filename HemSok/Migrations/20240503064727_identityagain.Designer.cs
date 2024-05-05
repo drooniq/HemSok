@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HemSok.Migrations
 {
     [DbContext(typeof(HemSokDbContext))]
-    [Migration("20240502223846_testing new database")]
-    partial class testingnewdatabase
+    [Migration("20240503064727_identityagain")]
+    partial class identityagain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -300,19 +300,19 @@ namespace HemSok.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bd8f55df-0e67-4e7d-8362-4a2841a93879",
+                            Id = "fc38f0a3-f3cb-4364-b7ea-04a3c4c457a4",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "e4102071-d2d5-420b-9f41-637d6e9fcb29",
+                            Id = "e0efa544-28ee-40b1-95de-aeebd28ec1e2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "54c959fb-afe1-4d78-9a03-0d232ca5f8a2",
+                            Id = "726f323a-9711-4df8-8f23-02c5454280d0",
                             Name = "Agent",
                             NormalizedName = "AGENT"
                         });
