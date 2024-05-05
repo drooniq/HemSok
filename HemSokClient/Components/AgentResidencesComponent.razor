@@ -1,29 +1,48 @@
 ﻿@page "/agentresidences"
-@inject IAPIService APIService
+@inject IAPIService apiService
 
 <h3> </h3>
 
-<button @onclick="ShowResidences" class="btn btn-primary mt-5 mb-1">Visa mina bostäder</button>
 
-@if (ShowComponent)
+
+@if (AgentResidences != null)
 {
     <GetResidenceComponent ListResidences="@AgentResidences" />
 }
+else if (isLoading)
+{
+    <div>
+        <img src="/gif/walkingghost.gif" alt="Ghost wandering" />
+        <p>Väntar...</p>
+    </div>
+}
+else
+{
+    <div>
+        <img src="/gif/floatingghost.gif" alt="Laddar..." />
+        <p>Inga bostäder att visa</p>
+    </div>
+}
+
 
 @code {
     [Parameter]
     public string? AgentId { get; set; }
 
-    private bool ShowComponent = false;
+    private bool isLoading = false;
+    private List<Residence>? Residences;
+
     private List<Residence>? AgentResidences;
 
-    private void ShowResidences()
+    protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         if (AgentId != null)
         {
-            AgentResidences = APIService.Residences?.Where(r => r.Agent.Id == AgentId).ToList();
-            ShowComponent = !ShowComponent;
+            Residences = await apiService.GetAllFromApiAsync<Residence>();
+            AgentResidences = Residences?.Where(r => r.Agent.Id == AgentId).ToList();
         }
+        isLoading = false;
     }
 }
 
