@@ -43,77 +43,10 @@
             </div>
             <div class="bottom">
                 <p>@Residence.City, @Residence.Municipality.Name Kommun</p>
-                <p>@Residence.ListingPrice KR</p>
+                <p>@Residence.ListingPrice SEK</p>
             </div>
         </div>
     </div>
-
-  @*   <div class="residenceContainer">
-    <div class="row-hover" @onclick="() => GoToDetailsResidencePage(Residence.Id)">           
-        @if (Residence.ImagePaths.Count > 0)
-            {
-                    <img src="@Residence.ImagePaths[0]" alt="Bild" class="residenceImage" />
-            }
-            else
-            {
-                    <img src="/images/ghost2.png" alt="Bild" class="residenceImage" />
-            } 
-            
-             @if (Residence.Agent.Agency.ImagePath != null)
-            {
-                    <img src="@Residence.Agent.Agency.ImagePath" alt="Bild" class="residenceAgencypic" />
-            }
-            else
-            {
-                    <img src="/images/ghost2.png" alt="Bild" class="residenceAgencypic" />
-            }         
-               
-            @if (Residence.Agent.ImagePath != null)
-            {
-                    <img src="@Residence.Agent.ImagePath" alt="Bild" class="agentPic" />
-            }
-            else
-            {
-                    <img src="/images/ghost2.png" alt="Bild" class="agentPic" />
-            }
-            <div class="residenceInfo">
-                <h3>@Residence.StreetName</h3>
-                <p>@Residence.City, @Residence.Municipality.Name</p>
-                <p>@Residence.ListingPrice KR</p>
-            </div>
-
-    </div>
-    </div> *@
-    @* <h4>Antal hus som matchade sökningen: @filteredResidences.Count()</h4>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Address</th>
-                <th>Stad</th>
-                <th>Kommun</th>
-                <th>Startpris</th>
-                <th>Kategori</th>
-                <th>Rum</th>
-                <th>Boarea kvm</th>
-            </tr>
-        </thead>
-        <tbody> *@
-          @*   @foreach (var residence in filteredResidences)
-            {
-                <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
-                    <td><img src="@residence.ImagePaths" alt="Bild" style="max-width: 6rem; border-radius: 10%;" /></td>
-                    <td>@residence.StreetName</td>
-                    <td>@residence.City</td>
-                    <td>@residence.Municipality.Name</td>
-                    <td>@residence.ListingPrice</td>
-                    <td>@residence.Category.Name</td>
-                    <td>@residence.Rooms</td>
-                    <td>@residence.LivingArea</td>
-                </tr>
-            } *@
-     @*    </tbody>
-    </table> *@
 }
 else
 {
