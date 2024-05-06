@@ -66,9 +66,19 @@
 <button type="button" class="btn btn-primary" @onclick="OnSearchClicked">
     Sök
 </button>
+<br />
+<br />
+<br />
+@if(filteredResidences.Any() == true)
+{
+    @foreach (var residence in filteredResidences)
+    {
+        <DisplayResidencesComponent Residence="residence"></DisplayResidencesComponent>
+    }
+}
 
 
-    <table class="table table-hover">
+   @*  <table class="table table-hover">
         <thead>
             <tr>
                 <th></th>
@@ -106,7 +116,7 @@
                 }
         </tbody>
     }
-    </table>
+    </table> *@
 
 @code {
     private List<Residence>? filteredResidences = new List<Residence>();
