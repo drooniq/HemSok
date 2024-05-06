@@ -13,26 +13,31 @@
 <ShowResidenceComponent></ShowResidenceComponent>
  *@
 
- <style>
-     .container
-     {
+<style>
+    .container {
+        display: flex;
+        width: 1200px;
+        padding: 0px;
+        margin: 0px;
+        justify-content: center;
+        align-items: left;
+    }
+</style>
 
-     }
- </style>
-
- <div container>
-    <div class="row">
+ <div class="container">
         @if (residence != null)
         {
+        <div class="row">
             @foreach (var item in residence)
             {
-                <div class="col-md-2">
+                <div class="col-lg">
                     <ResidenceCardComponent residence="@item"></ResidenceCardComponent>
                 </div>
             }
+            </div>
         }
-    </div>
 </div>
+
 
 @code {
     public List<Residence> residence { get; set; }
@@ -41,7 +46,7 @@
     {
         residence = await APIService.GetAllFromApiAsync<Residence>();
     }
- }
+}
 
 
 
