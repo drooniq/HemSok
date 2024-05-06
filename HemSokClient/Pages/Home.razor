@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject IAPIService APIService
 
 <PageTitle>Home</PageTitle>
 <div class="container">
@@ -11,6 +12,36 @@
 @* <Starting5Component numberOfObjects="5"></Starting5Component>
 <ShowResidenceComponent></ShowResidenceComponent>
  *@
+
+ <style>
+     .container
+     {
+
+     }
+ </style>
+
+ <div container>
+    <div class="row">
+        @if (residence != null)
+        {
+            @foreach (var item in residence)
+            {
+                <div class="col-md-2">
+                    <ResidenceCardComponent residence="@item"></ResidenceCardComponent>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    public List<Residence> residence { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        residence = await APIService.GetAllFromApiAsync<Residence>();
+    }
+ }
 
 
 

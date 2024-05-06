@@ -1,0 +1,109 @@
+﻿<style>
+    .card {
+        width: 18rem;
+        height: 22rem;
+        margin: 1rem;
+        box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2);
+        border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        padding: 0.5rem;
+    }
+
+    .card-footer {
+        background-color: rgba(200,200,200,0.7);
+        padding: 0.5rem;
+        display: flex;
+        justify-content: right;
+        align-items: right;
+    }
+
+    .card-footer-image {
+        max-height: 2rem;
+        max-width: 4rem;
+        display: inline;
+    }
+
+    .left-footer {
+        padding: 0px;
+        flex: 1;
+    }
+
+    .right-footer {
+        padding: 0px;
+        max-width: 4rem;
+    }
+
+    .card-title {
+        padding: 0px;
+        margin: 0px;
+        display: flex;
+    }
+
+    .card-title-left {
+        flex: 1;
+    }
+
+    .card-title-right {
+    }
+    
+    h6 {
+        margin: 0px;
+    }
+</style>
+
+@if(residence != null)
+{
+    <div class="card">
+                @if(residence.ImagePaths.Count == 0)
+                {
+                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+                }
+                else
+                {
+                    <img src="@residence.ImagePaths[0]" class="card-img-top" alt="...">
+                }
+        <div class="card-body">
+            <div class="card-title">
+                <div class="card-title-left">
+                    <h5>
+                        @residence.StreetName
+                    </h5>
+                </div>
+                <div class="card-title-right">
+                    <h5>
+                        @residence.ListingPrice kr
+                    </h5>
+                </div>
+            </div>
+            <p class="card-text">
+                <h6>
+                    Stad: @residence.City    
+                </h6>
+                <h6>
+                    Kommun: @residence.Municipality.Name
+                </h6>
+                <h6>
+                    BoArea: @residence.LivingArea m^2 (Rum: @residence.Rooms)
+                </h6>
+            </p>
+        </div>
+        <div class="card-footer">
+            <div class="left-footer">
+                <img class="card-footer-image" src="@residence.Agent.ImagePath" /> @residence.Agent.FirstName @residence.Agent.LastName
+            </div>
+            <div class="right-footer">
+                <img class="card-footer-image" src="@residence.Agent.Agency.ImagePath" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public Residence residence { get; set; }
+}
