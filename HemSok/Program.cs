@@ -3,7 +3,6 @@ using HemSok.Data;
 using HemSok.Helper;
 using HemSok.Mappings;
 using HemSok.Models;
-using HemSok.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +26,7 @@ namespace HemSok
             var connectionString = builder.Configuration.GetConnectionString("Default");
             builder.Services.AddDbContext<HemSokDbContext>(options => options.UseSqlServer(connectionString));
 
-            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));         
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
@@ -75,7 +73,8 @@ namespace HemSok
                 options.Password.RequiredLength = 6;
                 options.SignIn.RequireConfirmedEmail = false;
             })
-            .AddEntityFrameworkStores<HemSokDbContext>();
+            .AddEntityFrameworkStores<HemSokDbContext>()
+            .AddDefaultTokenProviders();
 
             builder.Services.AddAuthentication(options =>
             {

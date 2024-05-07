@@ -1,11 +1,16 @@
 ﻿using HemSok.Models;
 using HemSok.Models.AccountDTO;
-using HemSok.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace HemSok.Controllers
 {
@@ -14,71 +19,76 @@ namespace HemSok.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<Agent> userManager;
-        private readonly ITokenService tokenService;
         private readonly SignInManager<Agent> signinManager;
-        public AccountController(UserManager<Agent> userManager, ITokenService tokenService, SignInManager<Agent> signInManager)
+        private readonly IConfiguration config;
+        public AccountController(UserManager<Agent> userManager, SignInManager<Agent> signInManager, IConfiguration config)
         {
             this.userManager = userManager;
-            this.tokenService = tokenService;
             this.signinManager = signInManager;
+            this.config = config;
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login(LogInDTO loginDTO)
         {
-            if (loginDTO == null) return BadRequest(ModelState);
 
-            var user = await userManager.Users.FirstOrDefaultAsync(s => s.Email == loginDTO.Email.ToLower());
-            if (user == null) return Unauthorized("Invalid Email!");
+            var user = await userManager.FindByEmailAsync(loginDTO.Email);
 
-            var result = await signinManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
+            if (user == null || !await userManager.CheckPasswordAsync(user, loginDTO.Password))
+                return Unauthorized();
 
-            if(!result.Succeeded) return Unauthorized("Email not found and/or wrong password");
-
-            return Ok(new UserDTO
+            var authClaims = new List<Claim>
             {
-                Email = user.Email,
-                Token = tokenService.CreateToken(user)
-            }) ;
+                new Claim(ClaimTypes.Email, loginDTO.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                config["JWT:SigningKey"] ?? throw new InvalidOperationException("Key not configured")));
+
+            var token = new JwtSecurityToken(
+                issuer: config["JWT:Issuer"],
+                audience: config["JWT:Audience"],
+                expires: DateTime.UtcNow.AddDays(7),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+                );
+            return Ok(new LoginResponse
+            {
+                JwtToken = new JwtSecurityTokenHandler().WriteToken(token),
+                ExpirationDate = token.ValidTo
+            });
+        
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
-            try
+            var existingUser = await userManager.FindByEmailAsync(registerDTO.Email);
+            if (existingUser != null) return Conflict("User already exists");
+            var userNumber = 1;
+            var newUser = new Agent()
             {
-                if (registerDTO == null) return BadRequest(ModelState);
+                Email = registerDTO.Email,
+                UserName = $"User{userNumber++}"
+            };
 
-                var agent = new Agent()
-                {
-                    Email = registerDTO.Email,
-                    UserName = "User"
-                    
-                };
-
-                var createdUser = await userManager.CreateAsync(agent, registerDTO.Password);
-                if (createdUser.Succeeded)
-                {
-                    var role = await userManager.AddToRoleAsync(agent, "Agent");
-                    if (role.Succeeded)
-                    {
-                        return Ok("User created");
-                    }
-                    else
-                    {
-                        return StatusCode(500, role.Errors);
-                    }
-                }
-                else
-                {
-                    return StatusCode(500, createdUser.Errors);
-                }
-            }
-            catch (Exception e)
+            var result = await userManager.CreateAsync(newUser, registerDTO.Password);
+            if (result.Succeeded)
             {
-
-                return StatusCode(500, e);
+                var role = await userManager.AddToRoleAsync(newUser, "Agent");
+                if (role.Succeeded)               
+                    return Ok("New user created");
+                else return StatusCode(StatusCodes.Status500InternalServerError,
+                $"Failed to create user: {string.Join(" ", result.Errors.Select(s => s.Description))}");
             }
+            else return StatusCode(StatusCodes.Status500InternalServerError,
+                $"Failed to create user: {string.Join(" ", result.Errors.Select(s => s.Description))}");
+        
         }
     }
 }
