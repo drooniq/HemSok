@@ -7,54 +7,51 @@
 @* Author: Fredrik Blixt*@
 
 <PageTitle>DetailsAgent</PageTitle>
-<h3>Mäklare(spöken)</h3>
-
-<button class="btn btn-primary" @onclick="@(() =>NavigationManager.NavigateTo("/createagent"))">Lägg till ny mäklare</button>
 @if (Agent != null)
 {
-    <div class="row">
-        <div class=" d-flex justify-content-between align-items-center shadow rounded" style="width: 80%;">
-            <div class="col-md-3">
-                <img src="@(string.IsNullOrEmpty(Agent.ImagePath) ?
-                            (string.IsNullOrEmpty(Agent.Agency.ImagePath) ?
-                            "images/ghost1.png" : Agent.Agency.ImagePath) : Agent.ImagePath)"
-                     alt="Profilbild"
-                     class="img-fluid m-2 shadow rounded"
-                     style="width: 40%; border-radius: 50%" />
-            </div>
-            <div class="col-md-3">
-                <div class="card-body">
-                    <h5>@Agent.FirstName @Agent.LastName</h5>
-                    <p class="card-text">"@Agent.Nickname"</p>
-                    <div class="text-start">
-                        <small class="text-muted">@Agent.Agency.Name</small>
-                    </div>
+    <div class="row mt-5 mb-5 d-flex justify-content-center align-items-end shadow rounded" style="width: 80%;">
 
+        <div class="col-md-3 " style="height: inherit;">
+            <img src="@(string.IsNullOrEmpty(Agent.ImagePath) ?
+                    (string.IsNullOrEmpty(Agent.Agency.ImagePath) ?
+                    "images/ghost1.png" : Agent.Agency.ImagePath) : Agent.ImagePath)"
+                    alt="Profilbild"
+                    class="img-fluid m-2 shadow rounded"
+                 style="height: 16vh;" />
+        </div>
+        <div class="col-md-3">
+            <div class="card-body">
+                <h5>@Agent.FirstName @Agent.LastName</h5>
+                <p class="card-text">"@Agent.Nickname"</p>
+                <div class="text-start">
+                    <small class="text-muted">@Agent.Agency.Name</small>
                 </div>
+
             </div>
-            <div class="col-md-3">
-                <div class="card-body  ">
-                    <div class="text-start">
-                        <small class="text-muted">@Residences?.Count(r => r.Agent.Id == Agent?.Id) objekt till salu</small>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mt-3 ">
-                        <img src="@(string.IsNullOrEmpty(Agent.Agency.ImagePath) ?
-                                    "gif/floatingghost.png" : Agent.Agency.ImagePath)"
-                             alt="Mäklarfirma logga"
-                             class="img-fluid"
-                             style="height: 4rem;" />
-                    </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-body  ">
+                <div class="text-center">
+                    <small class="text-muted">@Residences?.Count(r => r.Agent.Id == Agent?.Id) objekt till salu</small>
                 </div>
-            </div>
-            <div class="col-md-3">
-            <div class="d-flex justify-content-end align-items-center m-3 ">
-                <small class="text-muted">@Agent.PhoneNumber Mobilnr.</small>
-                </div>
-                <div class="d-flex justify-content-end align-items-center m-3 ">
-                    <small class="text-muted">@Agent.Email</small>
+                <div class="d-flex justify-content-between align-items-center mt-3 ">
+                    <img src="@(string.IsNullOrEmpty(Agent.Agency.ImagePath) ?
+                            "gif/floatingghost.png" : Agent.Agency.ImagePath)"
+                            alt="Mäklarfirma logga"
+                            class="img-fluid"
+                            style="height: 4rem;" />
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+        <div class="d-flex justify-content-center align-items-center m-3 ">
+            <small class="text-muted">@Agent.PhoneNumber Mobilnr.</small>
+            </div>
+            <div class="d-flex justify-content-center align-items-lg-baseline m-3 ">
+                <a href="mailto:${@Agent.Email}">@Agent.Email</a>
+            </div>
+        </div>
+        
     </div>
     
     @* <h3>@Agent.Nickname<img src="@Agent.ImagePath" alt="Profilbild" style="max-width: 7rem; border-radius: 10%; margin: 1rem;" /></h3>
@@ -86,8 +83,9 @@ else
 {
     <p>Mäklaren kunde inte hittas.</p>
 }
-
-<button @onclick="@(() => NavigationManager.NavigateTo("/agent"))" class="btn btn-primary mt-2" >Tillbaka</button>
+<button class="btn btn-primary btn-sm mb-3 me-3" @onclick="@(() => NavigationManager.NavigateTo("/agent"))">Tillbaka till mäklare</button>
+<button class="btn btn-primary btn-sm mb-3" @onclick="@(() => NavigationManager.NavigateTo($"/editagent/{Agent.Id}"))"><i class="fa-solid fa-pencil"></i></button>
+<button class="btn btn-danger btn-sm mb-3" @onclick="() => DeleteAgent(Agent.Id)"><i class="fa-regular fa-trash-can"></i></button>
 
 @if (Agent != null)
 {
@@ -127,4 +125,3 @@ else
         }
     }
 }
-
