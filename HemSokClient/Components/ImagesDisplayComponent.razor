@@ -14,17 +14,17 @@
         }
         else
         {
-            <img src="@imagePaths[position]" alt="Picture" style="max-width: 400px; max-height: 400px;" />
+            <img src="@imagePaths?[position]" alt="Picture" style="max-width: 400px; max-height: 400px;" />
         }
 
-        @if (position > 0 && imagePaths.Count > 1)
+        @if (position > 0 && imagePaths?.Count > 1)
         {
-            <button type="button" class="btn btn-danger btn-sm" style="position: absolute; top: 150px; left: 10px;" @onclick="() => ChangePosition(-1)">L</button>
+            <button type="button" class="btn btn-danger" style="position: absolute; top: 45%; left: 10px; border-radius: 50%" @onclick="() => ChangePosition(-1)"><i class="fa-solid fa-chevron-left"></i></button>
         }
 
-        @if (position < imagePaths.Count - 1 && imagePaths.Count > 1)
+        @if (position < imagePaths?.Count - 1 && imagePaths?.Count > 1)
         {
-            <button type="button" class="btn btn-danger btn-sm" style="position: absolute; top: 150px; right: 10px;" @onclick="() => ChangePosition(+1)">R</button>
+            <button type="button" class="btn btn-danger" style="position: absolute; top: 45%; right: 10px; border-radius: 50%" @onclick="() => ChangePosition(+1)"><i class="fa-solid fa-chevron-right"></i></button>
         }
     </div>
 </div>
