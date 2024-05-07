@@ -15,6 +15,8 @@ namespace HemSokClient.Data
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
+        public string JWTtoken { get; set; }
+
 
         Task<bool> DeleteFromApiAsync<T>(string uri, T modelData) where T : class;
         Task<List<T>?> GetAllFromApiAsync<T>() where T : class;

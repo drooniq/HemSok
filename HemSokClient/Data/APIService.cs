@@ -18,6 +18,7 @@ namespace HemSokClient.Data
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
+        public string JWTtoken { get; set; }
 
         public APIService(HttpClient Client)
         {
