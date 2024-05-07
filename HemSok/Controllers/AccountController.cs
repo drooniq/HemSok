@@ -79,7 +79,6 @@ namespace HemSok.Controllers
 
                 return StatusCode(500, e);
             }
-
         }
     }
 }
