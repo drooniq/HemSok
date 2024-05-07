@@ -61,7 +61,10 @@
         <EditForm Model="@registerModel" OnValidSubmit="HandleSubmit">
             <DataAnnotationsValidator />
 
-            <h2 style="color: white;"><strong>Register</strong></h2>
+            <div class="login-header">
+                <img src="/images/ghost1.png" alt="Ghost" style="display: inline; width: 100px; height: 100px;" />
+                <h2 style="display:inline; color: white;"><strong>Register</strong></h2>
+            </div>
 
             <ValidationMessage For="@(() => registerModel.Email)" />
                 <InputText type="text" @bind-Value="registerModel.Email" placeholder="Email" />
