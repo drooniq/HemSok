@@ -1,25 +1,27 @@
 ﻿using HemSokClient.Models;
 using HemSokClient.Models.LoginModels;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 /*
- author: Emil Waara
+ author: Emil Waara, Marcus Karlsson
  */
 namespace HemSokClient.Data
 {
     public class APIService : IAPIService
     {
         public HttpClient Client { get; set; }
-
+        public CurrentUser? currentUser { get; set; }
         public List<Agency>? Agencies { get; set; }
         public List<Agent>? Agents { get; set; }
         public List<Category>? Categories { get; set; }
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
-        public LoginResponse LoginResponse { get; set; }
+       
 
         public APIService(HttpClient Client)
         {
@@ -73,13 +75,21 @@ namespace HemSokClient.Data
             var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
             if (content == null)
                 throw new InvalidDataException();
-
-            LoginResponse.JwtToken = content.JwtToken;
-            LoginResponse.ExpirationDate = content.ExpirationDate;
-
-            return LoginResponse.ExpirationDate;
+            
+            var agents = await GetFromApiAsync<List<Agent>>($"api/agent/");
+            var jwt = new JwtSecurityToken(content.JwtToken);
+            currentUser.CurrentAgent = agents.First(s=>s.Email == jwt.Claims
+                                             .First(s=>s.Type == ClaimTypes.Email).Value);        
+            currentUser.Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value;
+            currentUser.LoginResponse.JwtToken = content.JwtToken;
+            currentUser.LoginResponse.ExpirationDate = content.ExpirationDate;
+            return currentUser.LoginResponse.ExpirationDate;
         }
-
+        public async Task LogoutAsync()
+        {
+            if(currentUser!=null)
+            currentUser = null;         
+        }
         public async Task RegisterAsync(RegisterModel model)
         {
             var response = await Client.PostAsync("api/account/register", JsonContent.Create(model));
