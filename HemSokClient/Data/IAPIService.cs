@@ -1,4 +1,5 @@
 ﻿using HemSokClient.Models;
+using HemSokClient.Models.LoginModels;
 
 /*
 author: Emil Waara
@@ -15,7 +16,7 @@ namespace HemSokClient.Data
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
-        public string JWTtoken { get; set; }
+        public LoginResponse LoginResponse { get; set; }
 
 
         Task<bool> DeleteFromApiAsync<T>(string uri, T modelData) where T : class;
@@ -23,5 +24,7 @@ namespace HemSokClient.Data
         Task<T?> GetFromApiAsync<T>(string uri) where T : class;
         Task<bool> PostToApiAsync<T>(T modelData) where T : class;
         Task<bool> PutToApiAsync<T>(T modelData) where T : class;
+        Task<DateTime> LoginAsync(LoginModel model);
+        Task RegisterAsync(RegisterModel model);
     }
 }
