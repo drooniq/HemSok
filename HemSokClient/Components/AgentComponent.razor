@@ -12,44 +12,16 @@
 <h3>Mäklare(spöken)</h3>
 
 @* <button class="btn btn-primary" @onclick="FetchAgentsAsync">Visa mäklare</button> *@
-<button class="btn btn-primary" @onclick="@(() =>NavigationManager.NavigateTo("/createagent"))">Lägg till ny mäklare</button>
+<button class="btn btn-primary btn-sm" @onclick="@(() =>NavigationManager.NavigateTo("/createagent"))">Lägg till ny mäklare</button>
 
-@if (Agents != null)
+@if (agents != null)
 {
-    <div class="container">
-        @foreach (var agent in Agents)
+    <div class="row">
+        @foreach (var agent in agents)
         {
-            var residencesCount = Residences?.Count(r => r.Agent.Id == agent.Id);
-
-            <div class="card m-3 shadow rounded" @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{agent.Id}"))">
-                <img src=" @(string.IsNullOrEmpty(agent.ImagePath) ?
-                    (string.IsNullOrEmpty(agent.Agency.ImagePath) ?
-                    "images/ghost1.png" : agent.Agency.ImagePath) : agent.ImagePath)"
-                     alt="Profilbild"
-                     class=" m-1" />
-                <div class="card-body">
-                    <div class="card-title">
-                        <div class="card-title-left">
-                            <h5>@agent.FirstName @agent.LastName</h5>
-                            <p>"@agent.Nickname"</p>
-                            <small class="text-muted">@residencesCount objekt till salu</small>
-                        </div>
-                    
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="left-footer">
-                        <small class="text-muted">@agent.Agency.Name</small>
-                    </div>
-                    <div class="right-footer">
-                        <img src="@(string.IsNullOrEmpty(agent.Agency.ImagePath) ?
-                                        "gif/floatingghost.png" : agent.Agency.ImagePath)"
-                             alt="Mäklarfirma logga"
-                             class="card-footer-image"/>
-                    </div>
-                </div>
+            <div class="col-lg -3">
+                <AgentCardComponent Agent="@agent" Residences="residences"></AgentCardComponent>
             </div>
-
         }
     </div>
 }
@@ -59,15 +31,15 @@ else
 }
 
 @code {
-    private List<Agent>? Agents;
-    private List<Residence>? Residences;
+    private List<Agent>? agents;
+    private List<Residence>? residences;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            Agents = await apiService.GetAllFromApiAsync<Agent>();
-            Residences = await apiService.GetAllFromApiAsync<Residence>();
+            agents = await apiService.GetAllFromApiAsync<Agent>();
+            residences = await apiService.GetAllFromApiAsync<Residence>();
         }
         catch (Exception ex)
         {
@@ -75,72 +47,3 @@ else
         }
     }
 }
-
-<style>
-    .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: normal;
-    }
-    .card {
-        width: 18rem;
-        height: 22rem;
-        /*  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.6); */
-        border: 1px solid black;
-        transition: 0.3s ease;
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-    .card:hover {
-        transform: translateY(-15px);
-    }
-
-    .card-body {
-
-        border-top: 1px solid black;
-        padding: 0.5rem;
-        height: 35%;
-        overflow: auto;
-    }
-
-    .card-footer {
-        background-color: rgba(200,200,200,0.7);
-        padding: 0.5rem;
-        display: flex;
-        align-items: center;
-        height: 15%;
-    }
-
-    .card-footer-image {
-        max-height: 2rem;
-        max-width: 4rem;
-        display: inline;
-    }
-
-    .left-footer {
-        padding: 0px;
-        flex: 1;
-    }
-
-    .right-footer {
-        padding: 0px;
-        max-width: 4rem;
-    }
-
-    .card-title {
-        padding: 0px;
-        margin: 0px;
-        display: flex;
-    }
-
-    .card:hover {
-        transform: translateY(-15px);
-    }
-
-    .card img {
-        height: 45%;
-        object-fit: contain;
-     }
-
-</style>

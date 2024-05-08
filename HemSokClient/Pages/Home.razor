@@ -24,9 +24,9 @@
     }
 </style>
 
- <div class="container">
-        @if (residence != null)
-        {
+<div class="container">
+    @if (residence != null)
+    {
         <div class="row">
             @foreach (var item in residence)
             {
@@ -34,8 +34,8 @@
                     <ResidenceCardComponent residence="@item"></ResidenceCardComponent>
                 </div>
             }
-            </div>
-        }
+        </div>
+    }
 </div>
 
 
