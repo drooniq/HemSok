@@ -16,7 +16,7 @@ namespace HemSokClient.Data
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
-        public LoginResponse LoginResponse { get; set; }
+        public CurrentUser currentUser { get; set; }
 
 
         Task<bool> DeleteFromApiAsync<T>(string uri, T modelData) where T : class;
