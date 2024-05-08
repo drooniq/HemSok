@@ -1,0 +1,133 @@
+﻿@page "/register"
+@using System.ComponentModel.DataAnnotations;
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager navigationManager
+@inject IAPIService apiService
+
+<style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
+    }
+
+    .login-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        width: 300px;
+    }
+
+        .login-container form input[type="text"],
+        .login-container form input[type="password"],
+        .login-container form button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .login-container form button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+            .login-container form button:hover {
+                background-color: #45a049;
+            }
+
+    .content {
+        position: relative;
+        height: 500px;
+        padding: 20px;
+    }
+
+    .validation-message {
+        color: greenyellow;
+        padding-bottom: 10px;
+    }
+</style>
+
+<div class="content">
+    <div class="login-container">
+        <EditForm Model="@registerModel" OnValidSubmit="HandleSubmit">
+            <DataAnnotationsValidator />
+
+            <div class="login-header">
+                <img src="/images/ghost1.png" alt="Ghost" style="display: inline; width: 100px; height: 100px;" />
+                <h2 style="display:inline; color: white;"><strong>Register</strong></h2>
+            </div>
+
+            <ValidationMessage For="@(() => registerModel.Email)" />
+                <InputText type="text" @bind-Value="registerModel.Email" placeholder="Email" />
+
+            <ValidationMessage For="@(() => registerModel.Password)" />
+                <InputText type="password" @bind-Value="registerModel.Password" placeholder="Password" />
+
+            <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+            <InputText type="password" @bind-Value="registerModel.ConfirmPassword" placeholder="Confirmation Password" />
+
+            <ValidationMessage For="@(() => registerModel.Firstname)" />
+            <InputText type="text" @bind-Value="registerModel.Firstname" placeholder="Firstname" />           
+            <ValidationMessage For="@(() => registerModel.Lastname)" />
+            <InputText type="text" @bind-Value="registerModel.Lastname" placeholder="Lastname" />
+               @if (apiService.Agencies != null)
+             {<label>Välj Byrå: </label>
+            <InputSelect @bind-Value="@registerModel.agency">
+                @foreach (var c in apiService.Agencies)
+                {
+                    <option value="@c.Id">@c.Name</option>
+                }
+            </InputSelect>}
+            <button type="submit">Register</button>
+            <button type="button" @onclick="Reset">Reset</button>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    private RegisterModel registerModel = new RegisterModel();
+
+    private void Reset()
+    {
+        registerModel = new RegisterModel();
+    }
+
+    private async Task HandleSubmit(EditContext context)
+    {
+        try
+        {
+            // Assuming you have a service to handle authentication
+            //var token = await authService.Authenticate(loginModel);
+
+            // Store token in local storage or session storage
+            //await localStorage.SetItemAsync("authToken", token);
+            if(registerModel!=null)
+              await apiService.RegisterAsync(registerModel);
+            else navigationManager.NavigateTo("/register");
+            // Redirect to home page or another authorized page
+            navigationManager.NavigateTo("/agent");
+        }
+        catch (Exception ex)
+        {
+            // Handle authentication errors
+            // Display error message or perform other actions
+            Console.WriteLine($"Authentication error: {ex.Message}");
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        apiService.Agencies = await apiService.GetAllFromApiAsync<Agency>();  
+    }
+}

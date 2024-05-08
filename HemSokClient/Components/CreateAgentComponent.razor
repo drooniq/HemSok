@@ -82,7 +82,7 @@ else
             Agent.Agency = Agencies.FirstOrDefault(s => s.Id == AgencyId) ?? new Agency();
             // HttpResponseMessage response = await httpClient.PostAsJsonAsync("api/agent", Agent);
             var response = apiService.PostToApiAsync<Agent>(Agent);
-            if (response != null);
+            if (response != null)
             {
                 await JSRuntime.InvokeVoidAsync("alert", "Mäklaren är tillagd.");
                 NavigationManager.NavigateTo("/agent");

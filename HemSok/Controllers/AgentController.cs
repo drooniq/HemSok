@@ -35,7 +35,7 @@ namespace HemSok.Controllers
                 .ToListAsync();
 
             if (agents == null)
-                return NotFound();
+                return NotFound("Could not find any agent with that id.");
 
             return Ok(agents);
         }
@@ -49,7 +49,7 @@ namespace HemSok.Controllers
                 .FirstOrDefaultAsync(a => a.Id == id);
             
             if (agent == null)
-                return NotFound();
+                return NotFound("Could not find any agent with that id.");
 
             return Ok(agent);
         }
@@ -60,7 +60,7 @@ namespace HemSok.Controllers
             var agent = await agentRepository.GetAsync(id);
 
             if (agent == null)
-                return NotFound();
+                return NotFound("Could not find any agent with that id.");
 
             agentRepository.Delete(agent);
             await agentRepository.SaveChangesAsync();
@@ -74,7 +74,7 @@ namespace HemSok.Controllers
             //var agent = _mapper.Map<Agent>(agentDTO);
 
             if (agent == null)
-                return NotFound();
+                return NotFound("No agent data sent");
 
             await agentRepository.AddAsync(agent);
 
@@ -90,12 +90,12 @@ namespace HemSok.Controllers
         {
             if (agent == null)
             {
-                return BadRequest();
+                return BadRequest("No agent data sent");
             }
 
             if (!AgentExists(agent.Id))
             {
-                return NotFound();
+                return NotFound("Could not find agent");
             }
 
             agentRepository.Update(agent);

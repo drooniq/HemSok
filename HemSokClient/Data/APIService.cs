@@ -1,4 +1,5 @@
 ﻿using HemSokClient.Models;
+using HemSokClient.Models.LoginModels;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -18,7 +19,7 @@ namespace HemSokClient.Data
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
-        public string JWTtoken { get; set; }
+        public LoginResponse LoginResponse { get; set; }
 
         public APIService(HttpClient Client)
         {
@@ -60,6 +61,31 @@ namespace HemSokClient.Data
         {
             var response = await Client.PutAsJsonAsync("api/" + typeof(T).Name, modelData);
             return response.IsSuccessStatusCode;
+        }
+
+        // Login logik för api
+
+        public async Task<DateTime> LoginAsync(LoginModel model)
+        {
+            var response = await Client.PostAsync("api/account/login", JsonContent.Create(model));
+            if (!response.IsSuccessStatusCode)
+                throw new UnauthorizedAccessException("Login failed.");
+            var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
+            if (content == null)
+                throw new InvalidDataException();
+
+            LoginResponse.JwtToken = content.JwtToken;
+            LoginResponse.ExpirationDate = content.ExpirationDate;
+
+            return LoginResponse.ExpirationDate;
+        }
+
+        public async Task RegisterAsync(RegisterModel model)
+        {
+            var response = await Client.PostAsync("api/account/register", JsonContent.Create(model));
+            if (!response.IsSuccessStatusCode)        
+            throw new UnauthorizedAccessException("Failed to create user");
+
         }
     }
 }
