@@ -1,4 +1,5 @@
-﻿using HemSok.Models;
+﻿using HemSok.Data;
+using HemSok.Models;
 using HemSok.Models.AccountDTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -21,11 +22,14 @@ namespace HemSok.Controllers
         private readonly UserManager<Agent> userManager;
         private readonly SignInManager<Agent> signinManager;
         private readonly IConfiguration config;
-        public AccountController(UserManager<Agent> userManager, SignInManager<Agent> signInManager, IConfiguration config)
+        private readonly IRepository<Agency> agencyRepository;
+
+        public AccountController(UserManager<Agent> userManager, SignInManager<Agent> signInManager, IConfiguration config, IRepository<Agency> agencyRepository)
         {
             this.userManager = userManager;
             this.signinManager = signInManager;
             this.config = config;
+            this.agencyRepository = agencyRepository;
         }
 
         [HttpPost("login")]
@@ -38,12 +42,16 @@ namespace HemSok.Controllers
 
             if (user == null || !await userManager.CheckPasswordAsync(user, loginDTO.Password))
                 return Unauthorized();
-
+            
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, loginDTO.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+            foreach (var role in await userManager.GetRolesAsync(user))
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 config["JWT:SigningKey"] ?? throw new InvalidOperationException("Key not configured")));
 
@@ -69,14 +77,16 @@ namespace HemSok.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
             var existingUser = await userManager.FindByEmailAsync(registerDTO.Email);
-            if (existingUser != null) return Conflict("User already exists");
-            var userNumber = 1;
+            if (existingUser != null) return Conflict("User already exists");           
             var newUser = new Agent()
             {
-                Email = registerDTO.Email,
-                UserName = $"User{userNumber++}"
+                Email = registerDTO.Email,               
+                UserName = $"{registerDTO.Firstname}{registerDTO.Lastname}",
+                FirstName = registerDTO.Firstname,
+                LastName = registerDTO.Lastname
             };
-
+            if (registerDTO.agency != null)
+                newUser.Agency = await agencyRepository.GetAsync(int.Parse(registerDTO.agency));            
             var result = await userManager.CreateAsync(newUser, registerDTO.Password);
             if (result.Succeeded)
             {
