@@ -2,33 +2,35 @@
 
 @if (Agent != null)
 {
-    <div class="container">
-        <div class="card m-3 shadow rounded" @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{Agent.Id}"))">
-            <img src=" @(string.IsNullOrEmpty(Agent.ImagePath) ?
-                (string.IsNullOrEmpty(Agent.Agency.ImagePath) ?
-                "images/ghost1.png" : Agent.Agency.ImagePath) : Agent.ImagePath)"
-                    alt="Profilbild"
-                    class=" m-1" />
-            <div class="card-body">
-                <div class="card-title">
-                    <div class="card-title-left">
-                        <h5>@Agent.FirstName @Agent.LastName</h5>
-                        <p>"@Agent.Nickname"</p>
-                        <small class="text-muted">@Residences?.Count(r => r.Agent.Id == Agent.Id) objekt till salu</small>
-                    </div>
-
-                </div>
+    <div class="card m-3 rounded" @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{Agent.Id}"))">
+        <div class="card-img">
+            <div class="img-container">
+                <img src=" @(string.IsNullOrEmpty(Agent.ImagePath) ?
+                    (string.IsNullOrEmpty(Agent.Agency.ImagePath) ?
+                    "images/ghost1.png" : Agent.Agency.ImagePath) : Agent.ImagePath)"
+                        alt="Profilbild"
+                        class=" m-1" />
             </div>
-            <div class="card-footer">
-                <div class="left-footer">
-                    <small class="text-muted">@Agent.Agency.Name</small>
+        </div>
+        <div class="card-body">
+            <div class="card-title">
+                <div class="card-title-left">
+                    <h5>@Agent.FirstName @Agent.LastName</h5>
+                    <p>"@Agent.Nickname"</p>
+                    <small class="text-muted">@Residences?.Count(r => r.Agent.Id == Agent.Id) objekt till salu</small>
                 </div>
-                <div class="right-footer">
-                    <img src="@(string.IsNullOrEmpty(Agent.Agency.ImagePath) ?
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="left-footer">
+                <small class="text-muted">@Agent.Agency.Name</small>
+            </div>
+            <div class="right-footer">
+                <img src="@(string.IsNullOrEmpty(Agent.Agency.ImagePath) ?
                                     "gif/floatingghost.png" : Agent.Agency.ImagePath)"
-                            alt="Mäklarfirma logga"
-                            class="card-footer-image" />
-                </div>
+                     alt="Mäklarfirma logga"
+                     class="card-footer-image" />
             </div>
         </div>
     </div>
@@ -45,6 +47,12 @@ else
     public List<Residence>? Residences { get; set; }
 }
 <style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
+    }
+
     .container {
         display: flex;
         flex-wrap: wrap;
@@ -54,7 +62,7 @@ else
     .card {
         width: 18rem;
         height: 22rem;
-        /*  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.6); */
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
         border: 1px solid black;
         transition: 0.3s ease;
         cursor: pointer;
@@ -63,10 +71,10 @@ else
 
         .card:hover {
             transform: translateY(-15px);
+            box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.6);
         }
 
     .card-body {
-        border-top: 1px solid black;
         padding: 0.5rem;
         height: 35%;
         overflow: auto;
@@ -102,13 +110,26 @@ else
         display: flex;
     }
 
-    .card:hover {
-        transform: translateY(-15px);
+    .card-img {
+        height: 50%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    .card img {
-        height: 45%;
-        object-fit: contain;
+    .img-container {
+        width: 100%;
+        height: 100;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
     }
+
+        .img-container img {
+            position: absolute;
+            width: 100%;
+            height: 100;
+            object-fit: cover;
+        }
 
 </style>
