@@ -2,6 +2,9 @@
 
 namespace HemSok.Models.AccountDTO
 {
+    /*
+ Author: Marcus Karlsson, Emil Waara
+ */
     public class RegisterDTO
     {
         [Required]

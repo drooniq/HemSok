@@ -117,7 +117,7 @@
 
             // Assuming you have a service to handle authentication
             //var token = await authService.Authenticate(loginModel);
-
+            await APIService.RegisterAsync(registerModel);
             // Store token in local storage or session storage
             //await localStorage.SetItemAsync("authToken", token);
 

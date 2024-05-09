@@ -72,10 +72,7 @@
 
             <ValidationMessage For="@(() => loginModel.Password)" />
                 <InputText type="password" @bind-Value="loginModel.Password" placeholder="Password" />
-
-            <ValidationMessage For="@(() => loginModel.ConfirmPassword)" />
-                <InputText type="password" @bind-Value="loginModel.ConfirmPassword" placeholder="Confirm Password" />
-
+     
             <button type="submit">Logga In</button>
             <button type="button" @onclick="Reset">Resa Formulär</button>
             <button type="button" @onclick="Abort">Avbryt</button>
@@ -106,10 +103,11 @@
 
             // Store token in local storage or session storage
             //await localStorage.SetItemAsync("authToken", token);
-
+            if (await APIService.LoginAsync(loginModel))
+                NavigationStateService.NavigateTo("/");
             // Redirect to home page or another authorized page
             //NavigationManager.NavigateTo("/");
-            NavigationStateService.NavigateBack();
+            // NavigationStateService.NavigateBack();
         }
         catch (Exception ex)
         {
@@ -119,16 +117,4 @@
         }
     }
 
-    public class LoginModel
-    {
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Invalid email address")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessage = "Password is required")]
-        public string Password { get; set; }
-
-        [Required(ErrorMessage = "Confirmation Password is required")]
-        public string ConfirmPassword { get; set; }
-    }
 }

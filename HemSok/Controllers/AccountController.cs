@@ -12,7 +12,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
-
+/*
+ Author: Marcus Karlsson
+ */
 namespace HemSok.Controllers
 {
     [Route("api/[controller]")]
@@ -68,7 +70,8 @@ namespace HemSok.Controllers
             return Ok(new LoginResponse
             {
                 JwtToken = new JwtSecurityTokenHandler().WriteToken(token),
-                ExpirationDate = token.ValidTo
+                ExpirationDate = token.ValidTo,
+                Id = user.Id
             });
         
         }

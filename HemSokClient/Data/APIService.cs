@@ -13,7 +13,8 @@ namespace HemSokClient.Data
 {
     public class APIService : IAPIService
     {
-        public HttpClient Client { get; set; }
+
+        private readonly IHttpClientFactory Factory;
         public CurrentUser? currentUser { get; set; } = null;
         public List<Agency>? Agencies { get; set; }
         public List<Agent>? Agents { get; set; }
@@ -23,22 +24,24 @@ namespace HemSokClient.Data
         public List<Residence>? Residences { get; set; }
        
 
-        public APIService(HttpClient Client)
+        public APIService(IHttpClientFactory factory)
         {
-            this.Client = Client;
+            this.Factory = factory;         
         }
 
         // string uri = "api/Residence/" + residence.Id;
         public async Task<bool> DeleteFromApiAsync<T>(string uri, T modelData) where T : class
         {
-            var response = await Client.DeleteAsync(uri);
+            var response = await Factory.CreateClient("CustomClient")
+                                        .DeleteAsync(uri);
             return response.IsSuccessStatusCode;
         }
 
         // string uri = "api/Residence/" + residence.Id;
         public async Task<T?> GetFromApiAsync<T>(string uri) where T : class
         {
-            var response = await Client.GetAsync(uri);
+            var response = await Factory.CreateClient("CustomClient")
+                                        .GetAsync(uri);
             T? modelData = response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<T>() : null;
             return modelData;
         }
@@ -46,7 +49,8 @@ namespace HemSokClient.Data
         // var lista = await GetAllFromApiAsync<Residence>();
         public async Task<List<T>?> GetAllFromApiAsync<T>() where T : class
         {
-            var response = await Client.GetAsync("api/" + typeof(T).Name);
+            var response = await Factory.CreateClient("CustomClient")
+                                        .GetAsync("api/" + typeof(T).Name);
             List<T>? modelData = response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<List<T>>() : null;
             return modelData;
         }
@@ -54,22 +58,25 @@ namespace HemSokClient.Data
         // skapa ny bostad
         public async Task<bool> PostToApiAsync<T>(T modelData) where T : class
         {
-            var response = await Client.PostAsJsonAsync("api/" + typeof(T).Name, modelData);
+            var response = await Factory.CreateClient("CustomClient")
+                                        .PostAsJsonAsync("api/" + typeof(T).Name, modelData);
             return response.IsSuccessStatusCode;
         }
 
         // string uri = "api/" + typeof(T).Name, modelData   modelData = den förändrade residence 
         public async Task<bool> PutToApiAsync<T>(T modelData) where T : class
         {
-            var response = await Client.PutAsJsonAsync("api/" + typeof(T).Name, modelData);
+            var response = await Factory.CreateClient("CustomClient")
+                                        .PutAsJsonAsync("api/" + typeof(T).Name, modelData);
             return response.IsSuccessStatusCode;
         }
 
         // Login logik för api
 
-        public async Task<DateTime> LoginAsync(LoginModel model)
+        public async Task<bool> LoginAsync(LoginModel model)
         {
-            var response = await Client.PostAsync("api/account/login", JsonContent.Create(model));
+            var response = await Factory.CreateClient("CustomClient")
+                                        .PostAsync("api/account/login", JsonContent.Create(model));
 
             if (!response.IsSuccessStatusCode)
                 throw new UnauthorizedAccessException("Login failed.");
@@ -79,14 +86,17 @@ namespace HemSokClient.Data
             if (content == null)
                 throw new InvalidDataException();
             
-            var agents = await GetFromApiAsync<List<Agent>>($"api/agent/");
+            //var agents = await GetAllFromApiAsync<Agent>();
             var jwt = new JwtSecurityToken(content.JwtToken);
-            currentUser.CurrentAgent = agents.First(s=>s.Email == jwt.Claims
-                                             .First(s=>s.Type == ClaimTypes.Email).Value);        
-            currentUser.Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value;
-            currentUser.LoginResponse.JwtToken = content.JwtToken;
-            currentUser.LoginResponse.ExpirationDate = content.ExpirationDate;
-            return currentUser.LoginResponse.ExpirationDate;
+            currentUser = new CurrentUser 
+            {
+               AgentId = content.Id,
+               Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value,
+               loginResponse = content
+             };
+            if (currentUser != null)
+                return true;
+            else return false;
         }
         public async Task LogoutAsync()
         {
@@ -95,7 +105,8 @@ namespace HemSokClient.Data
         }
         public async Task RegisterAsync(RegisterModel model)
         {
-            var response = await Client.PostAsync("api/account/register", JsonContent.Create(model));
+            var response = await Factory.CreateClient("CustomClient")
+                                        .PostAsync("api/account/register", JsonContent.Create(model));
             if (!response.IsSuccessStatusCode)        
             throw new UnauthorizedAccessException("Failed to create user");
 
