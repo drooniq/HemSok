@@ -1,7 +1,5 @@
 ﻿using HemSok.Data;
 using HemSok.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 /*
  Author: Emil Waara

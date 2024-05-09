@@ -1,5 +1,4 @@
-﻿using HemSok.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 /*
  Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
@@ -27,15 +26,11 @@ namespace HemSok.Data
 
         public async Task<TEntity> GetAsync(int id)
         {
-#pragma warning disable CS8603 // Possible null reference return.
             return await dbContext.FindAsync<TEntity>(id);
-#pragma warning restore CS8603 // Possible null reference return.
         }
         public async Task<TEntity> GetAsync(string id)
         {
-#pragma warning disable CS8603 // Possible null reference return.
             return await dbContext.FindAsync<TEntity>(id);
-#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

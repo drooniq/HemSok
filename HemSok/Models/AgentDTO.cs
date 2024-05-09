@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 /*
 Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
 */
-
 namespace HemSok.Models
 {
     public class AgentDTO
@@ -25,6 +23,5 @@ namespace HemSok.Models
         [Required]
         public string Username { get; set; } = String.Empty;
         public string? Role { get; set; }
-
     }
 }

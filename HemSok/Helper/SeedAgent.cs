@@ -2,8 +2,6 @@
 using HemSok.Data;
 using HemSok.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
 
 /*
  Author: Emil Waara

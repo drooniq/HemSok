@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 /*
 Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
 */
-
 namespace HemSok.Models
 {
     public class Agent : IdentityUser

@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+/*
+Author: Marcus Karlsson, Emil Waara
+*/
 namespace HemSok.Models.AccountDTO
 {
-    /*
- Author: Marcus Karlsson, Emil Waara
- */
     public class LogInDTO
     {
         [Required]
