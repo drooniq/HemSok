@@ -12,14 +12,14 @@
 <h3>Mäklare(spöken)</h3>
 
 @* <button class="btn btn-primary" @onclick="FetchAgentsAsync">Visa mäklare</button> *@
-<button class="btn btn-primary btn-sm" @onclick="@(() =>NavigationManager.NavigateTo("/createagent"))">Lägg till ny mäklare</button>
+<button class="btn btn-primary btn-sm" @onclick="@(() =>NavigationManager.NavigateTo("/register"))">Skapa ny mäklare</button>
 
 @if (agents != null)
 {
     <div class="container">
         @foreach (var agent in agents)
         {
-                <AgentCardComponent Agent="@agent" Residences="residences"></AgentCardComponent>
+                <AgentCardComponent Agent="@agent" Residences="residences"></AgentCardComponent >
         }
     </div>
 }
