@@ -2,9 +2,6 @@ using HemSokClient.Data;
 using HemSokClient.Handlers;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-
-
 
 namespace HemSokClient
 {
