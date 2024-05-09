@@ -1,4 +1,7 @@
-﻿namespace HemSokClient.Data
+﻿/*
+ Author: Emil Waara
+ */
+namespace HemSokClient.Data
 {
     public interface INavigationStateService
     {

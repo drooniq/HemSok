@@ -14,7 +14,7 @@ namespace HemSokClient.Data
     public class APIService : IAPIService
     {
         public HttpClient Client { get; set; }
-        public CurrentUser? currentUser { get; set; }
+        public CurrentUser? currentUser { get; set; } = null;
         public List<Agency>? Agencies { get; set; }
         public List<Agent>? Agents { get; set; }
         public List<Category>? Categories { get; set; }
@@ -70,9 +70,12 @@ namespace HemSokClient.Data
         public async Task<DateTime> LoginAsync(LoginModel model)
         {
             var response = await Client.PostAsync("api/account/login", JsonContent.Create(model));
+
             if (!response.IsSuccessStatusCode)
                 throw new UnauthorizedAccessException("Login failed.");
+
             var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
             if (content == null)
                 throw new InvalidDataException();
             
