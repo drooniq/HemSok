@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HemSok.Data;
 using HemSok.Models;
@@ -32,8 +27,8 @@ namespace HemSok.Controllers
             , IRepository<Category> categoryRepository
             , IRepository<Municipality> municipalityRepository
             , IRepository<County> countyRepository
-            ,IMapper mapper)
-        {  
+            , IMapper mapper)
+        {
             this.agentRepository = agentRepository;
             this.agencyRepository = agencyRepository;
             this.residenceRepository = residenceRepository;
@@ -54,11 +49,8 @@ namespace HemSok.Controllers
                 .ThenInclude(s => s.Agency)
                 .Include(s => s.Category)
                 .ToListAsync();
-            if (residencies == null)
-            {
-                return NotFound();
-            }
-            return Ok(residencies);
+
+            return (residencies == null) ? NotFound("Could not find any residences") : Ok(residencies);
         }
 
         // GET: api/Residence/5
@@ -72,25 +64,23 @@ namespace HemSok.Controllers
                .ThenInclude(s => s.Agency)
                .Include(s => s.Category)
                .FirstOrDefaultAsync(s => s.Id == id);
-            if (residence == null)
-            {
-                return NotFound();
-            }
 
-            return Ok(residence);
+            return (residence == null) ? NotFound("Could not find the residence with that id") : Ok(residence);
         }
 
         // PUT: api/Residence/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        public async Task<IActionResult> PutResidence(Residence residence)
+        public async Task<IActionResult> PutResidence([FromBody] Residence residence)
         {
             if (residence == null)
             {
-                return NotFound();
+                return NotFound("Could not find residence data to update");
             }        
-                residenceRepository.Update(residence);
-                await residenceRepository.SaveChangesAsync();    
+
+            residenceRepository.Update(residence);
+            await residenceRepository.SaveChangesAsync();    
+
             return Ok();
         }
 
@@ -103,16 +93,24 @@ namespace HemSok.Controllers
             residence.ImagePaths = new List<string>();
 
             if (residence == null)
-                return NotFound();
+                return NotFound("No residence to post");
 
-            await residenceRepository.AddAsync(residence);
-            categoryRepository.Entry(residence.Category, EntityState.Unchanged);
-            agentRepository.Entry(residence.Agent, EntityState.Unchanged);
-            agencyRepository.Entry(residence.Agent.Agency, EntityState.Unchanged);
-            municipalityRepository.Entry(residence.Municipality, EntityState.Unchanged);
-            countyRepository.Entry(residence.Municipality.County, EntityState.Unchanged);
+            try
+            {
+                await residenceRepository.AddAsync(residence);
 
-            await residenceRepository.SaveChangesAsync();
+                categoryRepository.Entry(residence.Category, EntityState.Unchanged);
+                agentRepository.Entry(residence.Agent, EntityState.Unchanged);
+                agencyRepository.Entry(residence.Agent.Agency, EntityState.Unchanged);
+                municipalityRepository.Entry(residence.Municipality, EntityState.Unchanged);
+                countyRepository.Entry(residence.Municipality.County, EntityState.Unchanged);
+
+                await residenceRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return CreatedAtAction("GetResidence", new { id = residence.Id }, residence);
         }
@@ -122,9 +120,10 @@ namespace HemSok.Controllers
         public async Task<IActionResult> DeleteResidence(int id)
         {
             var residence = await residenceRepository.GetAsync(id);
+
             if (residence == null)
             {
-                return NotFound();
+                return NotFound("Could not find a residence with that id");
             }
 
             residenceRepository.Delete(residence);

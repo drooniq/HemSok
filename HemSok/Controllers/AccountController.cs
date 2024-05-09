@@ -1,11 +1,8 @@
 ﻿using HemSok.Data;
 using HemSok.Models;
 using HemSok.Models.AccountDTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -39,7 +36,6 @@ namespace HemSok.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login(LogInDTO loginDTO)
         {
-
             var user = await userManager.FindByEmailAsync(loginDTO.Email);
 
             if (user == null || !await userManager.CheckPasswordAsync(user, loginDTO.Password))

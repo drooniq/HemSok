@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using HemSok.Data;
 using HemSok.Models;
 
@@ -29,13 +23,7 @@ namespace HemSok.Controllers
         public async Task<ActionResult<IEnumerable<Agency>>> GetAgencies()
         {
             var agencies = await agencyRepository.GetAllAsync();
-
-            if (agencies == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(agencies);
+            return (agencies == null) ? NotFound("Could not find any agencies") : Ok(agencies);
         }
 
         // GET: api/Agency/5
@@ -43,13 +31,7 @@ namespace HemSok.Controllers
         public async Task<ActionResult<Agency>> GetAgency(int id)
         {
             var agency = await agencyRepository.GetAsync(id);
-
-            if (agency == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(agency);
+            return (agency == null) ? NotFound("Could not find any category with that id") : Ok(agency);
         }
 
         // PUT: api/Agency/5
@@ -59,12 +41,12 @@ namespace HemSok.Controllers
         {
             if(agency == null)
             {
-                return BadRequest();
+                return BadRequest("No agency to update");
             }
 
             if (!AgencyExists(agency.Id))
             {
-                return NotFound();
+                return NotFound("Could not find the agency");
             }
 
             try
@@ -72,18 +54,23 @@ namespace HemSok.Controllers
                 agencyRepository.Update(agency);
                 await agencyRepository.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
             return Ok();
         }
 
         // POST: api/Agency
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Agency>> PostAgency(Agency agency)
         {
+            if (agency == null)
+            {
+                return BadRequest("No agency to post.");
+            }
+
             await agencyRepository.AddAsync(agency);
             await agencyRepository.SaveChangesAsync();
 
@@ -101,8 +88,15 @@ namespace HemSok.Controllers
                 return NotFound();
             }
 
-            agencyRepository.Delete(agency);
-            await agencyRepository.SaveChangesAsync();
+            try
+            {
+                agencyRepository.Delete(agency);
+                await agencyRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
 
             return Ok();
         }

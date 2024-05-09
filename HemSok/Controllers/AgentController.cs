@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using HemSok.Data;
 using HemSok.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,10 +32,7 @@ namespace HemSok.Controllers
                 .Include(a => a.Agency)
                 .ToListAsync();
 
-            if (agents == null)
-                return NotFound("Could not find any agent with that id.");
-
-            return Ok(agents);
+            return (agents == null) ? NotFound("Could not find any agents") : Ok(agents);
         }
 
         [HttpGet("{id}")]
@@ -47,11 +42,8 @@ namespace HemSok.Controllers
                 .Queryable()
                 .Include(a => a.Agency)
                 .FirstOrDefaultAsync(a => a.Id == id);
-            
-            if (agent == null)
-                return NotFound("Could not find any agent with that id.");
 
-            return Ok(agent);
+            return (agent == null) ? NotFound("Could not find any agent with that id") : Ok(agent);
         }
 
         [HttpDelete("{id}")]
@@ -60,7 +52,7 @@ namespace HemSok.Controllers
             var agent = await agentRepository.GetAsync(id);
 
             if (agent == null)
-                return NotFound("Could not find any agent with that id.");
+                return NotFound("Could not find any agent with that id");
 
             agentRepository.Delete(agent);
             await agentRepository.SaveChangesAsync();
@@ -95,7 +87,7 @@ namespace HemSok.Controllers
 
             if (!AgentExists(agent.Id))
             {
-                return NotFound("Could not find agent");
+                return NotFound("No agent found to update");
             }
 
             agentRepository.Update(agent);

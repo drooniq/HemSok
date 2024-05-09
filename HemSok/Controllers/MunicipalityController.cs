@@ -1,13 +1,11 @@
 ﻿using HemSok.Data;
 using HemSok.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 /*
  Author: Emil Waara
  */
-
 namespace HemSok.Controllers
 {
     [Route("api/[controller]")]
@@ -30,12 +28,7 @@ namespace HemSok.Controllers
                 .Include(c=>c.County)
                 .ToListAsync();
 
-            if (municipalities == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(municipalities);
+            return (municipalities == null) ? NotFound("Could not find any municipalities") : Ok(municipalities);
         }
 
         // GET: api/Municipality/5
@@ -47,12 +40,7 @@ namespace HemSok.Controllers
                 .Include(c=>c.County)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (municipality == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(municipality);
+            return (municipality == null) ? NotFound("Could not find a municipality") : Ok(municipality);
         }
     }
 }

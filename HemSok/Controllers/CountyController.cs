@@ -1,6 +1,5 @@
 ﻿using HemSok.Data;
 using HemSok.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 /*
@@ -24,13 +23,7 @@ namespace HemSok.Controllers
         public async Task<ActionResult<IEnumerable<County>>> GetCounties()
         {
             var counties = await countyRepository.GetAllAsync();
-
-            if (counties == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(counties);
+            return (counties == null) ? NotFound("Could not find any counties") : Ok(counties);
         }
 
         // GET: api/County/5
@@ -38,13 +31,7 @@ namespace HemSok.Controllers
         public async Task<ActionResult<County>> GetCounty(int id)
         {
             var county = await countyRepository.GetAsync(id);
-
-            if (county == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(county);
+            return (county == null) ? NotFound("Could not find the county with id") : Ok(county);
         }
     }
 }
