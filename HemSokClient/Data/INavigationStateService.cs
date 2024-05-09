@@ -8,5 +8,6 @@ namespace HemSokClient.Data
         string GetCurrentUri();
         void NavigateBack();
         void NavigateTo(string uri);
+        string ToString();
     }
 }

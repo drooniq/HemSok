@@ -1,6 +1,6 @@
 ﻿@page "/editagency/{id:int}"
 @inject IAPIService apiService
-@inject NavigationManager NavigationManager
+@inject INavigationStateService NavigationStateService
 @using HemSokClient.Models;
 
 @* Author: Emil Waara*@
@@ -144,7 +144,9 @@ else
         {
             if (await apiService.PutToApiAsync<Agency>(agency))
             {
-                NavigationManager.NavigateTo("/agencylisting");
+                Console.WriteLine("EditAgency - before navigationBack ::");
+                Console.WriteLine(NavigationStateService.ToString());
+                NavigationStateService.NavigateBack();
             }
         }
     }

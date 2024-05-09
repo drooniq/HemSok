@@ -18,7 +18,6 @@ namespace HemSok.Helper
         {
             if (!dbContext.Agents.Any())
             {
-                IdentityUser user;
                 IdentityResult result;
 
                 var agents = new List<AgentDTO>

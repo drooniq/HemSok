@@ -37,5 +37,18 @@ namespace HemSokClient.Data
             history.Push(uri);
             navigationManager.NavigateTo(uri);
         }
+
+        public override string ToString()
+        {
+            string result = "HistoryList: \n";
+            int i = 0;
+            
+            foreach (var item in history)
+            {
+                result += $"{i++} {item} \n";
+            }
+
+            return result;
+        }
     }
 }

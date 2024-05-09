@@ -103,11 +103,15 @@ else
 
     private void GoToDetailsAgencyPage(int id)
     {       
+        Console.WriteLine("AgencyListing - before navigation to detailsAgency::");
+        Console.WriteLine(NavigationStateService.ToString());
         NavigationStateService.NavigateTo($"/agencydetails/{id.ToString()}");
     }
 
     private void GoToCreateAgencyPage()
     {
+        Console.WriteLine("AgencyListing - before navigation to createAgency::");
+        Console.WriteLine(NavigationStateService.ToString());
         NavigationStateService.NavigateTo("/addagency");
     }
 
