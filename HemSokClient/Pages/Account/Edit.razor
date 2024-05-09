@@ -1,0 +1,243 @@
+﻿@page "/edit/{guid}"
+@page "/edit"
+@using System.ComponentModel.DataAnnotations;
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Identity
+@inject INavigationStateService NavigationStateService
+@inject IAPIService APIService
+
+<style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
+    }
+
+    .login-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        width: 400px;
+    }
+
+        .login-container form input[type="text"],
+        .login-container form input[type="password"],
+        .login-container form button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .login-container form button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+            .login-container form button:hover {
+                background-color: #45a049;
+            }
+
+    .content {
+        position: relative;
+        height: 500px;
+        padding: 20px;
+    }
+
+    .validation-message {
+        color: red;
+    }
+
+    .login-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0px;
+        padding: 10px;
+        height: 200px;
+    }
+
+    .login-header-image {
+        border-radius: 50%;
+        max-height: 100%;
+    }
+
+    .InputSelect {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #000;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+</style>
+
+@if(Guid is not null && agent is not null)
+{
+<div class="content">
+    <div class="login-container">
+        <EditForm Model="@editModel" OnValidSubmit="HandleSubmit">
+            <DataAnnotationsValidator />
+
+            <div class="login-header">
+                @if(editModel.ImagePath is not null)
+                {
+                        <img src="@editModel.ImagePath" alt="Agent" class="login-header-image" />
+                }
+                else
+                {
+                        <img src="/images/ghost1.png" alt="Ghost" class="login-header-image" />
+                }
+            </div>
+
+            <ValidationMessage For="@(() => editModel.Email)" />
+            <InputText type="text" @bind-Value="editModel.Email" placeholder="Email" />
+            
+            <ValidationMessage For="@(() => editModel.Password)" />
+            <InputText type="password" @bind-Value="editModel.Password" placeholder="Enter a new Password" />
+
+            <ValidationMessage For="@(() => editModel.Firstname)" />
+            <InputText type="text" @bind-Value="editModel.Firstname" placeholder="Firstname" />
+
+            <ValidationMessage For="@(() => editModel.Lastname)" />
+            <InputText type="text" @bind-Value="editModel.Lastname" placeholder="Lastname" />
+
+            <ValidationMessage For="@(() => editModel.Nickname)" />
+            <InputText type="text" @bind-Value="editModel.Nickname" placeholder="Nickname" />
+
+            <ValidationMessage For="@(() => editModel.ImagePath)" />
+            <InputText type="text" @bind-Value="editModel.ImagePath" placeholder="ImagePath" />
+
+            <ValidationMessage For="@(() => editModel.agency)" />
+            <InputSelect class="InputSelect" @bind-Value="selectedAgencyName" placeholder="Agency">
+                @foreach (var agency in Agencies)
+                {
+                    <option value="@agency.Name">@agency.Name</option>
+                }
+            </InputSelect>
+
+            <button type="submit">Spara användaren</button>
+            <button type="button" @onclick="ResetForm">Rensa formuläret</button>
+            <button type="button" @onclick="Abort">Avbryt</button>
+        </EditForm>
+    </div>
+    </div>
+}
+else
+{
+    <p>Kunde inte hitta någon mäklare med det IDt, eller så saknas ID.</p>
+}
+
+@code {
+    [Parameter]
+    public string? Guid { get; set; }
+
+    private Agent agent = null;
+    private EditModel editModel = new EditModel();
+    private List<Agency> Agencies = null;
+
+    private string selectedAgencyName { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = $"api/agent/{Guid}";
+
+        agent = await APIService.GetFromApiAsync<Agent>(uri);
+        Agencies = await APIService.GetAllFromApiAsync<Agency>();
+
+        ResetForm();
+    }
+
+    private void ResetForm()
+    {
+        editModel = new EditModel();
+
+        if (agent != null)
+        {
+            editModel.Email = agent.Email;
+            editModel.Firstname = agent.FirstName;
+            editModel.Lastname = agent.LastName;
+            editModel.Nickname = agent.Nickname;
+            editModel.ImagePath = agent.ImagePath;
+            editModel.agency = agent.Agency;
+        }
+
+        selectedAgencyName = editModel.agency.Name;
+    }
+
+    private void Abort()
+    {
+        NavigationStateService.NavigateBack();
+    }
+
+    public void UpdateEditModelAgency()
+    {
+        var selectedAgency = Agencies.FirstOrDefault(a => a.Name == selectedAgencyName);
+        if (selectedAgency != null)
+        {
+            editModel.agency = selectedAgency;
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        try
+        {
+            UpdateEditModelAgency();
+
+            // if (!string.IsNullOrEmpty(editModel.Password))
+            // {
+            //     editModel.Password = userManager.PasswordHasher.HashPassword(agent, editModel.Password);
+            // }
+
+            // MAPP editModel to agent 
+            // Update agent in database thru API..
+
+            // Assuming you have a service to handle authentication
+            //var token = await authService.Authenticate(loginModel);
+
+            // Store token in local storage or session storage
+            //await localStorage.SetItemAsync("authToken", token);
+
+            // Redirect to home page or another authorized page
+            NavigationStateService.NavigateBack();
+        }
+        catch (Exception ex)
+        {
+            // Handle authentication errors
+            // Display error message or perform other actions
+            Console.WriteLine($"Authentication error: {ex.Message}");
+        }
+    }
+
+    public class EditModel
+    {
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string Email { get; set; }
+
+        public string Password { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Firstname is required")]
+        public string Firstname { get; set; }
+
+        [Required(ErrorMessage = "Lastname is required")]
+        public string Lastname { get; set; }
+
+        public string? Nickname { get; set; }
+        public string? ImagePath { get; set; }
+
+        [Required]
+        public Agency agency { get; set; }
+    }
+}

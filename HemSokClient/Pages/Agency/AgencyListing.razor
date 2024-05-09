@@ -3,7 +3,7 @@
 @using System.Net.Http.Json
 @using System.Text.Json
 @inject IAPIService apiService
-@inject NavigationManager NavigationManager
+@inject INavigationStateService NavigationStateService
 
 @* Author: Emil Waara*@
  
@@ -104,12 +104,12 @@ else
 
     private void GoToDetailsAgencyPage(int id)
     {       
-        NavigationManager.NavigateTo($"/agencydetails/{id.ToString()}");
+        NavigationStateService.NavigateTo($"/agencydetails/{id.ToString()}");
     }
 
     private void GoToCreateAgencyPage()
     {
-        NavigationManager.NavigateTo("/addagency");
+        NavigationStateService.NavigateTo("/addagency");
     }
 
 

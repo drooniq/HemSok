@@ -15,6 +15,7 @@ namespace HemSokClient
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7069/") });
             builder.Services.AddScoped<IAPIService, APIService>();
+            builder.Services.AddScoped<INavigationStateService, NavigationStateService>();
 
             await builder.Build().RunAsync();
         }
