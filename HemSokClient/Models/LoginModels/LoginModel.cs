@@ -1,7 +1,7 @@
-﻿/*
+﻿using System.ComponentModel.DataAnnotations;
+/*
  Author: Marcus Karlsson
  */
-using System.ComponentModel.DataAnnotations;
 
 namespace HemSokClient.Models.LoginModels
 {

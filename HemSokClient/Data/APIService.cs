@@ -1,8 +1,6 @@
 ﻿using HemSokClient.Models;
 using HemSokClient.Models.LoginModels;
-using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security.Claims;
 

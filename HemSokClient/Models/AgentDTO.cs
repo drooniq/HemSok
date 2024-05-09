@@ -3,7 +3,6 @@
 /*
 Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
 */
-
 namespace HemSokClient.Models
 {
     public class AgentDTO

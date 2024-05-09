@@ -21,8 +21,10 @@ namespace HemSokClient.Handlers
             {
                 return await base.SendAsync(request, cancellationToken);
             }
+
             var jwt = apiService.currentUser.loginResponse.JwtToken;
             var isToServer = request.RequestUri?.AbsoluteUri.StartsWith("https://localhost:7069/" ?? " ") ?? false;
+
             if (isToServer && !string.IsNullOrEmpty(jwt))
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
 
