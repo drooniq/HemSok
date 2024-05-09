@@ -10,8 +10,5 @@ namespace HemSokClient.Models.LoginModels
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
-
-        [Required(ErrorMessage = "Confirmation Password is required")]
-        public string ConfirmPassword { get; set; }
     }
 }
