@@ -111,15 +111,10 @@
     {
         try
         {
-            // NEED to create an agent based upon the registerModel
-            // using userManager, roleManager.
-            // var response = await APIService.PostAsync("api/Account/Register", registerModel);
-
-            // Assuming you have a service to handle authentication
-            //var token = await authService.Authenticate(loginModel);
-            await APIService.RegisterAsync(registerModel);
-            // Store token in local storage or session storage
-            //await localStorage.SetItemAsync("authToken", token);
+            if (!await APIService.RegisterAsync(registerModel))
+            {
+                // failed to register user.
+            }
 
             // Redirect to home page or another authorized page
             NavigationStateService.NavigateBack();

@@ -23,6 +23,6 @@ namespace HemSokClient.Data
         Task<bool> PostToApiAsync<T>(T modelData) where T : class;
         Task<bool> PutToApiAsync<T>(T modelData) where T : class;
         Task<bool> LoginAsync(LoginModel model);
-        Task RegisterAsync(RegisterModel model);
+        Task<bool> RegisterAsync(RegisterModel model);
     }
 }

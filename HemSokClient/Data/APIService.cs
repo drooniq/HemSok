@@ -94,22 +94,18 @@ namespace HemSokClient.Data
                Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value,
                loginResponse = content
              };
-            if (currentUser != null)
-                return true;
-            else return false;
+            return currentUser is not null;
         }
         public async Task LogoutAsync()
         {
             if(currentUser!=null)
             currentUser = null;         
         }
-        public async Task RegisterAsync(RegisterModel model)
+        public async Task<bool> RegisterAsync(RegisterModel model)
         {
             var response = await Factory.CreateClient("CustomClient")
                                         .PostAsync("api/account/register", JsonContent.Create(model));
-            if (!response.IsSuccessStatusCode)        
-            throw new UnauthorizedAccessException("Failed to create user");
-
+            return response.IsSuccessStatusCode;
         }
     }
 }
