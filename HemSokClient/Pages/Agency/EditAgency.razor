@@ -103,7 +103,7 @@
                 {
                     <button type="submit" class="btn btn-secondary">Spara</button>
                 }
-                <a class="btn btn-primary" href="/agencylisting">Avbryt</a>
+                <a class="btn btn-primary" @onclick="@(() => NavigateBack())">Avbryt</a>
             </EditForm>
         </div>
         <div class="rightColumn">
@@ -127,6 +127,11 @@ else
     private bool formIsChanged = false;
 
     private Agency agency { get; set; }
+
+    private void NavigateBack()
+    {
+        NavigationStateService.NavigateBack();
+    }
 
     private void HandleChange()
     {

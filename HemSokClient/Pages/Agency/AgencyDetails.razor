@@ -1,6 +1,6 @@
 ﻿@page "/agencydetails/{id:int}"
 @inject IAPIService apiService
-@inject NavigationManager NavigationManager
+@inject INavigationStateService NavigationStateService
 
 @* Author: Emil Waara*@
 <style>
@@ -101,7 +101,7 @@ else
 
     private void ReturnToAgencyListing()
     {
-        NavigationManager.NavigateTo("/agencylisting");
+        NavigationStateService.NavigateBack();
     }
 }
 

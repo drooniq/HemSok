@@ -53,9 +53,9 @@
                     <td>@agency.Website</td>
                     <td><img class="agencyLogo"src="@agency.ImagePath" alt="Profilbild" style="" /></td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="/editagency/@agency.Id"><i class="fa-solid fa-pencil"></i></a>
-                        <a class="btn btn-secondary btn-sm" href="/agencydetails/@agency.Id"><i class="fa-solid fa-circle-info"></i></a>
-                        <a class="btn btn-danger btn-sm" href="/deleteagency/@agency.Id"><i class="fa-regular fa-trash-can"></i></a>
+                        <a class="btn btn-primary btn-sm" @onclick="@(() => Navigate("/editagency/" + @agency.Id))"><i class="fa-solid fa-pencil"></i></a>
+                        <a class="btn btn-secondary btn-sm" @onclick="@(() => Navigate("/agencydetails/" + @agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
+                        <a class="btn btn-danger btn-sm" @onclick="@(() => Navigate("/deleteagency/" + @agency.Id))"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
             }
@@ -70,6 +70,11 @@ else
 
 @code {
     private List<Residence> residences { get; set; }
+
+    private void Navigate(string uri)
+    {
+        NavigationStateService.NavigateTo(uri);
+    }
 
     protected void SortTable(int column)
     {

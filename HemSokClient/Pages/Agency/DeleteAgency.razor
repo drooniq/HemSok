@@ -1,6 +1,6 @@
 ﻿@page "/deleteagency/{id:int}"
 @inject IAPIService apiService
-@inject NavigationManager NavigationManager
+@inject INavigationStateService NavigationStateService
 
 @* Author: Emil Waara*@
 <style>
@@ -98,14 +98,14 @@ else
 
     private async Task CancelDeletion()
     {
-        NavigationManager.NavigateTo("/agencylisting");
+        NavigationStateService.NavigateBack();
     }
 
     private async Task HandleValidSubmit()
     {
         if (await apiService.DeleteFromApiAsync<Agency>("api/agency/" + Id, agency))
         {
-            NavigationManager.NavigateTo("/agencylisting");
+            NavigationStateService.NavigateBack();
         }
     }
 }
