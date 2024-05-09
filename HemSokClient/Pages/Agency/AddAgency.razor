@@ -1,6 +1,6 @@
 ﻿@page "/addagency"
 @inject IAPIService apiService
-@inject NavigationManager NavigationManager
+@inject INavigationStateService NavigationStateService
 
 @* Author: Emil Waara*@
 
@@ -103,7 +103,7 @@
                 {
                     <button type="submit" class="btn btn-secondary">Spara</button>
                 }
-                <a class="btn btn-primary" href="/agencylisting">Avbryt</a>
+                <button type="button" class="btn btn-primary" @onclick="Abort">Avbryt</button>
 
             </EditForm>
         </div>
@@ -134,6 +134,11 @@ else
         agency.ImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
     }
 
+    private void Abort()
+    {
+        NavigationStateService.NavigateBack();
+    }
+
     private void HandleChange()
     {
         formIsChanged = true;
@@ -145,7 +150,7 @@ else
         {
             if (await apiService.PostToApiAsync<Agency>(agency))
             {
-                NavigationManager.NavigateTo("/agencylisting");
+                NavigationStateService.NavigateBack();
             }
         }
     }
