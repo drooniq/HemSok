@@ -1,7 +1,9 @@
 ﻿using HemSok.Console;
 using HemSok.Console.Models;
-using System.Text.Json;
-
+/*
+    Not part of main project, it was start of a test-bench for api 
+    Author: Emil Waara
+ */
 var testAPI = new TestAPI("https://localhost:7069");
 
 await testAPI.runAPITests<Agency>(); 

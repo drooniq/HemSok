@@ -1,12 +1,11 @@
-﻿using HemSok.Console.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
+/*
+    Not part of main project, it was start of a test-bench for api 
+    Author: Emil Waara
+ */
 namespace HemSok.Console
 {
     public enum HttpMethod
