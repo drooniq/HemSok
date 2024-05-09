@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/*
+ Author: Emil Waara
+ */
+using System.ComponentModel.DataAnnotations;
 
 namespace HemSokClient.Models.LoginModels
 {

@@ -1,4 +1,7 @@
-﻿namespace HemSokClient.Models.LoginModels
+﻿/*
+ Author: Marcus Karlsson
+ */
+namespace HemSokClient.Models.LoginModels
 {
     public class LoginResponse
     {

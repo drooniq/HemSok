@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 
+/*
+ Author: Emil Waara
+ */
 namespace HemSokClient.Data
 {
     public class NavigationStateService : INavigationStateService
