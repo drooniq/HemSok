@@ -11,7 +11,6 @@
 <PageTitle>Agents</PageTitle>
 <h3>Mäklare(spöken)</h3>
 
-@* <button class="btn btn-primary" @onclick="FetchAgentsAsync">Visa mäklare</button> *@
 <button class="btn btn-primary btn-sm" @onclick="@(() =>NavigationManager.NavigateTo("/register"))">Skapa ny mäklare</button>
 
 @if (agents != null)
@@ -19,7 +18,9 @@
     <div class="container">
         @foreach (var agent in agents)
         {
-                <AgentCardComponent Agent="@agent" Residences="residences"></AgentCardComponent >
+            <div  @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{agent.Id}"))">
+                <AgentCardComponent Agent="@agent" Residences="residences"></AgentCardComponent>
+            </div>
         }
     </div>
 }

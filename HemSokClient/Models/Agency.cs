@@ -16,7 +16,7 @@ namespace HemSokClient.Models
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
-        public string? ImagePath { get; set; }
+        public string? ImagePath { get; set; } = "/images/ghost1.jpg";
         //public List<Agent> Agents { get; set; } = new List<Agent>();
         public Agency() { }
     }
