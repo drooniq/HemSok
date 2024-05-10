@@ -2,20 +2,31 @@
 
 @if (Agent != null)
 {
-    <div class="card m-3 rounded" @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{Agent.Id}"))">
+    @* <div class="card" style="@($"background-color: {(NavigationManager.Uri.Contains("agent") ? "lightblue" : "white")};
+    {(NavigationManager.Uri.Contains("detailsagent") ? "cursor: pointer;" : "")}")"> *@
+    <div class="card m-3 rounded">
         <div class="card-img">
             <div class="img-container">
                 <img src="@GetProfileImagePath(Agent)" alt="Profilbild" class="m-1" />
             </div>
         </div>
         <div class="card-body">
-            <div class="card-title d-flex justify-content-center">
-                <div class="card-title-left text-center">
-                    <h5>@Agent.FirstName @Agent.LastName</h5>
-                    <p>"@Agent.Nickname"</p>
+            <div class="card-title text-center">
+                <h5 class="mt-1">@Agent.FirstName @Agent.LastName</h5>
+                <p class ="mb-1">"@Agent.Nickname"</p>
+                @if (NavigationManager.Uri.Contains("detailsagent"))
+                {
+                    <p><a href="mailto:@Agent.Email">@Agent.Email</a></p>
+                    @* <small class="text-muted">"@Agent.PhoneNumber"</small> *@
+                }
+                else if (NavigationManager.Uri.Contains("/agent"))
+                {
                     <small class="text-muted">@Residences?.Count(r => r.Agent.Id == Agent.Id) objekt till salu</small>
-                </div>
-
+                }
+                else
+                {
+                    <img src="~/icon-192.png" alt="No info" style="max-height:fit-content" ; />
+                }
             </div>
         </div>
         <div class="card-footer">
@@ -62,6 +73,7 @@ else
             return "gif/floatingghost.gif";
         }
     }
+
 }
 <style>
     body {
@@ -74,6 +86,7 @@ else
         display: flex;
         flex-wrap: wrap;
         justify-content: normal;
+
     }
 
     .card {
@@ -84,6 +97,7 @@ else
         transition: 0.3s ease;
         cursor: pointer;
         overflow: hidden;
+        background: linear-gradient(217deg, rgba(135, 206, 250, 0.8), rgba(173, 216, 230, 0.8) 70.71%), linear-gradient(127deg, rgba(173, 216, 230, 0), rgba(255, 255, 255, 0.9) 70.71%);
     }
 
         .card:hover {
@@ -122,14 +136,13 @@ else
     }
 
     .card-title {
-        padding: 0px;
-        margin: 0px;
         display: flex;
+        flex-direction: column;
     }
 
     .card-img {
         height: 50%;
-        display:flex;
+        display: flex;
         justify-content: center;
         align-items: center;
     }

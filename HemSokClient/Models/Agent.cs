@@ -13,7 +13,7 @@ namespace HemSokClient.Models
         [Required]
         public string LastName { get; set; } = String.Empty;
         public string? Nickname { get; set; }
-        public string? ImagePath { get; set; }
+        public string? ImagePath { get; set; } = "/images/ghost1.jpg";
         [Required]
         public Agency Agency { get; set; } = new Agency();
         public Agent() { }
