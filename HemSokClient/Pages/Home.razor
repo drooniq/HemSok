@@ -2,11 +2,8 @@
 @inject IAPIService APIService
 
 <PageTitle>Home</PageTitle>
-<div class="container">
-    <div class="row justify-content-center">
-        <h1 style="font-family: Lobster"; "text-align: center" ; color: white; >Välkommen till HemSök</h1>
-    </div>
-</div>
+<h1 style="color: white;">Välkommen till Hemsök(t)</h1>
+
 @if(APIService.currentUser != null)
 {
     if (APIService.Agents != null)
@@ -47,6 +44,7 @@
         </div>
     }
 </div>
+ 
 
 @code {
     public List<Residence> residence { get; set; }
