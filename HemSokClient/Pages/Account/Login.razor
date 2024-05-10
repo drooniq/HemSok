@@ -37,16 +37,6 @@
             box-sizing: border-box;
         }
 
-        .login-container form button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-
-            .login-container form button:hover {
-                background-color: #45a049;
-            }
-
     .content {
         position: relative;
         height: 500px;
@@ -74,9 +64,9 @@
             <ValidationMessage For="@(() => loginModel.Password)" />
                 <InputText type="password" @bind-Value="loginModel.Password" placeholder="Password" />
      
-            <button type="submit">Logga In</button>
-            <button type="button" @onclick="Reset">Resa Formulär</button>
-            <button type="button" @onclick="Abort">Avbryt</button>
+            <button type="submit" class="btn btn-success">Logga In</button>
+            <button type="button" class="btn btn-primary" @onclick="Reset">Resa Formuläret</button>
+            <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
         </EditForm>
     </div>
 </div>

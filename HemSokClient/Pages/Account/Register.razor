@@ -38,16 +38,6 @@
             box-sizing: border-box;
         }
 
-        .login-container form button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-
-            .login-container form button:hover {
-                background-color: #45a049;
-            }
-
     .content {
         position: relative;
         height: 500px;
@@ -84,9 +74,9 @@
             <ValidationMessage For="@(() => registerModel.Lastname)" />
             <InputText type="text" @bind-Value="registerModel.Lastname" placeholder="Lastname" />
 
-            <button type="submit">Registrera användare</button>
-            <button type="button" @onclick="ResetForm">Rensa formuläret</button>
-            <button type="button" @onclick="Abort">Avbryt</button>
+            <button type="submit" class="btn btn-success">Registrera användaren</button>
+            <button type="button" class="btn btn-primary" @onclick="ResetForm">Rensa formuläret</button>
+            <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
         </EditForm>
     </div>
 </div>
