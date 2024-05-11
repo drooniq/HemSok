@@ -56,7 +56,7 @@
 
             <div class="login-header">
                 <img src="/images/ghost1.png" alt="Ghost" style="display: inline; width: 100px; height: 100px;" />
-                <h2 style="display:inline; color:white"><strong>Registrera</strong></h2>
+                <h4 style="display:inline; color:white"><strong>Registrera ny mäklare</strong></h4>
             </div>
 
             <ValidationMessage For="@(() => registerModel.Email)" />
@@ -74,7 +74,7 @@
             <ValidationMessage For="@(() => registerModel.Lastname)" />
             <InputText type="text" @bind-Value="registerModel.Lastname" placeholder="Lastname" />
 
-            <button type="submit" class="btn btn-success">Registrera användaren</button>
+            <button type="submit" class="btn btn-success">Registrera mäklaren</button>
             <button type="button" class="btn btn-primary" @onclick="ResetForm">Rensa formuläret</button>
             <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
         </EditForm>
