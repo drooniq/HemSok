@@ -1,7 +1,7 @@
 ﻿/*
  Author: Marcus Karlsson
  */
-namespace HemSokClient.SearchModel
+namespace HemSokClient.Models.SearchModel
 {
     public class SearchModel
     {
