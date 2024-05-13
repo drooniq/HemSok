@@ -14,6 +14,10 @@
 }
 
 .NavMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
     background-color: rgb(27, 29, 42);
     display: flex;
     width: 100%;
@@ -56,6 +60,10 @@
 }
 
 .Footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     background-color: rgb(27, 29, 42);
     color: white;
     display: flex;
