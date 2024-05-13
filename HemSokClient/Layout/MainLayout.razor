@@ -19,13 +19,13 @@
         <div class="UserArea">
             @if (apiService.currentUser != null)
             {
-                <a @onclick="@(e =>  NavigateToPage($" /detailsagent/{apiService.currentUser.AgentId}"))">Min Profil</a>
+                <a @onclick="@(e =>  NavigateToPage($"/detailsagent/{apiService.currentUser.AgentId}"))">Min Profil | </a>
                 <a @onclick="@apiService.Logout">Logga ut</a>
             }
             else
             {
                 <a @onclick="@(e => NavigateToPage("/login"))">Logga In</a>
-                <a @onclick="@(e => NavigateToPage("/register"))">Registera</a>
+                @* <a @onclick="@(e => NavigateToPage("/register"))">Registera</a> *@
             }
             
         </div>
