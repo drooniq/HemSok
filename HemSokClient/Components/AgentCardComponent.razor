@@ -17,7 +17,8 @@
                 @if (NavigationManager.Uri.Contains("detailsagent"))
                 {
                     <p><a href="mailto:@Agent.Email">@Agent.Email</a></p>
-                    @* <small class="text-muted">"@Agent.PhoneNumber"</small> *@
+                    <small><i class="fas fa-phone-alt"></i></small>
+                    <small class="text-muted">@Agent.PhoneNumber</small>
                 }
                 else if (NavigationManager.Uri.Contains("/agent"))
                 {
