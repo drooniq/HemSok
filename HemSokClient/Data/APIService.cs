@@ -26,7 +26,7 @@ namespace HemSokClient.Data
         {
             this.Factory = factory;         
         }
-
+        
         // string uri = "api/Residence/" + residence.Id;
         public async Task<bool> DeleteFromApiAsync<T>(string uri, T modelData) where T : class
         {

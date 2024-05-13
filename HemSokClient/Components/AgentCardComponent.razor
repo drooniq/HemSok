@@ -17,7 +17,10 @@
                 @if (NavigationManager.Uri.Contains("detailsagent"))
                 {
                     <p><a href="mailto:@Agent.Email">@Agent.Email</a></p>
-                    @* <small class="text-muted">"@Agent.PhoneNumber"</small> *@
+                    <div class="phone-section">
+                        <i class="fas fa-phone-alt"></i>
+                        <p>@Agent.PhoneNumber</p>
+                    </div>
                 }
                 else if (NavigationManager.Uri.Contains("/agent"))
                 {
@@ -167,6 +170,15 @@ else
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
+        }
+
+    .phone-section {
+        display: flex;
+        justify-content: center;
+    }
+
+        .phone-section i {
+            margin-right: 5px;
         }
 
 </style>
