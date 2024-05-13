@@ -295,3 +295,7 @@ code {
     height: auto;
    
 }
+.nav-link.active, UserArea.active {
+    background-color: forestgreen;
+    border-radius: 5px;
+}
