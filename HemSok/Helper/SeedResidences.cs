@@ -168,11 +168,11 @@ namespace HemSok.Helper
                         OperationCost = 6700,
                         ConstructionYear = 1934,
                         Description = "Denna unika fastighet, belägen vid Köhrsgatu 4 i det idylliska området Vikarbyn, erbjuder en sällsynt möjlighet att uppleva den nordiska naturens skönhet och stillhet på första parkett. Med en imponerande skogsomgivning som sträcker sig över 544736 kvadratmeter marker, är detta inte bara en bostad - det är en port till äventyr och fridfullhet.Köhrsgatu 4 välkomnar dig till en värld där naturlig charm möter modern komfort. Den välplanerade bostaden är designad för att smälta sömlöst in i den omgivande miljön samtidigt som den erbjuder bekvämligheter och stil. Med sina generösa ytor och ljusa interiör skapar detta hem en atmosfär av lugn och trivsel.Den omfattande skogsmarken som omger Köhrsgatu 4 är mer än bara ett landskap - det är en resurs och en möjlighet. Med sina 544736 kvadratmeter mark erbjuder det en rad möjligheter för den naturälskande köparen. Från vandringar och utflykter till jakt och avkoppling, är detta ett paradis för den som söker en nära kontakt med naturen.Beläget i Vikarbyn, ett område känt för sin pittoreska skönhet och gemenskapliga anda, erbjuder Köhrsgatu 4 en unik livsstil där lugn och stillhet möter lokal charm och värme. Med närhet till lokala bekvämligheter och sevärdheter, inklusive butiker, restauranger och kulturella evenemang, är detta en plats där man kan njuta av det bästa av både landsbygd och stadsliv.Köhrsgatu 4 är inte bara en bostad, det är en investering i en livsstil. Med sin unika kombination av naturskönhet, komfort och gemenskap, erbjuder denna fastighet en möjlighet att skapa minnen och uppleva livet på ett helt nytt sätt. Missa inte chansen att bli ägare till denna enastående egendom och upptäck allt den har att erbjuda.",
-                        ImagePaths = new List<string> { "Images/Kohrsgatu5.JPG",
-                                                        "Images/Kohrsgatu4.JPG",
-                                                        "Images/Kohrsgatu3.JPG",
-                                                        "Images/Kohrsgatu2.JPG",
-                                                        "Images/Kohrsgatu1.JPG"}
+                        ImagePaths = new List<string> { "/images/Kohrsgatu5.JPG",
+                                                        "/images/Kohrsgatu4.JPG",
+                                                        "/images/Kohrsgatu3.JPG",
+                                                        "/images/Kohrsgatu2.JPG",
+                                                        "/images/Kohrsgatu1.JPG"}
 
                     },
                     new Residence
