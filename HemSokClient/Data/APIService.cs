@@ -21,19 +21,12 @@ namespace HemSokClient.Data
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
-        public string? JwtSession { get; set; }
 
         public APIService(IHttpClientFactory factory)
         {
             this.Factory = factory;         
         }
-
-        //public string GetJwt()
-        //{
-        //    string jwt = 
-        //    return 
-        //}
-
+        
         // string uri = "api/Residence/" + residence.Id;
         public async Task<bool> DeleteFromApiAsync<T>(string uri, T modelData) where T : class
         {
@@ -90,7 +83,7 @@ namespace HemSokClient.Data
 
             if (content == null)
                 throw new InvalidDataException();
-            JwtSession = content.JwtToken;         
+            //JwtSession = content.JwtToken;         
             //var agents = await GetAllFromApiAsync<Agent>();
             var jwt = new JwtSecurityToken(content.JwtToken);
             currentUser = new CurrentUser 
@@ -106,7 +99,6 @@ namespace HemSokClient.Data
             if (currentUser != null)
             {
                 currentUser = null;
-                JwtSession = null;
             }        
         }
         public async Task<bool> RegisterAsync(RegisterModel model)

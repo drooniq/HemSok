@@ -27,7 +27,6 @@
                 <a @onclick="@(e => NavigateToPage("/login"))">Logga In</a>
                 @* <a @onclick="@(e => NavigateToPage("/register"))">Registera</a> *@
             }
-            
         </div>
     </div>
     <div class="mainContent">
@@ -39,6 +38,12 @@
 </div>
 
 @code {
+    private void Logout()
+    {
+        apiService.Logout();
+        //NavigationStateService.NavigateTo("/login");
+    }
+
     private void NavigateToPage(string page)
     {
         NavigationStateService.NavigateTo(page);
