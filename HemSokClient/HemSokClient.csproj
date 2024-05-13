@@ -7,6 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\Kohrsgatu1.JPG" />
+    <Content Remove="wwwroot\images\Kohrsgatu2.JPG" />
+    <Content Remove="wwwroot\images\Kohrsgatu3.JPG" />
+    <Content Remove="wwwroot\images\Kohrsgatu4.JPG" />
+    <Content Remove="wwwroot\images\Kohrsgatu5.JPG" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\Kohrsgatu1.JPG" />
+    <None Include="wwwroot\images\Kohrsgatu2.JPG" />
+    <None Include="wwwroot\images\Kohrsgatu3.JPG" />
+    <None Include="wwwroot\images\Kohrsgatu4.JPG" />
+    <None Include="wwwroot\images\Kohrsgatu5.JPG" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
