@@ -154,7 +154,7 @@ namespace HemSok.Helper
                     new Residence
                     {
                         Category = categories[2],
-                        StreetName = "Köhrsgatu 4",
+                        StreetName = "Kohrsgatu 4",
                         City = "Vikarbyn",
                         ZipCode = "79570",
                         Municipality = municipalities[225],
