@@ -2,6 +2,7 @@ using HemSokClient.Data;
 using HemSokClient.Handlers;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.Net.Http.Headers;
 
 namespace HemSokClient
 {
@@ -13,15 +14,19 @@ namespace HemSokClient
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
             builder.Services.AddTransient<AuthenticationHandler>();
-         
-            builder.Services.AddHttpClient("CustomClient", client=>
-            {
-                client.BaseAddress = new Uri("https://localhost:7069/");
 
-            }).AddHttpMessageHandler<AuthenticationHandler>(); 
-            
+            builder.Services.AddHttpClient("CustomClient", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7069/");               
+            }).AddHttpMessageHandler<AuthenticationHandler>();
             builder.Services.AddScoped<IAPIService, APIService>();
             builder.Services.AddScoped<INavigationStateService, NavigationStateService>();
+            //builder.Services.AddHttpClient("CustomClient")
+            //                .ConfigureHttpClient(s => s.BaseAddress = new Uri("https://localhost:7069/"))
+            //                .AddHttpMessageHandler<AuthenticationHandler>();
+                            
+            
+           
 
             await builder.Build().RunAsync();
         }

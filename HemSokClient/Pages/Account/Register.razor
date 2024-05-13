@@ -73,6 +73,7 @@
 
             <ValidationMessage For="@(() => registerModel.Lastname)" />
             <InputText type="text" @bind-Value="registerModel.Lastname" placeholder="Lastname" />
+                  
 
             <button type="submit" class="btn btn-success">Registrera mäklaren</button>
             <button type="button" class="btn btn-primary" @onclick="ResetForm">Rensa formuläret</button>
@@ -83,9 +84,11 @@
 
 @code {
     private RegisterModel registerModel = new RegisterModel();
+    private List<Agency> Agencies = null;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        Agencies = await APIService.GetAllFromApiAsync<Agency>();
     }
 
     private void ResetForm()
@@ -102,13 +105,23 @@
     {
         try
         {
-            if (!await APIService.RegisterAsync(registerModel))
+            var adminAgent = APIService.Agents.First(s => s.Id == APIService.currentUser.AgentId);
+            if(adminAgent== null)
             {
-                // failed to register user.
+                ResetForm();
             }
+            else
+            {
+                registerModel.agency = adminAgent.Agency.Id.ToString();
+                if (!await APIService.RegisterAsync(registerModel))
+                {
+                    // failed to register user.
+                }
 
-            // Redirect to home page or another authorized page
-            NavigationStateService.NavigateBack();
+                // Redirect to home page or another authorized page
+                NavigationStateService.NavigateBack();
+            }
+           
         }
         catch (Exception ex)
         {
