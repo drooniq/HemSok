@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject INavigationStateService NavigationStateService
+@inject IAPIService apiService
 <script src="https://kit.fontawesome.com/27b0f27f86.js" crossorigin="anonymous"></script>
 
 <div class="main">
@@ -8,7 +9,7 @@
             <img src="/images/ghost1.png" alt="Logo">
         </div>
         <div class="NavLinks">
-            <NavLink class="nav-link custom-nav-link" href="/agencylisting">CRUD Mäklarfirmor</NavLink>
+            <NavLink class="nav-link" href="/agencylisting">CRUD Mäklarfirmor</NavLink>
             <NavLink class="nav-link" href="/agent">Mäklare</NavLink>
             <NavLink class="nav-link" href="/residence">Bostäder</NavLink>
             <NavLink class="nav-link" href="/filterresidences">Filtrera Bostäder</NavLink>
@@ -16,16 +17,16 @@
             <NavLink class="nav-link" href="/edit/7b8163ca-2b80-4766-9e9b-c9548a2f8ddb">Editera en mäklare</NavLink>
         </div>
         <div class="UserArea">
-            @* @if (autenticated)
+            @if (apiService.currentUser != null)
             {
-                <a @onclick="@(e => NavigateToPage("/login"))">Min Profil </a> |
-                <a @onclick="@(e => NavigateToPage("/register"))">Logga ut</a>
+                <a @onclick="@(e =>  NavigateToPage($" /detailsagent/{apiService.currentUser.AgentId}"))">Min Profil</a>
+                <a @onclick="@apiService.Logout">Logga ut</a>
             }
             else
-            { *@
-                <a @onclick="@(e => NavigateToPage("/login"))">Logga In</a> |
+            {
+                <a @onclick="@(e => NavigateToPage("/login"))">Logga In</a>
                 <a @onclick="@(e => NavigateToPage("/register"))">Registera</a>
-            @* } *@
+            }
             
         </div>
     </div>

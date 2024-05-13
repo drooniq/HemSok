@@ -22,7 +22,7 @@ namespace HemSokClient.Handlers
             //    return await base.SendAsync(request, cancellationToken);
             //}
 
-            var jwt = apiService.GetJwt();                  
+            var jwt = apiService.JwtSession;                  
             if (!string.IsNullOrEmpty(jwt))
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
                 
