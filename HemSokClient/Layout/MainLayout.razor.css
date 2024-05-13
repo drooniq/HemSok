@@ -67,3 +67,10 @@
     .Footer p {
         margin: 0;
     }
+
+.active {
+    background-color: darkcyan;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

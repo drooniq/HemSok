@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System;
 
 /*
  Author: Emil Waara
@@ -18,7 +19,9 @@ namespace HemSokClient.Data
 
         public string GetCurrentUri()
         {
-            return navigationManager.Uri;
+            Uri baseUri = new Uri(navigationManager.BaseUri);
+            Uri absoluteUri = new Uri(baseUri, navigationManager.Uri);
+            return absoluteUri.AbsolutePath;
         }
 
         public void NavigateBack()
