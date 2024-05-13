@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using HemSok.Data;
 using HemSok.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 /*
  Author: Marcus Karlsson
  */
 namespace HemSok.Controllers
-{
+{  
     [Route("api/[controller]")]
     [ApiController]
     public class ResidenceController : ControllerBase

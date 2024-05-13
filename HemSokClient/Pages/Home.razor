@@ -10,8 +10,10 @@
     {
         <h1>
             @APIService.Agents.First(s => s.Id == APIService.currentUser.AgentId).FirstName
-            @APIService.Agents.First(s => s.Id == APIService.currentUser.AgentId).LastName
+            @APIService.Agents.First(s => s.Id == APIService.currentUser.AgentId).LastName          
         </h1>
+        <p>@APIService.JwtSession</p>
+        <button @onclick="@APIService.Logout">Logga ut</button>
     }
  
 }

@@ -1,6 +1,7 @@
 ﻿using HemSokClient.Models;
 using HemSokClient.Models.LoginModels;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
@@ -20,11 +21,17 @@ namespace HemSokClient.Data
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
-       
+        public string? JwtSession { get; set; }
 
         public APIService(IHttpClientFactory factory)
         {
             this.Factory = factory;         
+        }
+
+        public string GetJwt()
+        {
+            string jwt = 
+            return 
         }
 
         // string uri = "api/Residence/" + residence.Id;
@@ -83,7 +90,7 @@ namespace HemSokClient.Data
 
             if (content == null)
                 throw new InvalidDataException();
-            
+            JwtSession = content.JwtToken;         
             //var agents = await GetAllFromApiAsync<Agent>();
             var jwt = new JwtSecurityToken(content.JwtToken);
             currentUser = new CurrentUser 
@@ -94,14 +101,17 @@ namespace HemSokClient.Data
              };
             return currentUser is not null;
         }
-        public async Task LogoutAsync()
+        public void Logout()
         {
-            if(currentUser!=null)
-            currentUser = null;         
+            if (currentUser != null)
+            {
+                currentUser = null;
+                JwtSession = null;
+            }        
         }
         public async Task<bool> RegisterAsync(RegisterModel model)
-        {
-            var response = await Factory.CreateClient("CustomClient")
+        {                                         
+            var response = await  Factory.CreateClient("CustomClient")                                     
                                         .PostAsync("api/account/register", JsonContent.Create(model));
             return response.IsSuccessStatusCode;
         }

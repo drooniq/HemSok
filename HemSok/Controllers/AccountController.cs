@@ -1,6 +1,7 @@
 ﻿using HemSok.Data;
 using HemSok.Models;
 using HemSok.Models.AccountDTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -71,7 +72,7 @@ namespace HemSok.Controllers
             });
         
         }
-
+        [Authorize]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status200OK)]
