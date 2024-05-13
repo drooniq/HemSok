@@ -23,5 +23,6 @@ namespace HemSok.Models
         [Required]
         public string Username { get; set; } = String.Empty;
         public string? Role { get; set; }
+        public string? Phonenumber { get; set; }
     }
 }

@@ -23,6 +23,8 @@ namespace HemSokClient.Models.LoginModels
 
         [Required(ErrorMessage = "Lastname is required")]
         public string Lastname { get; set; }
+        [Phone]
+        public string? PhoneNumber { get; set; }
         public string? agency { get; set; }
     }
 }

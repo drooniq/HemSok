@@ -74,6 +74,9 @@
             <ValidationMessage For="@(() => registerModel.Lastname)" />
             <InputText type="text" @bind-Value="registerModel.Lastname" placeholder="Lastname" />
 
+            <ValidationMessage For="@(() => registerModel.PhoneNumber)" />
+            <InputText type="text" @bind-Value="registerModel.PhoneNumber" placeholder="Phonenumber" />
+
             <button type="submit" class="btn btn-success">Registrera mäklaren</button>
             <button type="button" class="btn btn-primary" @onclick="ResetForm">Rensa formuläret</button>
             <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>

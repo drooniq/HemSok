@@ -68,7 +68,7 @@ namespace HemSok.Helper
                         Username = "warren@hogwartshemligahem.se",
                         Password = "Warren@1",
                         Role = "Admin",
-                        ImagePath = "https://pbs.twimg.com/media/Fo-QVYhaYAAAE1Z.jpg"
+                        ImagePath = "https://yt3.ggpht.com/-6DzA-RYzCaA/AAAAAAAAAAI/AAAAAAAAAAA/nsLEw40RKKU/s900-c-k-no/photo.jpg"
                     },
                     new AgentDTO
                     {
@@ -90,7 +90,7 @@ namespace HemSok.Helper
                         Nickname = "Patte",
                         Email = "patrik.lundberg@widerlov.se",
                         Username = "patrik.lundberg@widerlov.se",
-                        Password = "Patrik@1",
+                        Password = "Lundberg@1",
                         Role = "Agent",
                         ImagePath = "https://bilder.hemnet.se/images/broker_profile_large/53/47/53472eb67e182e2eb52ba36866950231.png"
                     },
@@ -102,7 +102,7 @@ namespace HemSok.Helper
                         Nickname = "Ellen",
                         Email = "helen.lindstrom@lansforsakringar.se",
                         Username = "helen.lindstrom@lansforsakringar.se",
-                        Password = "Helen@1",
+                        Password = "Lindström@1",
                         Role = "Admin",
                         ImagePath = "https://bilder.hemnet.se/images/broker_profile_large/7d/e0/7de0eceaf4b032a000cf86a9dabcb4af.jpg"
                     },
@@ -141,6 +141,19 @@ namespace HemSok.Helper
                         Password = "Krueger@1",
                         Role = "Admin",
                         ImagePath = "https://i.pinimg.com/originals/4b/85/78/4b8578038aab7ee8a38c2fba231fa075.jpg"
+                    },
+                    new AgentDTO
+                    {
+                        Firstname = "Casper",
+                        Lastname = "Ghost",
+                        Agency = agencies[0],
+                        Nickname = "The Friendly Ghost",
+                        Email = "casper.ghost@ghostbusters.se",
+                        Username = "casper.ghost@ghostbusters.se",
+                        Password = "Ghost@1",
+                        Phonenumber = "0730551498",
+                        Role = "Agent",
+                        ImagePath = "https://th.bing.com/th/id/R.cd19f1a1ffb22cb9d0a3e5b9eba9b52c?rik=bRWygfFyscygqw&riu=http%3a%2f%2fimages6.fanpop.com%2fimage%2fphotos%2f39900000%2fCasper-casper-the-ghost-39982351-808-960.jpg&ehk=pNL3c52nVoYamlAtK%2fBFbQQq%2bFCAv7BT94T0S1%2fJDpI%3d&risl=&pid=ImgRaw&r=0"
                     }
                 };
 
