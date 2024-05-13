@@ -14,10 +14,15 @@
 }
 
 .NavMenu {
+    position: fixed; /* Fäst menyn längst upp */
+    top: 0;
+    left: 0;
     background-color: rgb(27, 29, 42);
     display: flex;
     width: 100%;
     align-items: center;
+    z-index: 1000; /* Säkerställ att menyn ligger ovanpå annat innehåll */
+    border-bottom: 1px solid white;
 }
 
 .NavLinks {
@@ -26,14 +31,14 @@
     color: white;
 }
 
-.NavLinks a, .UserArea a {
-    color: white;
+::deep .nav-link, .UserArea {
+    color: white ;
     text-decoration: none;
     padding: 1rem;
-    font-size:larger;
+    font-size: larger;
 }
 
-    .NavLinks a:hover, .UserArea a:hover {
+    ::deep .nav-link:hover, .UserArea:hover {
         background-color: rgb(47, 49, 62);
         color: white;
         border-radius: 5px;
@@ -53,15 +58,22 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 5rem; /* Lägg till ett avstånd överst för att undvika att innehållet döljs under den fastsatta menyn */
 }
 
 .Footer {
+    position: fixed; /* Fäst footern längst ner */
+    bottom: 0;
+    left: 0;
     background-color: rgb(27, 29, 42);
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
     height: 3rem;
+    z-index: 1000; /* Säkerställ att footern ligger ovanpå annat innehåll */
+    border-top: 1px solid white;
 }
 
 .Footer p {
