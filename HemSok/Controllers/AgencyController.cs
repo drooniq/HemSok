@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HemSok.Data;
 using HemSok.Models;
+using HemSok.Constants;
 using Microsoft.AspNetCore.Authorization;
 
 /*
@@ -38,7 +39,7 @@ namespace HemSok.Controllers
         // PUT: api/Agency/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        [Authorize] 
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> PutAgency(Agency agency)
         {
             if(agency == null)
