@@ -13,5 +13,6 @@ namespace HemSokClient.Models
         public string LastName { get; set; } = String.Empty;
         [Required]
         public Agency Agency { get; set; } = new Agency();
+        public string Phonenumber { get; set; } = String.Empty;
     }
 }

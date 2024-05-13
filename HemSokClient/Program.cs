@@ -15,12 +15,13 @@ namespace HemSokClient
             builder.RootComponents.Add<HeadOutlet>("head::after");
             builder.Services.AddTransient<AuthenticationHandler>();
 
+            builder.Services.AddSingleton<IAPIService, APIService>();
+            builder.Services.AddScoped<INavigationStateService, NavigationStateService>();
+
             builder.Services.AddHttpClient("CustomClient", client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7069/");               
             }).AddHttpMessageHandler<AuthenticationHandler>();
-            builder.Services.AddScoped<IAPIService, APIService>();
-            builder.Services.AddScoped<INavigationStateService, NavigationStateService>();
             //builder.Services.AddHttpClient("CustomClient")
             //                .ConfigureHttpClient(s => s.BaseAddress = new Uri("https://localhost:7069/"))
             //                .AddHttpMessageHandler<AuthenticationHandler>();

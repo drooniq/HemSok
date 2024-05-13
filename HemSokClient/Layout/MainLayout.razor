@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject INavigationStateService NavigationStateService
+@inject IAPIService apiService
 <script src="https://kit.fontawesome.com/27b0f27f86.js" crossorigin="anonymous"></script>
 
 <div class="main">
@@ -8,25 +9,35 @@
             <img src="/images/ghost1.png" alt="Logo">
         </div>
         <div class="NavLinks">
-            <NavLink class="nav-link custom-nav-link" href="/agencylisting">CRUD Mäklarfirmor</NavLink>
-            <NavLink class="nav-link" href="/agent">Mäklare</NavLink>
-            <NavLink class="nav-link" href="/residence">Bostäder</NavLink>
-            <NavLink class="nav-link" href="/filterresidences">Filtrera Bostäder</NavLink>
-            <NavLink class="nav-link" href="/register">Skapa ny mäklare</NavLink>
-            <NavLink class="nav-link" href="/edit/7b8163ca-2b80-4766-9e9b-c9548a2f8ddb">Editera en mäklare</NavLink>
+            <a @onclick="@(e => NavigateToPage("/agencylisting"))">CRUD Mäklarfirmor</a>
+            <a @onclick="@(e => NavigateToPage("/agent"))">Sök Mäklare</a>
+            <a @onclick="@(e => NavigateToPage("/residence"))">Bostäder</a>
+            <a @onclick="@(e => NavigateToPage("/filterresidences"))">Filtrera Bostäder</a>
+            <a @onclick="@(e => NavigateToPage("/register"))">Skapa ny mäklare</a>
+            <a @onclick="@(e =>
+         NavigateToPage("/edit/7b8163ca-2b80-4766-9e9b-c9548a2f8ddb"))">
+                Editera en mäklare
+            </a>
         </div>
         <div class="UserArea">
             @* @if (autenticated)
             {
-                <a @onclick="@(e => NavigateToPage("/login"))">Min Profil </a> |
-                <a @onclick="@(e => NavigateToPage("/register"))">Logga ut</a>
+            <a @onclick="@(e => NavigateToPage("/login"))">Min Profil </a> |
+            <a @onclick="@(e => NavigateToPage("/register"))">Logga ut</a>
             }
             else
             { *@
-                <a @onclick="@(e => NavigateToPage("/login"))">Logga In</a> |
+            @if (apiService.currentUser == null)
+            {
+                <a @onclick="@(e => NavigateToPage("/login"))">Logga In</a>
                 <a @onclick="@(e => NavigateToPage("/register"))">Registera</a>
-            @* } *@
-            
+            }
+            else
+            {
+                <a @onclick="@(e => NavigateToPage("/login"))">Min profil</a>
+                <a @onclick="@Logout">Logga ut</a>
+            }
+
         </div>
     </div>
     <div class="mainContent">
@@ -38,6 +49,12 @@
 </div>
 
 @code {
+    private void Logout()
+    {
+        apiService.Logout();
+        //NavigationStateService.NavigateTo("/login");
+    }
+
     private void NavigateToPage(string page)
     {
         NavigationStateService.NavigateTo(page);

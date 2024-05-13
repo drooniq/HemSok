@@ -1,4 +1,5 @@
 ﻿using HemSokClient.Data;
+using HemSokClient.Models.LoginModels;
 using System.Net.Http.Headers;
 /*
  Author: Marcus Karlsson
@@ -17,15 +18,15 @@ namespace HemSokClient.Handlers
         }
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            //if (apiService.currentUser ==null)
-            //{
-            //    return await base.SendAsync(request, cancellationToken);
-            //}
+            if (apiService != null && apiService.currentUser != null )
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiService.currentUser.loginResponse.JwtToken);
+            }
+            else
+            {
+                Console.WriteLine("apiService or apiService.currentUser is null");
+            }
 
-            var jwt = apiService.GetJwt();                  
-            if (!string.IsNullOrEmpty(jwt))
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
-                
             return await base.SendAsync(request, cancellationToken);
         }
     }
