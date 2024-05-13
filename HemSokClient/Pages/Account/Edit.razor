@@ -107,6 +107,9 @@
             <ValidationMessage For="@(() => editModel.Nickname)" />
             <InputText type="text" @bind-Value="editModel.Nickname" placeholder="Nickname" />
 
+                <ValidationMessage For="@(() => editModel.PhoneNumber)" />
+                <InputText type="text" @bind-Value="editModel.PhoneNumber" placeholder="Phonenumber" />
+
             <ValidationMessage For="@(() => editModel.ImagePath)" />
             <InputText type="text" @bind-Value="editModel.ImagePath" placeholder="ImagePath" />
 

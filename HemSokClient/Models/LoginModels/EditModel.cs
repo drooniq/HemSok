@@ -20,6 +20,8 @@ namespace HemSokClient.Models.LoginModels
         public string Lastname { get; set; }
 
         public string? Nickname { get; set; }
+        [Phone]
+        public string? PhoneNumber { get; set; }
         public string? ImagePath { get; set; }
 
         [Required]
