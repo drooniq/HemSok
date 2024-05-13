@@ -26,11 +26,7 @@ namespace HemSokClient.Handlers
             {
                 Console.WriteLine("apiService or apiService.currentUser is null");
             }
-            
-            var jwt = apiService.JwtSession;                  
-            if (!string.IsNullOrEmpty(jwt))
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
-                
+
             return await base.SendAsync(request, cancellationToken);
         }
     }
