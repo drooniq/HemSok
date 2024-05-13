@@ -48,6 +48,30 @@ namespace HemSok.Helper
                     },
                     new AgentDTO
                     {
+                        Firstname = "Nicholas",
+                        Lastname = "de Mimsy-Porpington",
+                        Agency = agencies[3],
+                        Nickname = "Nearly Headless Nick",
+                        Email = "porpington@hogwartshemligahem.se",
+                        Username = "porpington@hogwartshemligahem.se",
+                        Password = "Porpington@1",
+                        Role = "Admin",
+                        ImagePath = "https://pbs.twimg.com/media/Fo-QVYhaYAAAE1Z.jpg"
+                    },
+                    new AgentDTO
+                    {
+                        Firstname = "Myrtle",
+                        Lastname = "Warren",
+                        Agency = agencies[3],
+                        Nickname = "Moaning Myrtle",
+                        Email = "warren@hogwartshemligahem.se",
+                        Username = "warren@hogwartshemligahem.se",
+                        Password = "Warren@1",
+                        Role = "Admin",
+                        ImagePath = "https://pbs.twimg.com/media/Fo-QVYhaYAAAE1Z.jpg"
+                    },
+                    new AgentDTO
+                    {
                         Firstname = "Erik",
                         Lastname = "Lundkvist",
                         Agency = agencies[1],
@@ -81,6 +105,42 @@ namespace HemSok.Helper
                         Password = "Helen@1",
                         Role = "Admin",
                         ImagePath = "https://bilder.hemnet.se/images/broker_profile_large/7d/e0/7de0eceaf4b032a000cf86a9dabcb4af.jpg"
+                    },
+                    new AgentDTO
+                    {
+                        Firstname = "Sir Simon",
+                        Lastname = "de Canterville",
+                        Agency = agencies[0],
+                        Nickname = "The Canterville Ghost",
+                        Email = "simon.canterville@ghostbusters.se",
+                        Username = "simon.canterville@ghostbusters.se",
+                        Password = "Canterville@1",
+                        Role = "Admin",
+                        ImagePath = "https://i.pinimg.com/originals/e9/07/e6/e907e6162817cac025d8ff7bcdfeb59e.jpg"
+                    },
+                    new AgentDTO
+                    {
+                        Firstname = "Tove",
+                        Lastname = "Jansson",
+                        Agency = agencies[5],
+                        Nickname = "Mårran",
+                        Email = "tove.jansson@poltergeistproperties.se",
+                        Username = "tove.jansson@poltergeistproperties.se",
+                        Password = "Jansson@1",
+                        Role = "Admin",
+                        ImagePath = "https://i.pinimg.com/originals/92/73/99/927399cbae443d7b95fe9d6a755d787e.jpg"
+                    },
+                    new AgentDTO
+                    {
+                        Firstname = "Freddy",
+                        Lastname = "Krueger",
+                        Agency = agencies[4],
+                        Nickname = "The Springwood Slasher",
+                        Email = "freddy.krueger@skrackfastigheter.se",
+                        Username = "freddy.krueger@skrackfastigheter.se",
+                        Password = "Krueger@1",
+                        Role = "Admin",
+                        ImagePath = "https://i.pinimg.com/originals/4b/85/78/4b8578038aab7ee8a38c2fba231fa075.jpg"
                     }
                 };
 

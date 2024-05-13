@@ -1,5 +1,6 @@
 ﻿using HemSok.Data;
 using HemSok.Models;
+using static System.Net.WebRequestMethods;
 
 /*
  Author: Emil Waara
@@ -120,6 +121,129 @@ namespace HemSok.Helper
                                                         "https://bilder.hemnet.se/images/1024x/db/d1/dbd11aac3552c04f8e3df2f0a3f6ecdb.jpg",
                                                         "https://bilder.hemnet.se/images/1024x/9c/78/9c78fe598b457ce2ad5a2350dd3010cf.jpg",
                                                         "https://bilder.hemnet.se/images/1024x/92/50/9250cccd2635ae6807698f64b3fbb7de.jpg" }
+
+                    },
+                    new Residence
+                    {
+                        Category = categories[2],
+                        StreetName = "Borgvattnet 760",
+                        City = "Stugun",
+                        ZipCode = "83076",
+                        Municipality = municipalities[253],
+                        Agent = agents[8],
+                        ListingPrice = 395000,
+                        Rooms = 6,
+                        LivingArea = 140,
+                        BiArea = 100,
+                        PlotArea =  6338,
+                        MonthlyFee = 0,
+                        OperationCost = 4300,
+                        ConstructionYear = 1876,
+                        Description = "Välkommen till Borgvattnet 760, hem för den historiska och spännande Borgvattnets Prästgård. Denna anrika byggnad, belägen i den pittoreska byn Borgvattnet, cirka 10 mil från Östersund, erbjuder en unik affärsmöjlighet för den rätta köparen. Byggd 1876, är denna prästgård känd för sina övernaturliga fenomen och har varit en populär destination för de som söker spänning och äventyr. Med rumsbokning tillgänglig för de modiga, erbjuder denna fastighet en unik inkomstmöjlighet. Utöver Prästgården, ingår också Prästgårdens Café, som är öppet under sommaren. Här kan gäster njuta av en fika i en avkopplande atmosfär. Fastigheten erbjuder en rad faciliteter för gäster, inklusive ett fullt utrustat kök och matsal. Med en by av cirka 70 fasta invånare, är Borgvattnet en idyllisk plats att driva en verksamhet. För mer information om denna unika möjlighet, vänligen kontakta oss. Missa inte chansen att äga en bit av Sveriges spökhistoria! 🏰👻",
+                        ImagePaths = new List<string> { "https://www.borgvattnet.eu/awesome/2020/06/Borgvattnet-Pra%CC%88stga%CC%8Ard-2020-892x594.jpg",
+                                                        "https://www.borgvattnet.eu/awesome/2020/06/Borgvattnet-Pra%CC%88stga%CC%8Ard-Utsida-2020-892x595.jpg",
+                                                        "https://www.borgvattnet.eu/awesome/2020/06/Borgvattnet-Pra%CC%88stga%CC%8Ard-Entre-Nedre-Plan-892x595.jpg",
+                                                        "https://www.borgvattnet.eu/awesome/2020/06/Expeditionen-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x593.jpg",
+                                                        "https://www.borgvattnet.eu/awesome/2020/06/Rosa-Rummet-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x595.jpg",
+                                                        "https://www.borgvattnet.eu/awesome/2020/06/Borgvattnet-Pra%CC%88stga%CC%8Ard-Nedre-Plan-Stora-Salen-892x595.jpg",
+                                                        "https://www.borgvattnet.eu/awesome/2020/06/Gra%CC%8Aterskornas-Rum-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x595.jpg",
+                                                        "https://www.borgvattnet.eu/awesome/2020/06/Bla%CC%8A-Rummet-Pra%CC%88stga%CC%8Arden-892x595.jpg",
+                                                        "https://www.borgvattnet.eu/awesome/2020/06/Gula-Rummet-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x595.jpg"}
+
+                    },
+                    new Residence
+                    {
+                        Category = categories[2],
+                        StreetName = "Köhrsgatu 4",
+                        City = "Vikarbyn",
+                        ZipCode = "79570",
+                        Municipality = municipalities[225],
+                        Agent = agents[9],
+                        ListingPrice = 35000000,
+                        Rooms = 6,
+                        LivingArea = 200,
+                        BiArea = 700,
+                        PlotArea =  544736,
+                        MonthlyFee = 0,
+                        OperationCost = 6700,
+                        ConstructionYear = 1934,
+                        Description = "Denna unika fastighet, belägen vid Köhrsgatu 4 i det idylliska området Vikarbyn, erbjuder en sällsynt möjlighet att uppleva den nordiska naturens skönhet och stillhet på första parkett. Med en imponerande skogsomgivning som sträcker sig över 544736 kvadratmeter marker, är detta inte bara en bostad - det är en port till äventyr och fridfullhet.Köhrsgatu 4 välkomnar dig till en värld där naturlig charm möter modern komfort. Den välplanerade bostaden är designad för att smälta sömlöst in i den omgivande miljön samtidigt som den erbjuder bekvämligheter och stil. Med sina generösa ytor och ljusa interiör skapar detta hem en atmosfär av lugn och trivsel.Den omfattande skogsmarken som omger Köhrsgatu 4 är mer än bara ett landskap - det är en resurs och en möjlighet. Med sina 544736 kvadratmeter mark erbjuder det en rad möjligheter för den naturälskande köparen. Från vandringar och utflykter till jakt och avkoppling, är detta ett paradis för den som söker en nära kontakt med naturen.Beläget i Vikarbyn, ett område känt för sin pittoreska skönhet och gemenskapliga anda, erbjuder Köhrsgatu 4 en unik livsstil där lugn och stillhet möter lokal charm och värme. Med närhet till lokala bekvämligheter och sevärdheter, inklusive butiker, restauranger och kulturella evenemang, är detta en plats där man kan njuta av det bästa av både landsbygd och stadsliv.Köhrsgatu 4 är inte bara en bostad, det är en investering i en livsstil. Med sin unika kombination av naturskönhet, komfort och gemenskap, erbjuder denna fastighet en möjlighet att skapa minnen och uppleva livet på ett helt nytt sätt. Missa inte chansen att bli ägare till denna enastående egendom och upptäck allt den har att erbjuda.",
+                        ImagePaths = new List<string> { "Images/Kohrsgatu5.JPG",
+                                                        "Images/Kohrsgatu4.JPG",
+                                                        "Images/Kohrsgatu3.JPG",
+                                                        "Images/Kohrsgatu2.JPG",
+                                                        "Images/Kohrsgatu1.JPG"}
+
+                    },
+                    new Residence
+                    {
+                        Category = categories[2],
+                        StreetName = "Södra Prästholm 534",
+                        City = "Råneå",
+                        ZipCode = "95591",
+                        Municipality = municipalities[285],
+                        Agent = agents[9],
+                        ListingPrice = 250000,
+                        Rooms = 6,
+                        LivingArea = 200,
+                        BiArea = 50,
+                        PlotArea =   3043,
+                        MonthlyFee = 0,
+                        OperationCost = 3300,
+                        ConstructionYear = 1928,
+                        Description = "Välkommen till Södra Prästholm 534, det legendariska spökhuset som nu är till salu i Råneå! Denna unika fastighet har fångat fantasin hos många med sin mystiska historia och kusliga charm. Beläget i det pittoreska Råneå, erbjuder detta spökhus en spännande möjlighet för den äventyrlige köparen. Med sina uråldriga murar och dunkla korridorer bär det på en atmosfär av gåtfullhet och mystik som väntar på att utforskas. Trots sin ovanliga rykte bär detta hus på en omisskännlig karaktär och potential för den som vågar ta sig an dess utmaningar. Med närhet till naturen och lokala bekvämligheter, är detta en plats där det övernaturliga möter vardagen. Missa inte chansen att bli ägare till detta fascinerande spökhus och upptäck allt det har att erbjuda!",
+                        ImagePaths = new List<string> { "https://wp-assets.hemnet.se/wp-content/uploads/2023/11/spokhus-590.jpg",
+                                                        "https://wp-assets.hemnet.se/wp-content/uploads/2023/11/kusligt-590.jpg",
+                                                        "https://wp-assets.hemnet.se/wp-content/uploads/2023/11/kusligt-3-590.jpg",
+                                                        "https://wp-assets.hemnet.se/wp-content/uploads/2023/11/kuslig-2-590.jpg"}
+
+                    },
+                    new Residence
+                    {
+                        Category = categories[3],
+                        StreetName = "Fällforsvägen 98",
+                        City = "Vännäs",
+                        ZipCode = "91134",
+                        Municipality = municipalities[270],
+                        Agent = agents[4],
+                        ListingPrice = 4900000,
+                        Rooms = 8,
+                        LivingArea = 138,
+                        BiArea = 197,
+                        PlotArea =   41456,
+                        MonthlyFee = 0,
+                        OperationCost = 6800,
+                        ConstructionYear = 1993,
+                        Description = "Välkommen till Fällforsvägen 98 - där lugnet vid vattnet möter en spöklik historia som får håren att resa sig! Denna förtrollande fastighet ligger vackert vid vattnet i Vännäs och bjuder in till stillsamma stunder och fridfulla vyer. Men bakom den idylliska fasaden döljer sig en mörk och kuslig historia - ett ställe som har blivit känt för sina övernaturliga fenomen och skrämmande berättelser om drukningsmord som tycks ha för alltid präglat dess omgivningar. Trots sina kusliga rykten bär denna bostad på en unik charm och en atmosfär av mystik som lockar äventyrssugna själar. Med närheten till det stilla vattnet och den vackra naturen runt omkring, är detta en plats där det övernaturliga möter det naturliga på ett sätt som är både spännande och oförglömligt. Ta chansen att uppleva den spöklika skönheten hos Fällforsvägen 98 - det är en resa du sent kommer att glömma, oavsett om du tror på spöken eller inte!",
+                        ImagePaths = new List<string> { "https://jasifil.se/odehus/ghosthouse/pictures/album/small/0012.jpg",
+                                                        "https://jasifil.se/odehus/ghosthouse/pictures/album/small/0006.jpg",
+                                                        "https://jasifil.se/odehus/ghosthouse/pictures/album/small/0011.jpg",
+                                                        "https://jasifil.se/odehus/ghosthouse/pictures/album/small/0009.jpg"}
+
+                    },
+                    new Residence
+                    {
+                        Category = categories[0],
+                        StreetName = "Jönköpingsvägen 15",
+                        City = "Värnamo",
+                        ZipCode = "33134",
+                        Municipality = municipalities[64],
+                        Agent = agents[4],
+                        ListingPrice = 2800000,
+                        Rooms = 6,
+                        LivingArea = 76,
+                        BiArea = 25,
+                        PlotArea =   13192,
+                        MonthlyFee = 300,
+                        OperationCost = 0,
+                        ConstructionYear = 1927,
+                        Description = "Välkommen till den häpnadsväckande lägenheten i Gummifabriken - där varje steg studsar med glädje! Denna unika bostad är mer än bara en lägenhet, det är en upplevelse som kommer att få dig att hoppa av glädje (och kanske lite bokstavligt). Beläget i hjärtat av Gummifabriken, är denna bostad en sann gummibonanza för den som älskar en touch av absurditet i sitt boende. Med sina elastiska väggar och mjuka golv får du en känsla av att gå på moln (eller kanske bara en extra studsig dag). Här kan du leva det mjuka livet med en interiör som är lika färgglad och livlig som ett regnbågeftermäl! Och för de dagar när du behöver lite extra hopp i steget, erbjuder Gummifabriken en rad unika bekvämligheter, från en gigantisk hoppborg i gården till en specialdesignad gummimatta i hallen - perfekt för att ta emot posten utan att behöva oroa dig för att falla! Missa inte chansen att bo i denna härligt galna lägenhet i Gummifabriken - det är en upplevelse du sent kommer att glömma (eller sluta studsa över)!",
+                        ImagePaths = new List<string> { "https://jasifil.se/gummi/pictures/album/medium/0001.jpg",
+                                                        "https://jasifil.se/gummi/pictures/album/medium/0002.jpg",
+                                                        "https://jasifil.se/gummi/pictures/album/medium/0006.jpg",
+                                                        "https://jasifil.se/gummi/pictures/album/medium/0012.jpg",
+                                                        "https://jasifil.se/gummi/pictures/album/medium/0016.jpg",
+                                                        "https://jasifil.se/gummi/pictures/album/medium/0029.jpg"}
 
                     }
 
