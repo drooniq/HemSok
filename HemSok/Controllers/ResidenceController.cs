@@ -4,6 +4,7 @@ using HemSok.Data;
 using HemSok.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using HemSok.Constants;
 /*
  Author: Marcus Karlsson
  */
@@ -72,6 +73,7 @@ namespace HemSok.Controllers
         // PUT: api/Residence/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> PutResidence([FromBody] Residence residence)
         {
             if (residence == null)
@@ -88,6 +90,7 @@ namespace HemSok.Controllers
         // POST: api/Residence
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Residence>> PostResidence(ResidenceDTO residenceDTO)
         {
             var residence = mapper.Map<Residence>(residenceDTO);
@@ -118,6 +121,7 @@ namespace HemSok.Controllers
 
         // DELETE: api/Residence/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteResidence(int id)
         {
             var residence = await residenceRepository.GetAsync(id);

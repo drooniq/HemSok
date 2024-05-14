@@ -39,7 +39,7 @@ namespace HemSok.Controllers
         // PUT: api/Agency/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.SuperAdminAndAdmin)]
         public async Task<IActionResult> PutAgency(Agency agency)
         {
             if(agency == null)
@@ -67,6 +67,7 @@ namespace HemSok.Controllers
 
         // POST: api/Agency
         [HttpPost]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult<Agency>> PostAgency(Agency agency)
         {
             if (agency == null)
@@ -82,6 +83,7 @@ namespace HemSok.Controllers
 
         // DELETE: api/Agency/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> DeleteAgency(int id)
         {
             var agency = await agencyRepository.GetAsync(id);

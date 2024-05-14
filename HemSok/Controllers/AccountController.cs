@@ -1,4 +1,5 @@
-﻿using HemSok.Data;
+﻿using HemSok.Constants;
+using HemSok.Data;
 using HemSok.Models;
 using HemSok.Models.AccountDTO;
 using Microsoft.AspNetCore.Authorization;
@@ -72,7 +73,7 @@ namespace HemSok.Controllers
             });
         
         }
-        [Authorize]
+        [Authorize(Roles = UserRoles.SuperAdminAndAdmin)]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status200OK)]
