@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using HemSok.Constants;
 using HemSok.Data;
 using HemSok.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,6 +49,7 @@ namespace HemSok.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = UserRoles.SuperAdminAndAdmin)]
         public async Task<ActionResult> DeleteAgent(string id)
         {
             var agent = await agentRepository.GetAsync(id);
@@ -61,6 +64,7 @@ namespace HemSok.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.SuperAdminAndAdmin)]
         public async Task<ActionResult> PostAgent([FromBody] Agent agent)
         {
             //var agent = _mapper.Map<Agent>(agentDTO);
@@ -78,6 +82,7 @@ namespace HemSok.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<ActionResult> PutAgent([FromBody] Agent agent)
         {
             if (agent == null)
