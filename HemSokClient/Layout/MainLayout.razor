@@ -6,7 +6,9 @@
 <div class="main">
     <div class="NavMenu">
         <div class="NavLogo">
-            <img src="/images/ghost1.png" alt="Logo">
+            <a @onclick="@(e => NavigateToPage("/"))">
+                <img src="/images/ghost1.png" alt="Logo">
+            </a>
         </div>
         <div class="NavLinks">
             <a class="@((NavigationStateService.GetCurrentUri() == "/agencylisting") ? "active" : "")" @onclick="@(e => NavigateToPage("/agencylisting"))">CRUD Mäklarfirmor</a>

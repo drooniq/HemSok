@@ -13,6 +13,12 @@
     width: auto;
 }
 
+.NavLogo img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+}
+
 .NavMenu {
     position: fixed;
     top: 0;
