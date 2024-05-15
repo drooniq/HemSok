@@ -1,5 +1,6 @@
 ﻿@inject NavigationManager NavigationManager
 @inject IAPIService apiService
+@inject IAuthStateService AuthStateService
 
 @* Author: Marcus Karlsson*@
 
@@ -40,11 +41,15 @@
                     <img src="/images/ghost2.png" alt="Bild" class="AgencypicDetails" />
                 }
                     <br /> <br />
-                    <button class="btn btn-primary" @onclick="()=>GoToEditResidence(residence.Id)">Redigera</button>
-                    <br />  <br />
-                    <button class="btn btn-danger" @onclick="()=>GoToDeleteResidence(residence.Id)">Ta bort</button>
-                    <br />
-                    <br />
+                    @if(AuthStateService.IsLoggedIn())
+                    {
+                        <button class="btn btn-primary" @onclick="()=>GoToEditResidence(residence.Id)">Redigera</button>
+                        <br />  <br />
+                        <button class="btn btn-danger" @onclick="()=>GoToDeleteResidence(residence.Id)">Ta bort</button>
+                        <br />
+                        <br />
+                    }
+                   
             </div>
         </div>
         </div>

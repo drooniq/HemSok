@@ -148,10 +148,7 @@ else
         if (formIsChanged)
         {
 
-            Console.WriteLine($"value: {apiService.ToString()}");
-            Console.WriteLine($"value: {apiService.currentUser.ToString()}");
-            Console.WriteLine($"value: {apiService.currentUser.loginResponse.ToString()}");
-            Console.WriteLine($"value: {apiService.currentUser.loginResponse.JwtToken.ToString()}");
+         
 
             if (await apiService.PutToApiAsync<Agency>(agency))
             {
@@ -160,10 +157,7 @@ else
             }
             else
             {
-                Console.WriteLine("Failed to update agency: " + apiService);
-                Console.WriteLine("Failed to update agency: " + apiService.currentUser);
-                Console.WriteLine("Failed to update agency: " + apiService.currentUser.loginResponse.Id);
-                Console.WriteLine("Failed to update agency: " + apiService.currentUser.loginResponse.JwtToken);
+           
             }
         }
     }

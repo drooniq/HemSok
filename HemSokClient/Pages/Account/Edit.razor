@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject INavigationStateService NavigationStateService
 @inject IAPIService APIService
+@inject IAuthStateService AuthStateService
 
 @* Author: Emil Waara *@
 <style>
@@ -73,7 +74,7 @@
         box-sizing: border-box;
     }
 </style>
-
+@if(AuthStateService.IsLoggedIn()){
 @if(Guid is not null && agent is not null)
 {
 <div class="content">
@@ -130,9 +131,14 @@
 }
 else
 {
-    <p>Kunde inte hitta någon mäklare med det IDt, eller så saknas ID.</p>
-}
+        <p>Kunde inte hitta någon mäklare med det IDt, eller så saknas ID.</p>
+    }
 
+}
+else
+{
+    <p>Du har inte spökenas tillåtelse att gå hit.</p>
+}
 @code {
     [Parameter]
     public string? Guid { get; set; }

@@ -1,8 +1,11 @@
 ﻿@inject IAPIService apiService
 @inject NavigationManager navigationManager
+@inject IAuthStateService AuthStateService
 @page "/editresidence/{id}"
 
 @* Author: Marcus Karlsson*@
+@if (AuthStateService.IsLoggedIn())
+{
 <h3>Fyll i all information om bostaden</h3>
 
 <EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
@@ -82,8 +85,12 @@
     </CascadingValue>
     <button type="submit">Submit</button>
 
-</EditForm>
-
+    </EditForm>
+}
+else
+{
+    <p>Du har inte spökenas tillåtelse att gå hit.</p>
+}
 
 
 @code {

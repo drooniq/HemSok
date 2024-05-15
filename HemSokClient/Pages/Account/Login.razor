@@ -97,15 +97,13 @@
             //await localStorage.SetItemAsync("authToken", token);
             
             
-            /*var user = await APIService.LoginAsync(loginModel);
+            var user = await APIService.LoginAsync(loginModel);
             if (user != null)
             {
                 AuthStateService.Login(user);
                 NavigationStateService.NavigateTo("/");
-            }) */
-
-            if (await APIService.LoginAsync(loginModel))
-                NavigationStateService.NavigateTo("/");
+            }         
+               
 
             // Redirect to home page or another authorized page
             //NavigationManager.NavigateTo("/");
