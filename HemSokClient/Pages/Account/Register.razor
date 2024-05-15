@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @inject INavigationStateService NavigationStateService
 @inject IAPIService APIService
+@inject IAuthStateService AuthStateService
 
 @* Author: Emil Waara *@
  <style>
@@ -108,7 +109,7 @@
     {
         try
         {
-            var adminAgent = APIService.Agents.First(s => s.Id == APIService.currentUser.AgentId);
+            var adminAgent = APIService.Agents.First(s => s.Id == AuthStateService.currentUser.AgentId);
             if(adminAgent== null)
             {
                 ResetForm();
