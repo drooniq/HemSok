@@ -7,20 +7,20 @@ using System.Net.Http.Headers;
 namespace HemSokClient.Handlers
 {
     public class AuthenticationHandler : DelegatingHandler
-    {
-        private readonly IAPIService apiService;
+    {     
         private readonly IConfiguration config;
+        private readonly IAuthStateService authStateService;
 
-        public AuthenticationHandler(IAPIService apiService, IConfiguration config)
-        {
-            this.apiService = apiService;
+        public AuthenticationHandler(IConfiguration config, IAuthStateService authStateService)
+        {     
             this.config = config;
+            this.authStateService = authStateService;
         }
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (apiService != null && apiService.currentUser != null )
+            if (authStateService != null && authStateService.currentUser != null )
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiService.currentUser.loginResponse.JwtToken);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authStateService.currentUser.loginResponse.JwtToken);
             }
             else
             {

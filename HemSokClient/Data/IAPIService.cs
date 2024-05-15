@@ -14,14 +14,12 @@ namespace HemSokClient.Data
         public List<County>? Counties { get; set; }
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
-        public CurrentUser currentUser { get; set; }
         Task<bool> DeleteFromApiAsync<T>(string uri, T modelData) where T : class;
         Task<List<T>?> GetAllFromApiAsync<T>() where T : class;
         Task<T?> GetFromApiAsync<T>(string uri) where T : class;
         Task<bool> PostToApiAsync<T>(T modelData) where T : class;
         Task<bool> PutToApiAsync<T>(T modelData) where T : class;
-        Task<bool> LoginAsync(LoginModel model);
-        void Logout();
+        Task<CurrentUser> LoginAsync(LoginModel model);
         Task<bool> RegisterAsync(RegisterModel model);
     }
 }

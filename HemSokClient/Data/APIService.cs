@@ -14,7 +14,7 @@ namespace HemSokClient.Data
     {
 
         private readonly IHttpClientFactory Factory;
-        public CurrentUser? currentUser { get; set; } = null;
+        private readonly IAuthStateService authStateService;
         public List<Agency>? Agencies { get; set; }
         public List<Agent>? Agents { get; set; }
         public List<Category>? Categories { get; set; }
@@ -22,9 +22,10 @@ namespace HemSokClient.Data
         public List<Municipality>? Municipality { get; set; }
         public List<Residence>? Residences { get; set; }
 
-        public APIService(IHttpClientFactory factory)
+        public APIService(IHttpClientFactory factory, IAuthStateService authStateService)
         {
-            this.Factory = factory;         
+            this.Factory = factory;
+            this.authStateService = authStateService;
         }
 
         // string uri = "api/Residence/" + residence.Id;
@@ -71,7 +72,7 @@ namespace HemSokClient.Data
 
         // Login logik för api
 
-        public async Task<bool> LoginAsync(LoginModel model)
+        public async Task<CurrentUser> LoginAsync(LoginModel model)
         {
             var response = await Factory.CreateClient("CustomClient")
                                         .PostAsync("api/account/login", JsonContent.Create(model));
@@ -86,21 +87,14 @@ namespace HemSokClient.Data
             //JwtSession = content.JwtToken;         
             //var agents = await GetAllFromApiAsync<Agent>();
             var jwt = new JwtSecurityToken(content.JwtToken);
-            currentUser = new CurrentUser 
+            authStateService.currentUser = new CurrentUser 
             {
                AgentId = content.Id,
                Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value,
                loginResponse = content
              };
-            return currentUser is not null;
-        }
-        public void Logout()
-        {
-            if (currentUser != null)
-            {
-                currentUser = null;
-            }        
-        }
+            return authStateService.currentUser;
+        }      
         public async Task<bool> RegisterAsync(RegisterModel model)
         {                                         
             var response = await  Factory.CreateClient("CustomClient")                                     
