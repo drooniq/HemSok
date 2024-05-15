@@ -27,13 +27,14 @@
             @foreach (var residence in Residences)
             {
                 <tr class="row-hover" @onclick="() => GoToDetailsResidencePage(residence.Id)">
-                    @if (residence.ImagePaths != null && residence.ImagePaths.Count>0)
+                    <td><img src="@residence.PrimaryImagePath" alt="..." style="max-width: 6rem; border-radius: 10%;" /></td>
+                    @* @if (residence.ImagePaths != null && residence.ImagePaths.Count>0)
                     {
-                        <td><img src="@residence.ImagePaths[0]" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
+                        <td><img src="@residence.PrimaryImagePath" alt="..." style="max-width: 6rem; border-radius: 10%;" /></td>
                     } else
                     {
                         <td></td>
-                    }
+                    } *@
                     <td>@residence.ListingPrice</td>
                     <td>@residence.StreetName</td>
                     <td>@residence.ZipCode</td>

@@ -24,22 +24,11 @@
                     <p style="font-weight: 500;">@residence.Agent.Agency.Name</p>
                 </div>
             <div class="infopics">
-                @if (residence.Agent.ImagePath != null)
-                {
+                
                     <img src="@residence.Agent.ImagePath" alt="Bild" class="agentPicDetails" />
-                }
-                else
-                {
-                    <img src="/images/ghost2.png" alt="Bild" class="agentPicDetails" />
-                }      
-                @if (residence.Agent.Agency.ImagePath != null)
-                {
+                
                     <img src="@residence.Agent.Agency.ImagePath" alt="Bild" class="AgencypicDetails" />
-                }
-                else
-                {
-                    <img src="/images/ghost2.png" alt="Bild" class="AgencypicDetails" />
-                }
+               
                     <br /> <br />
                     @if(AuthStateService.IsLoggedIn())
                     {
