@@ -7,6 +7,8 @@ namespace HemSokClient.Models
 {
     public class Residence
     {
+        private const string DefaultResidenceImagePath = "/images/hauntedhouseghost.jpg";
+
         [Key]
         public int Id { get; set; }
         [Required]
@@ -31,6 +33,16 @@ namespace HemSokClient.Models
         public int? OperationCost { get; set; }
         public int? ConstructionYear { get; set; }
         public string? Description { get; set; }
-        public List<string>? ImagePaths { get; set; }
+        private List<string>? imagePaths;
+        public List<string>? ImagePaths
+        {
+            get => imagePaths;
+            set => imagePaths = value;
+        }
+
+        public string PrimaryImagePath
+        {
+            get => ImagePaths != null && ImagePaths.Count > 0 ? ImagePaths[0] : DefaultResidenceImagePath;
+        }
     }
 }
