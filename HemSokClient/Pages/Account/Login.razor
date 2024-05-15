@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @inject INavigationStateService NavigationStateService
 @inject IAPIService APIService
+@inject IAuthStateService AuthStateService
 
 @* Author: Emil Waara *@
 <style>
@@ -94,8 +95,18 @@
 
             // Store token in local storage or session storage
             //await localStorage.SetItemAsync("authToken", token);
+            
+            
+            /*var user = await APIService.LoginAsync(loginModel);
+            if (user != null)
+            {
+                AuthStateService.Login(user);
+                NavigationStateService.NavigateTo("/");
+            }) */
+
             if (await APIService.LoginAsync(loginModel))
                 NavigationStateService.NavigateTo("/");
+
             // Redirect to home page or another authorized page
             //NavigationManager.NavigateTo("/");
             // NavigationStateService.NavigateBack();
