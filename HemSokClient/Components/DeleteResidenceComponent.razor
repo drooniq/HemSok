@@ -1,12 +1,14 @@
 ﻿@inject NavigationManager navigationManager
 @inject IAPIService apiService
+@inject IAuthStateService AuthStateService
 @page "/deleteresidence/{id}"
 
 @* Author: Marcus Karlsson*@
-
+@if (AuthStateService.IsLoggedIn())
+{
 <h3>Ta bort bostad!</h3>
 
-Är du säker på att du vill ta bort denna bostad?
+<p>Är du säker på att du vill ta bort denna bostad?</p>
 @if (residence != null)
 {
     <EditForm Model="@residence">
@@ -18,7 +20,11 @@ else
 {
     <p>Bostaden kunde inte hittas.</p>
 }
-
+}
+else
+{
+    <p>Du har inte spökenas tillåtelse att gå hit.</p>
+}
 @code {
 
     [Parameter]
