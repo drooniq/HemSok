@@ -16,7 +16,7 @@ namespace HemSok.Models
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
-        public string? ImagePath { get; set; }
+        public string? ImagePath { get; set; } = "https://media.wired.com/photos/593272de5c4fbd732b552b5c/master/w_2240,c_limit/ghostbusters-inline.jpg";
         public Agency() { }
     }
 }
