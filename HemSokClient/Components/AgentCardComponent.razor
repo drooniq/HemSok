@@ -2,12 +2,10 @@
 
 @if (Agent != null)
 {
-    @* <div class="card" style="@($"background-color: {(NavigationManager.Uri.Contains("agent") ? "lightblue" : "white")};
-    {(NavigationManager.Uri.Contains("detailsagent") ? "cursor: pointer;" : "")}")"> *@
     <div class="card m-3 rounded">
         <div class="card-img">
             <div class="img-container">
-                <img src="@GetProfileImagePath(Agent)" alt="Profilbild" class="m-1" />
+                <img src="@Agent.ImagePath" alt="Profilbild" class="m-1" />
             </div>
         </div>
         <div class="card-body">
@@ -37,7 +35,7 @@
                 <small class="text-muted">@Agent.Agency.Name</small>
             </div>
             <div class="right-footer">
-                <img src="@GetLogoImagePath(Agent)" alt="Mäklarfirma logga" class="card-footer-image" />
+                <img src="@Agent.Agency.ImagePath" alt="Logotyp" class="card-footer-image" />
             </div>
         </div>
     </div>
@@ -52,31 +50,6 @@ else
     public Agent? Agent { get; set; }
     [Parameter]
     public List<Residence>? Residences { get; set; }
-
-    private string GetProfileImagePath(Agent agent)
-    {
-        if (!string.IsNullOrEmpty(agent.ImagePath))
-        {
-            return agent.ImagePath;
-        }
-        else
-        {
-            return "images/ghost1.png";
-        }
-    }
-    private string GetLogoImagePath(Agent agent)
-    {
-        if (!string.IsNullOrEmpty(agent.Agency.ImagePath))
-        {
-            return agent.Agency.ImagePath;
-        }
-        else
-        {
-
-            return "gif/floatingghost.gif";
-        }
-    }
-
 }
 <style>
     body {

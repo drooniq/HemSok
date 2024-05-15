@@ -2,7 +2,7 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Threading.Tasks
 @inject HttpClient httpClient
-@inject NavigationManager NavigationManager
+@inject INavigationStateService NavigationStateService
 @inject IJSRuntime JSRuntime
 @inject IAPIService apiService
 
@@ -11,14 +11,14 @@
 <PageTitle>Agents</PageTitle>
 <h3>Mäklare(spöken)</h3>
 
-<button class="btn btn-primary btn-sm" @onclick="@(() =>NavigationManager.NavigateTo("/register"))">Skapa ny mäklare</button>
+@* <button class="btn btn-primary btn-sm" @onclick="@(() =>NavigationStateService.NavigateTo("/register"))">Skapa ny mäklare</button> *@
 
 @if (agents != null)
 {
     <div class="container">
         @foreach (var agent in agents)
         {
-            <div  @onclick="@(() => NavigationManager.NavigateTo($"/detailsagent/{agent.Id}"))">
+            <div @onclick="@(() => NavigationStateService.NavigateTo($"/detailsagent/{agent.Id}"))">
                 <AgentCardComponent Agent="@agent" Residences="residences"></AgentCardComponent>
             </div>
         }

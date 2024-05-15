@@ -7,6 +7,8 @@ namespace HemSokClient.Models
 {
     public class Agency
     {
+        private const string DefaultAgencyImagePath = "/gif/floatingghost.gif";
+
         [Key]
         public int Id { get; set; }
         [Required]
@@ -16,8 +18,14 @@ namespace HemSokClient.Models
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
-        public string? ImagePath { get; set; } = "/images/ghost1.jpg";
-        //public List<Agent> Agents { get; set; } = new List<Agent>();
+
+        private string? imagePath = DefaultAgencyImagePath;
+
+        public string? ImagePath
+        {
+            get => string.IsNullOrEmpty(imagePath) ? DefaultAgencyImagePath : imagePath;
+            set => imagePath = value;
+        }
         public Agency() { }
     }
 }
