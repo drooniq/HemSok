@@ -8,14 +8,17 @@
 
 <div style="display: flex; flex-wrap: wrap;">
     <div style="position: relative; margin-right: 10px;">
-        @if( imagePaths != null && imagePaths.Count == 0)
+
+        <img src="@imagePaths[position]" alt="Picture" style="width: 450px; height: 400px;" onerror="this.onerror=null; this.src='/images/hauntedhouseghosts.JPG';" />
+        
+        @* @if (string.IsNullOrEmpty(imagePaths[position]) || !IsImageValid(imagePaths[position]) || imagePaths.Count == 0)
         {
-            <img src="https://via.placeholder.com/200" alt="Picture" style="max-width: 400px; max-height: 400px;" />
+            <img src="/images/hauntedhouseghosts.JPG" alt="Placeholder" style="max-width: 400px; max-height: 400px;" />
         }
         else
         {
             <img src="@imagePaths?[position]" alt="Picture" style="width: 600px; height: 450px;" />
-        }
+        } *@
 
         @if (position > 0 && imagePaths?.Count > 1)
         {

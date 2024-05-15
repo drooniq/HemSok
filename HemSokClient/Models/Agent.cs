@@ -8,7 +8,7 @@ namespace HemSokClient.Models
 {
     public class Agent : IdentityUser
     {
-        private const string DefaultAgentImagePath = "/images/ghost1.png";
+        private const string DefaultAgentImagePath = "images/ghost1.png";
 
         [Required]
         public string FirstName { get; set; } = String.Empty;
