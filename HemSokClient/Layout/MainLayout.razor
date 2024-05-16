@@ -12,7 +12,7 @@
             </a>
         </div>
         <div class="NavLinks">        
-            <a class="@((NavigationStateService.GetCurrentUri() == "/agent") ? "active" : "")" @onclick="@(e => NavigateToPage("/agent"))">Sök Mäklare</a>
+            <a class="@((NavigationStateService.GetCurrentUri() == "/agent") ? "active" : "")" @onclick="@(e => NavigateToPage("/agent"))">Mäklare</a>
             <a class="@((NavigationStateService.GetCurrentUri() == "/residence") ? "active" : "")" @onclick="@(e => NavigateToPage("/residence"))">Bostäder</a>
             <a class="@((NavigationStateService.GetCurrentUri() == "/filterresidences") ? "active" : "")" @onclick="@(e => NavigateToPage("/filterresidences"))">Filtrera Bostäder</a>
             <a class="@((NavigationStateService.GetCurrentUri() == "/register") ? "active" : "")" @onclick="@(e => NavigateToPage("/register"))">Skapa ny mäklare</a>

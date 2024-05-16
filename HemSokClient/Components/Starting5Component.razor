@@ -10,7 +10,8 @@
         <div class="image-container">
             <button class="arrow left" @onclick="PreviousResidence">❮</button>
             <a @onclick="@(() => NavigationManager.NavigateTo($"/residencedetails/{Residences?[CurrentResidenceIndex].Id}"))">
-                <img id="startPic" src="@Residences?[CurrentResidenceIndex].ImagePaths?.FirstOrDefault()" alt="Residence Image" class="img-fluid" style="cursor:pointer;" />
+                <ResidenceCardComponent residence="Residences[CurrentResidenceIndex]"/>
+                @* <img id="startPic" src="@Residences?[CurrentResidenceIndex].ImagePaths?.FirstOrDefault()" alt="Residence Image" class="img-fluid" style="cursor:pointer;" /> *@
             </a>
             <button class="arrow right" @onclick="NextResidence">❯</button>
             @* <div class="info-container">
