@@ -6,6 +6,9 @@
     background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
     flex: 1;
     overflow-y: auto;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    padding-right: 1rem;
 }
 
 .NavLogo {
@@ -25,7 +28,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 1;
     background-color: rgb(27, 29, 42);
     display: flex;
     width: 100vw;
@@ -79,7 +82,7 @@
     justify-content: center;
     align-items: center;
     height: 3rem;
-    z-index: 1000;
+    z-index: 1;
 }
 
     .Footer p {

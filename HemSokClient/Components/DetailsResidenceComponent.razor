@@ -5,9 +5,20 @@
 @* Author: Marcus Karlsson*@
 
 @page "/residencedetails/{id}"
+<style>
+    .card {
+        width: 65rem;
+        height: 120rem;
+        margin: 1rem;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
+        border: 1px solid black;
+        transition: 0.3s ease;
+    }
+</style>
 
 @if (residence != null)
 {
+     <div class="card">
     <div class="piccontainer">       
         <div class="pictureSlider">
             <CascadingValue Value="@residence.ImagePaths">
@@ -32,13 +43,16 @@
                     <br /> <br />
                     @if(AuthStateService.IsLoggedIn())
                     {
-                        <button class="btn btn-primary" @onclick="()=>GoToEditResidence(residence.Id)">Redigera</button>
-                        <br />  <br />
-                        <button class="btn btn-danger" @onclick="()=>GoToDeleteResidence(residence.Id)">Ta bort</button>
-                        <br />
-                        <br />
-                    }
-                   
+                            @if (residence.Agent.Id == currentAgent?.Id ||
+                                 AuthStateService.currentUser?.Role == UserRoles.SuperAdmin)
+                            {
+                                <button class="btn btn-primary" @onclick="()=>GoToEditResidence(residence.Id)">Redigera</button>
+                                <br />  <br />
+                                <button class="btn btn-danger" @onclick="()=>GoToDeleteResidence(residence.Id)">Ta bort</button>
+                                <br />
+                                <br />
+                            }     
+                    }            
             </div>
         </div>
         </div>
@@ -75,17 +89,19 @@
             </div>
         </div>
     </div>
+    </div>
 }
 else
 {
     <p>Bostaden kunde inte hittas.</p>
 }
-
+   
 @code {
 
     [Parameter]
     public string? Id { get; set; }
     private Residence residence = new();
+    private Agent currentAgent = new();
 
     private void GoToDeleteResidence(int id)
     {
@@ -102,6 +118,8 @@ else
         if (!string.IsNullOrEmpty(Id))
         {
             residence = await apiService.GetFromApiAsync<Residence>("api/residence/" + Id);
+            if(AuthStateService.currentUser !=null)
+            currentAgent = await apiService.GetFromApiAsync<Agent>("api/agent/" + AuthStateService.currentUser.AgentId);
         }
     }
 }
