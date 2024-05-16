@@ -1,7 +1,7 @@
 ﻿@page "/filterresidences"
 @using HemSokClient.Data
 @inject IAPIService apiService
-@inject NavigationManager NavigationManager
+@inject INavigationStateService NavigationStateService
 
 @* Author: Marcus Karlsson, Emil Waara *@
 <PageTitle>Filter Residences</PageTitle>
@@ -71,10 +71,14 @@
 <br />
 @if(filteredResidences.Any() == true)
 {
-    @foreach (var residence in filteredResidences)
-    {
-        <DisplayResidencesComponent Residence="residence"></DisplayResidencesComponent>
-    }
+    <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+        @foreach (var residence in filteredResidences)
+        {
+            <div style="margin: 0 1rem;" @onclick="@(() => NavigationStateService.NavigateTo($"/residencedetails/{residence.Id}"))">
+                <ResidenceCardComponent residence="residence"></ResidenceCardComponent>
+            </div>
+        }
+    </div>
 }
 
 
@@ -146,7 +150,7 @@
 
     private void GoToDetailsResidencePage(int id)
     {
-        NavigationManager.NavigateTo($"/residencedetails/{id.ToString()}");
+        NavigationStateService.NavigateTo($"/residencedetails/{id.ToString()}");
     }
 
     private void OnSearchClicked()
