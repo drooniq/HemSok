@@ -6,80 +6,155 @@
 @* Author: Marcus Karlsson, Emil Waara *@
 <PageTitle>Filter Residences</PageTitle>
 
-<input style="width: 30%; display:inline" class="form-control" placeholder="Sök bostad med address.." @bind="searchModel.StreetSearch" />
+<style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-@if (apiService.Municipality != null)
-{
-    <label>Kommun: </label>
-    <InputSelect ValueChanged="@((string value)=>ChooseMun(value))" ValueExpression="@(()=>searchModel.MunSearch)" Value="searchModel.MunSearch">
-        @if (searchModel.CountySearch != "")
-        {
-            <option value="">Sök på kommun...</option>
-            @foreach (var c in apiService.Municipality.Where(s => s.County.Id == int.Parse(searchModel.CountySearch))
-            .OrderBy(s => s.Name))
-            {
-                <option value="@c.Id">@c.Name</option>
-            }
-        }
-        else
-        {
-            <option value="">Sök på kommun...</option>
-            @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
-            {
-                <option value="@c.Id">@c.Name</option>
-            }
-        }
-    </InputSelect>
-}
+    .content-container {
+        width: 100%;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-@if (apiService.Counties != null)
-{
-    <label>Län: </label>
-    <InputSelect ValueChanged="@((string value)=>ChooseCounty(value))" ValueExpression="@(()=>searchModel.CountySearch)" Value="searchModel.CountySearch">
-        @if (searchModel.MunSearch != "")
-        {
-            var mun = apiService.Municipality.FirstOrDefault(s => s.Id == int.Parse(searchModel.MunSearch));
-            <option value=@apiService.Counties.FirstOrDefault(s =>s.Id == mun.County.Id)>
-                @apiService.Counties.FirstOrDefault(s => s.Id == mun.County.Id).Name
-            </option>
+    .filter-container {
+        position: absolute;
+        top: 6rem;
+        width: 30rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+        .filter-container form input[type="text"],
+        .filter-container form select,
+        .filter-container form button {
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
-        else
+
+        .filter-container form input[type="text"] {
+            flex: 1;
+        }
+
+        .filter-container form select {
+            flex: 1;
+        }
+
+        .filter-container form button {
+            flex-shrink: 0;
+        }
+
+    .residences-container {
+        position: absolute;
+        top: 14rem;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .residences-inner-container {
+        width: 80%;
+        max-width: 1200px;
+    }
+
+    .residence-card {
+        margin: 0 1rem;
+        cursor: pointer;
+    }
+</style>
+
+<div class="content-container">
+    <div class="filter-container">
+        <input class="form-control" placeholder="Sök bostad med address.." @bind="searchModel.StreetSearch" />
+
+        @if (apiService.Counties != null)
         {
-            @if (searchModel.CountySearch != "")
-            {
-                <option value="@searchModel.CountySearch">
-                    @apiService.Counties.First(s => s.Id == int.Parse(searchModel.CountySearch)).Name
-                </option>
-                <option value="">Nollställ filter</option>
-            }
-            else
-            {
-                <option value="">Sök på län...</option>
-                @foreach (var c in apiService.Counties.OrderBy(s => s.Name))
+            <InputSelect ValueChanged="@((string value)=>ChooseCounty(value))" ValueExpression="@(()=>searchModel.CountySearch)" Value="searchModel.CountySearch" style="width: 180px; border-radius: 5px;">
+                @if (searchModel.MunSearch != "")
                 {
-                    <option value="@c.Id">@c.Name</option>
+                    var mun = apiService.Municipality.FirstOrDefault(s => s.Id == int.Parse(searchModel.MunSearch));
+                    <option value=@apiService.Counties.FirstOrDefault(s =>s.Id == mun.County.Id)>
+                        @apiService.Counties.FirstOrDefault(s => s.Id == mun.County.Id).Name
+                    </option>
                 }
-            }
+                else
+                {
+                    @if (searchModel.CountySearch != "")
+                    {
+                        <option value="@searchModel.CountySearch">
+                            @apiService.Counties.First(s => s.Id == int.Parse(searchModel.CountySearch)).Name
+                        </option>
+                        <option value="">Nollställ filter</option>
+                    }
+                    else
+                    {
+                        <option value="">Sök på län...</option>
+                        @foreach (var c in apiService.Counties.OrderBy(s => s.Name))
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    }
+                }
+            </InputSelect>
         }
-    </InputSelect>
-}
-<button type="button" class="btn btn-primary" @onclick="OnSearchClicked">
-    Sök
-</button>
-<br />
-<br />
-<br />
-@if(filteredResidences.Any() == true)
-{
-    <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-        @foreach (var residence in filteredResidences)
+
+        @if (apiService.Municipality != null)
         {
-            <div style="margin: 0 1rem;" @onclick="@(() => NavigationStateService.NavigateTo($"/residencedetails/{residence.Id}"))">
-                <ResidenceCardComponent residence="residence"></ResidenceCardComponent>
-            </div>
+            <InputSelect ValueChanged="@((string value)=>ChooseMun(value))" ValueExpression="@(()=>searchModel.MunSearch)" Value="searchModel.MunSearch" style= "border-radius: 5px;">
+                @if (searchModel.CountySearch != "")
+                {
+                    <option value="">Sök på kommun...</option>
+                    @foreach (var c in apiService.Municipality.Where(s => s.County.Id == int.Parse(searchModel.CountySearch))
+               .OrderBy(s => s.Name))
+                    {
+                        <option value="@c.Id">@c.Name</option>
+                    }
+                }
+                else
+                {
+                    <option value="">Sök på kommun...</option>
+                    @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
+                    {
+                        <option value="@c.Id">@c.Name</option>
+                    }
+                }
+            </InputSelect>
+        }
+
+        <button type="button" class="btn btn-primary" @onclick="OnSearchClicked">Sök</button>
+    </div>
+
+    <div class="residences-container">
+        @if (filteredResidences.Any() == true)
+        {
+            @foreach (var residence in filteredResidences)
+            {
+                <div class="residence-card" @onclick="@(() => NavigationStateService.NavigateTo($"/residencedetails/{residence.Id}"))">
+                    <ResidenceCardComponent residence="residence"></ResidenceCardComponent>
+                </div>
+            }
         }
     </div>
-}
+</div>
 
 @code {
     private List<Residence>? filteredResidences = new List<Residence>();
@@ -103,8 +178,9 @@
         apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();
         apiService.Counties = await apiService.GetAllFromApiAsync<County>();
         apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
-        //filteredResidences = apiService.Residences;
         initResidences = apiService.Residences;
+
+        OnSearchClicked();
     }
 
     private void GoToDetailsResidencePage(int id)
