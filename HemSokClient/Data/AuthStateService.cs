@@ -14,9 +14,23 @@ namespace HemSokClient.Data
         public bool IsAdmin() => currentUser?.Role == Constants.UserRoles.Admin;
         public bool IsAgent() => currentUser?.Role == Constants.UserRoles.Agent;
         public bool IsSuperAdmin() => currentUser?.Role == Constants.UserRoles.SuperAdmin;
-        public void Login(CurrentUser user) => currentUser = user;
-        public void Logout() => currentUser = null;
+        public void Login(CurrentUser user)
+        {
+            currentUser = user;
+//            CurrentUserHasChange = true;
+        }
+        public void Logout()
+        {
+            currentUser = null;
+//            CurrentUserHasChange = true;
+        }
 
+//        private bool CurrentUserHasChange;
+
+        //public bool HasUserChanged()
+        //{
+        //    return CurrentUserHasChange;
+        //}
 
         public bool HasValidToken()
         {
