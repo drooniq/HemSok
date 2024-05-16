@@ -26,8 +26,8 @@ namespace HemSok.Helper
                     {
                         Firstname = "Super",
                         Lastname = "Admin",
-                        Agency = agencies[0],
-                        Nickname = "Spökplumpen",
+                        Agency = null,
+                        Nickname = "Slimer",
                         Email = "SuperAdmin@SuperAdmin.com",
                         Username = "SuperAdmin@SuperAdmin.com",
                         Password = "SuperAdmin@1234",

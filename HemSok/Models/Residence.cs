@@ -31,6 +31,6 @@ namespace HemSok.Models
         public int? OperationCost { get; set; }
         public int? ConstructionYear { get; set; }
         public string? Description { get; set; }
-        public List<string>? ImagePaths { get; set; }
+        public List<string>? ImagePaths { get; set; } = new() { "/images/ghost2.jpg"};
     }
 }

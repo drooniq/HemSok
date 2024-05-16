@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 /*
 Author: Marcus Karlsson, Fredrik Blixt, Emil Waara
@@ -14,8 +15,7 @@ namespace HemSok.Models
         public string LastName { get; set; } = String.Empty;
         public string? Nickname { get; set; }
         public string? ImagePath { get; set; }
-        [Required]
-        public Agency Agency { get; set; } = new Agency();
+        public Agency? Agency { get; set; }
         public Agent() { }
     }
 }
