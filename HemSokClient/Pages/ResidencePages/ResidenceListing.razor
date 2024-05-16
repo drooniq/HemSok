@@ -1,0 +1,94 @@
+﻿@page "/agencylisting"
+@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Text.Json
+@inject IAPIService apiService
+@inject INavigationStateService NavigationStateService
+
+<h3>Bostäder</h3>
+
+@foreach (var residence in filteredResidences)
+{
+
+    <ResidenceCardComponent residence="residence" />
+
+
+
+}
+
+@code {
+    [CascadingParameter]
+    public IEnumerable<Residence>? filteredResidences { get; set; }
+
+    public IEnumerable<Residence>? initResidences { get; set; }
+    private SearchModel searchModel { get; set; } = new SearchModel();
+    private string stringOutput { get; set; } = "";
+
+    private void OnSearchClicked()
+    {
+        stringOutput = $"Sökning: {searchModel.StreetSearch}, {searchModel.MunSearch}, {searchModel.CountySearch}";
+
+        if (filteredResidences != null && filteredResidences.Count() > 0)
+        {
+            stringOutput += $"\nAntal träffar: {filteredResidences.Count()}";
+        }
+
+        filteredResidences = initResidences;
+
+        PrintFilteredResidences(filteredResidences);
+
+        if (filteredResidences != null)
+        {
+            if (searchModel.MunSearch != "")
+            {
+                filteredResidences = filteredResidences.Where(s => s.Municipality.Id == int.Parse(searchModel.MunSearch));
+                PrintFilteredResidences(filteredResidences);
+            }
+            else if (searchModel.CountySearch != "")
+            {
+                filteredResidences = filteredResidences.Where(s => s.Municipality.County.Id == int.Parse(searchModel.CountySearch));
+                PrintFilteredResidences(filteredResidences);
+            }
+
+            if (searchModel.StreetSearch != "")
+            {
+                filteredResidences = filteredResidences.Where(s => s.StreetName.Contains(searchModel.StreetSearch));
+                PrintFilteredResidences(filteredResidences);
+            }
+        }
+    }
+
+    private void PrintFilteredResidences(IEnumerable<Residence> residences)
+    {
+        if (residences != null)
+        {
+            Console.WriteLine("Filtered Residences:");
+            foreach (var residence in residences)
+            {
+                Console.WriteLine($"Id: {residence.Id}, StreetName: {residence.StreetName}, City: {residence.City}, Municipality: {residence.Municipality?.Name ?? "Unknown"}, Municipality: {residence.Municipality.County?.Name ?? "Unknown"}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Filtered Residences: null");
+        }
+    }
+
+    private void ChooseMun(string munId)
+    {
+        searchModel.MunSearch = munId;
+    }
+
+    private void ChooseCounty(string countyId)
+    {
+        searchModel.CountySearch = countyId;
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        apiService.Residences = await apiService.GetAllFromApiAsync<Residence>();
+        apiService.Counties = await apiService.GetAllFromApiAsync<County>();
+        apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
+        initResidences = filteredResidences;
+    }
+}
