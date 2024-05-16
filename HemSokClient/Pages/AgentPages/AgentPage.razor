@@ -1,6 +1,7 @@
 ﻿@page "/agent"
 @using System.ComponentModel.DataAnnotations
 @using System.Threading.Tasks
+@using HemSokClient.Components.Agents
 @inject HttpClient httpClient
 @inject INavigationStateService NavigationStateService
 @inject IJSRuntime JSRuntime
@@ -9,7 +10,6 @@
 @* Author: Fredrik Blixt*@
 
 <PageTitle>Agents</PageTitle>
-<h3>Mäklare(spöken)</h3>
 
 @* <button class="btn btn-primary btn-sm" @onclick="@(() =>NavigationStateService.NavigateTo("/register"))">Skapa ny mäklare</button> *@
 
