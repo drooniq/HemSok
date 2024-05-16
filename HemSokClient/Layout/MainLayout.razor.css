@@ -5,10 +5,7 @@
     width: 100vw;
     background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
     flex: 1;
-    overflow-y: scroll;
-    padding-top: 10rem;
-    padding-bottom: 6rem;
-    padding-right: 1rem;
+    overflow-y: auto;
 }
 
 .NavLogo {
@@ -31,7 +28,7 @@
     z-index: 1000;
     background-color: rgb(27, 29, 42);
     display: flex;
-    width: 99vw;
+    width: 100vw;
     align-items: center;
     height: 5rem;
 }
@@ -75,7 +72,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 99vw;
+    width: 100vw;
     background-color: rgb(27, 29, 42);
     color: white;
     display: flex;
