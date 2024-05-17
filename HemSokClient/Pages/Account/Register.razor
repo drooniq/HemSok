@@ -7,9 +7,10 @@
 @inject INavigationStateService NavigationStateService
 @inject IAPIService APIService
 @inject IAuthStateService AuthStateService
+@inject IJSRuntime JSRuntime
 
 @* Author: Emil Waara *@
- <style>
+<style>
     body {
         width: 100vw;
         height: 100vh;
@@ -50,41 +51,48 @@
     }
 </style>
 
-<div class="content">
-    <div class="login-container">
-        <EditForm Model="@registerModel" OnValidSubmit="HandleSubmit">
-            <DataAnnotationsValidator />
+@if (!AuthStateService.IsAdmin() || !AuthStateService.IsSuperAdmin())
+{
+    <ErrorMessage Message="Du har inte behörighet att komma åt denna sida."/>
+}
+else
+{
+    <div class="content">
+        <div class="login-container">
+            <EditForm Model="@registerModel" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
 
-            <div class="login-header">
-                <img src="/images/ghost1.png" alt="Ghost" style="display: inline; width: 100px; height: 100px;" />
-                <h4 style="display:inline; color:white"><strong>Registrera ny mäklare</strong></h4>
-            </div>
+                <div class="login-header">
+                    <img src="/images/ghost1.png" alt="Ghost" style="display: inline; width: 100px; height: 100px;" />
+                    <h4 style="display:inline; color:white"><strong>Registrera ny mäklare</strong></h4>
+                </div>
 
-            <ValidationMessage For="@(() => registerModel.Email)" />
-            <InputText type="text" @bind-Value="registerModel.Email" placeholder="Email" />
-            
-            <ValidationMessage For="@(() => registerModel.Password)" />
-            <InputText type="password" @bind-Value="registerModel.Password" placeholder="Password" />
+                <ValidationMessage For="@(() => registerModel.Email)" />
+                <InputText type="text" @bind-Value="registerModel.Email" placeholder="Email" />
 
-            <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
-            <InputText type="password" @bind-Value="registerModel.ConfirmPassword" placeholder="Confirmation Password" />
+                <ValidationMessage For="@(() => registerModel.Password)" />
+                <InputText type="password" @bind-Value="registerModel.Password" placeholder="Password" />
 
-            <ValidationMessage For="@(() => registerModel.Firstname)" />
-            <InputText type="text" @bind-Value="registerModel.Firstname" placeholder="Firstname" />
+                <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+                <InputText type="password" @bind-Value="registerModel.ConfirmPassword" placeholder="Confirmation Password" />
 
-            <ValidationMessage For="@(() => registerModel.Lastname)" />
-            <InputText type="text" @bind-Value="registerModel.Lastname" placeholder="Lastname" />
-                  
+                <ValidationMessage For="@(() => registerModel.Firstname)" />
+                <InputText type="text" @bind-Value="registerModel.Firstname" placeholder="Firstname" />
 
-            <ValidationMessage For="@(() => registerModel.PhoneNumber)" />
-            <InputText type="text" @bind-Value="registerModel.PhoneNumber" placeholder="Phonenumber" />
+                <ValidationMessage For="@(() => registerModel.Lastname)" />
+                <InputText type="text" @bind-Value="registerModel.Lastname" placeholder="Lastname" />
 
-            <button type="submit" class="btn btn-success">Registrera mäklaren</button>
-            <button type="button" class="btn btn-primary" @onclick="ResetForm">Rensa formuläret</button>
-            <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
-        </EditForm>
+
+                <ValidationMessage For="@(() => registerModel.PhoneNumber)" />
+                <InputText type="text" @bind-Value="registerModel.PhoneNumber" placeholder="Phonenumber" />
+
+                <button type="submit" class="btn btn-success">Registrera mäklaren</button>
+                <button type="button" class="btn btn-primary" @onclick="ResetForm">Rensa formuläret</button>
+                <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
+            </EditForm>
+        </div>
     </div>
-</div>
+}
 
 @code {
     private RegisterModel registerModel = new RegisterModel();
@@ -110,7 +118,7 @@
         try
         {
             var adminAgent = APIService.Agents.First(s => s.Id == AuthStateService.currentUser.AgentId);
-            if(adminAgent== null)
+            if (adminAgent == null)
             {
                 ResetForm();
             }
@@ -120,15 +128,17 @@
                 if (!await APIService.RegisterAsync(registerModel))
                 {
                     // failed to register user.
+                    await JSRuntime.InvokeVoidAsync("alert", "Något gick fel.");
                 }
-
+                await JSRuntime.InvokeVoidAsync("alert", "Mäklaren har skapats.");
                 // Redirect to home page or another authorized page
                 NavigationStateService.NavigateBack();
             }
-           
+
         }
         catch (Exception ex)
         {
+            await JSRuntime.InvokeVoidAsync("alert", $"Något gick fel: {ex.Message}");
             // Handle authentication errors
             // Display error message or perform other actions
             Console.WriteLine($"Authentication error: {ex.Message}");

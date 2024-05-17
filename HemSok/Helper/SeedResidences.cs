@@ -121,7 +121,6 @@ namespace HemSok.Helper
                                                         "https://bilder.hemnet.se/images/1024x/db/d1/dbd11aac3552c04f8e3df2f0a3f6ecdb.jpg",
                                                         "https://bilder.hemnet.se/images/1024x/9c/78/9c78fe598b457ce2ad5a2350dd3010cf.jpg",
                                                         "https://bilder.hemnet.se/images/1024x/92/50/9250cccd2635ae6807698f64b3fbb7de.jpg" }
-
                     },
                     new Residence
                     {
@@ -149,7 +148,6 @@ namespace HemSok.Helper
                                                         "https://www.borgvattnet.eu/awesome/2020/06/Gra%CC%8Aterskornas-Rum-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x595.jpg",
                                                         "https://www.borgvattnet.eu/awesome/2020/06/Bla%CC%8A-Rummet-Pra%CC%88stga%CC%8Arden-892x595.jpg",
                                                         "https://www.borgvattnet.eu/awesome/2020/06/Gula-Rummet-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x595.jpg"}
-
                     },
                     new Residence
                     {
@@ -173,7 +171,6 @@ namespace HemSok.Helper
                                                         "/images/Kohrsgatu3.JPG",
                                                         "/images/Kohrsgatu2.JPG",
                                                         "/images/Kohrsgatu1.JPG"}
-
                     },
                     new Residence
                     {
@@ -196,7 +193,6 @@ namespace HemSok.Helper
                                                         "https://wp-assets.hemnet.se/wp-content/uploads/2023/11/kusligt-590.jpg",
                                                         "https://wp-assets.hemnet.se/wp-content/uploads/2023/11/kusligt-3-590.jpg",
                                                         "https://wp-assets.hemnet.se/wp-content/uploads/2023/11/kuslig-2-590.jpg"}
-
                     },
                     new Residence
                     {
@@ -219,7 +215,6 @@ namespace HemSok.Helper
                                                         "https://jasifil.se/odehus/ghosthouse/pictures/album/small/0006.jpg",
                                                         "https://jasifil.se/odehus/ghosthouse/pictures/album/small/0011.jpg",
                                                         "https://jasifil.se/odehus/ghosthouse/pictures/album/small/0009.jpg"}
-
                     },
                     new Residence
                     {
@@ -244,9 +239,7 @@ namespace HemSok.Helper
                                                         "https://jasifil.se/gummi/pictures/album/medium/0012.jpg",
                                                         "https://jasifil.se/gummi/pictures/album/medium/0016.jpg",
                                                         "https://jasifil.se/gummi/pictures/album/medium/0029.jpg"}
-
                     }
-
                 };
 
                 dbContext.Residences.AddRange(residences);

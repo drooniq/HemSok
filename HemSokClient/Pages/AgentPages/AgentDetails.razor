@@ -24,7 +24,7 @@
     {
         <button class="btn btn-primary btn-sm mt-3 mb-3 me-1" @onclick="@(() => NavigationStateService.NavigateTo($"/edit/{Agent.Id}"))"><i class="fa-solid fa-pencil"></i></button>
     }
-    @if (AuthStateService.IsAdmin() && AuthStateService?.currentUser?.AgencyId == Agent?.Agency.Id && AuthStateService?.currentUser?.AgentId != Agent?.Id || AuthStateService.IsSuperAdmin())
+    @if (AuthStateService.IsAdmin() && AuthStateService?.currentUser?.AgencyId == Agent?.Agency.Id && AuthStateService?.currentUser?.AgentId != Agent?.Id || AuthStateService.IsSuperAdmin() && AuthStateService?.currentUser?.AgentId != Agent?.Id)
     {
         <button class="btn btn-danger btn-sm mt-3 mb-3" @onclick="() => DeleteAgent(Agent.Id)"><i class="fa-regular fa-trash-can"></i></button>
     }
