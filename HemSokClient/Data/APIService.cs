@@ -83,15 +83,16 @@ namespace HemSokClient.Data
             var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
             if (content == null)
-                throw new InvalidDataException();
-            //JwtSession = content.JwtToken;         
-            //var agents = await GetAllFromApiAsync<Agent>();
+                throw new InvalidDataException();          
+            var agent = await GetFromApiAsync<Agent>("/api/agent/" + content.Id);
+
             var jwt = new JwtSecurityToken(content.JwtToken);
-            authStateService.currentUser = new CurrentUser 
+            authStateService.currentUser = new CurrentUser
             {
-               AgentId = content.Id,
-               Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value,
-               loginResponse = content
+                AgentId = content.Id,
+                Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value,
+                loginResponse = content,
+                AgencyId = agent.Agency.Id.ToString()
              };
             return authStateService.currentUser;
         }      
