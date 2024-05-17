@@ -92,7 +92,7 @@ namespace HemSokClient.Data
                 AgentId = content.Id,
                 Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value,
                 loginResponse = content,
-                AgencyId = agent.Agency.Id.ToString()
+                AgencyId = agent.Agency.Id
              };
             return authStateService.currentUser;
         }      

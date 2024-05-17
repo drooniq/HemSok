@@ -8,6 +8,6 @@ namespace HemSokClient.Models.LoginModels
         public string? AgentId { get; set; }
         public LoginResponse loginResponse { get; set; }
         public string? Role { get; set; }
-        public string? AgencyId { get; set; }
+        public int? AgencyId { get; set; }
     }
 }

@@ -9,6 +9,7 @@
 @inject INavigationStateService NavigationStateService
 @inject IAPIService APIService
 @inject IAuthStateService AuthStateService
+@inject IJSRuntime JSRuntime
 
 @* Author: Emil Waara *@
 <style>
@@ -170,6 +171,7 @@ else
             editModel.Firstname = agent.FirstName;
             editModel.Lastname = agent.LastName;
             editModel.Nickname = agent.Nickname;
+            editModel.PhoneNumber = agent.PhoneNumber;
             editModel.ImagePath = agent.ImagePath;
             editModel.agency = agent.Agency;
         }
@@ -204,6 +206,19 @@ else
 
             // MAPP editModel to agent 
             // Update agent in database thru API..
+
+            agent.Email = editModel.Email;
+            agent.FirstName = editModel.Firstname;
+            agent.LastName = editModel.Lastname;
+            agent.Nickname = editModel.Nickname;
+            agent.PhoneNumber = editModel.PhoneNumber;
+            agent.ImagePath = editModel.ImagePath;
+            agent.Agency = editModel.agency;
+
+            if (await APIService.PutToApiAsync<Agent>(agent))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Mäklaren har uppdaterats.");
+            };
 
             // Assuming you have a service to handle authentication
             //var token = await authService.Authenticate(loginModel);

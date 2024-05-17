@@ -43,7 +43,7 @@
                     <br /> <br />
                     @if(AuthStateService.IsLoggedIn())
                     {
-                            @if (residence.Agent.Id == AuthStateService?.currentUser?.AgencyId ||
+                            @if (residence.Agent.Id == AuthStateService?.currentUser?.AgentId ||
                                  AuthStateService?.currentUser?.Role == UserRoles.SuperAdmin)
                             {
                                 <button class="btn btn-primary" @onclick="()=>GoToEditResidence(residence.Id)">Redigera</button>
