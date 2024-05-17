@@ -43,8 +43,8 @@
                     <br /> <br />
                     @if(AuthStateService.IsLoggedIn())
                     {
-                            @if (residence.Agent.Id == currentAgent?.Id ||
-                                 AuthStateService.currentUser?.Role == UserRoles.SuperAdmin)
+                            @if (residence.Agent.Id == AuthStateService?.currentUser?.AgencyId ||
+                                 AuthStateService?.currentUser?.Role == UserRoles.SuperAdmin)
                             {
                                 <button class="btn btn-primary" @onclick="()=>GoToEditResidence(residence.Id)">Redigera</button>
                                 <br />  <br />
@@ -101,7 +101,6 @@ else
     [Parameter]
     public string? Id { get; set; }
     private Residence residence = new();
-    private Agent currentAgent = new();
 
     private void GoToDeleteResidence(int id)
     {
@@ -117,9 +116,7 @@ else
     {
         if (!string.IsNullOrEmpty(Id))
         {
-            residence = await apiService.GetFromApiAsync<Residence>("api/residence/" + Id);
-            if(AuthStateService.currentUser !=null)
-            currentAgent = await apiService.GetFromApiAsync<Agent>("api/agent/" + AuthStateService.currentUser.AgentId);
+            residence = await apiService.GetFromApiAsync<Residence>("api/residence/" + Id);      
         }
     }
 }

@@ -16,7 +16,7 @@
 
             @if(AuthStateService.IsLoggedIn())
             {
-                <a class="@((NavigationStateService.GetCurrentUri() == "/residence") ? "active" : "")" @onclick="@(e => NavigateToPage("/residence"))">Sälj Bostad</a>
+                <a class="@((NavigationStateService.GetCurrentUri() == "/residence") ? "active" : "")" @onclick="@(e => NavigateToPage("/residence create "))">Sälj Bostad</a>
             }
             
             <a class="@((NavigationStateService.GetCurrentUri() == "/agencylisting") ? "active" : "")" @onclick="@(e => NavigateToPage("/agencylisting"))">Mäklarfirmor</a>
@@ -38,8 +38,8 @@
             }
             else
             {
-                <a @onclick="@(e => NavigateToPage("/agencydetails"))">Min mäklarbyrå</a>
-                <a @onclick="@(e => NavigateToPage("/agentdetails"))">Min profil</a>
+                <a @onclick="@(e => NavigateToPage($"/agencydetails/{AuthStateService?.currentUser?.AgencyId}"))">Min mäklarbyrå</a>
+                <a @onclick="@(e => NavigateToPage($"/detailsagent/{AuthStateService?.currentUser?.AgentId}"))">Min profil</a>
                 <a @onclick="@Logout">Logga ut</a>
             }
 
@@ -54,6 +54,8 @@
 </div>
 
 @code {
+    private Agent currentAgent = new();
+
     private void Logout()
     {
         AuthStateService.Logout();
