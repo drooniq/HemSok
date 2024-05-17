@@ -16,7 +16,7 @@
 
             @if(AuthStateService.IsLoggedIn())
             {
-                <a class="@((NavigationStateService.GetCurrentUri() == "/residence") ? "active" : "")" @onclick="@(e => NavigateToPage("/residence create "))">Sälj Bostad</a>
+                <a class="@((NavigationStateService.GetCurrentUri() == "/residence") ? "active" : "")" @onclick="@(e => NavigateToPage("/createresidence"))">Sälj Bostad</a>
             }
             
             <a class="@((NavigationStateService.GetCurrentUri() == "/agencylisting") ? "active" : "")" @onclick="@(e => NavigateToPage("/agencylisting"))">Mäklarfirmor</a>

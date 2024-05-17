@@ -4,75 +4,136 @@
 @using System.Text
 @inject NavigationManager navigationManager
 @inject IAPIService apiService
+@inject INavigationStateService NavigationStateService
+@inject IAuthStateService AuthStateService
 
-@* Author: Marcus Karlsson*@
+@* Author: Marcus Karlsson, Emil Waara*@
 
 @page "/createresidence"
-<h3>Fyll i nyckel informationen</h3>
-
-
-<EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
-<DataAnnotationsValidator></DataAnnotationsValidator>
-<ValidationSummary></ValidationSummary>
-<label for="StreetName">Address: </label>
-<InputText id="StreetName" @bind-Value="@residence.StreetName"></InputText>
-    <br />  <br />
-<label for="City">Stad: </label>
-<InputText id="City" @bind-Value="@residence.City"></InputText>
-<br />
-<label for="ZipCode">Post Nummer: </label>
-<InputText id="ZipCode" @bind-Value="@residence.ZipCode"></InputText>
-    <br />  <br />
-<label for="ListingPrice">Utgångspris: </label>
- <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice"></InputNumber>
-    <br />  <br />
-    @if (apiService.Categories != null)
-    {<label>Välj Kategori: </label>
-      <InputSelect @bind-Value="CategoryId">
-        @foreach (var c in apiService.Categories)
-        {<option value="@c.Id">@c.Name</option>}
-        </InputSelect>
+@if (AuthStateService.IsLoggedIn())
+{  
+<style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
     }
-    <br />  <br />
-    @if (apiService.Agents != null)
-    {<label>Välj Mäklare: </label>
-      <InputSelect @bind-Value="AgentId">
-        @foreach (var c in apiService.Agents)
-        {<option value="@c.Id">@c.FirstName @c.LastName</option>}
-      </InputSelect>
+
+    .login-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        width: 400px;
     }
-    <br />  <br />
-    @if (apiService.Municipality != null)
-    {<label>Välj Kommun: </label>
-     <InputSelect @bind-Value="MunicipalityId">
-      @foreach (var c in apiService.Municipality.OrderBy(s=>s.Name))
-       {<option value="@c.Id">@c.Name</option>}
-     </InputSelect>
-    }  <br />  <br />
-    <button type="submit">Submit</button>
 
-</EditForm>
+        .login-container form input[type="text"],
+        .login-container form input[type="password"],
+        .login-container form button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
+    .content {
+        position: relative;
+        height: 500px;
+        padding: 20px;
+    }
 
+    .validation-message {
+        color: red;
+    }
+</style>
+
+<div class="content">
+    <div class="login-container">
+        <EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
+            <DataAnnotationsValidator />
+
+            <div class="login-header">
+                <img src="/images/ghost1.png" alt="Ghost" style="display: inline; width: 100px; height: 100px;" />
+                <h4 style="display:inline; color:white"><strong>Registrera Bostad</strong></h4>
+            </div>
+
+            <ValidationMessage For="@(() => residence.StreetName)" />
+            <InputText id="StreetName" @bind-Value="@residence.StreetName" placeholder="Gatunamn"/>
+                <br /><br />
+            <ValidationMessage For="@(() => residence.City)" />
+            <InputText id="City" @bind-Value="@residence.City" placeholder="Stad" />
+                <br /><br />
+            <ValidationMessage For="@(() => residence.ZipCode)" />
+            <InputText id="ZipCode" @bind-Value="@residence.ZipCode" placeholder="Postnummer" />
+                <br /><br />
+            <ValidationMessage For="@(() => residence.ListingPrice)" />         
+            <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice" placeholder="Utgångspris" />
+                <label style="font-weight: 600; font-size:inherit; color: white;">Utgångspris</label>
+            <br /><br />
+            @if (apiService.Categories != null)
+            {            
+                <InputSelect @bind-Value="CategoryId" placeholder="Kategori">
+                    @foreach (var c in apiService.Categories)
+                    {
+                        <option value="@c.Id">@c.Name</option>
+                    }
+                </InputSelect>
+                }<br /><br />
+            @if (apiService.Municipality != null)
+            {              
+                <InputSelect @bind-Value="MunicipalityId" placeholder="Kommun">
+                    @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
+                    {
+                        <option value="@c.Id">@c.Name</option>
+                    }
+                </InputSelect>
+            }
+                <br /><br />
+            <button type="submit" class="btn btn-success">Registrera Bostaden</button>
+            <button type="button" class="btn btn-primary" @onclick="ResetForm">Rensa formuläret</button>
+            <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
+        </EditForm>
+    </div>
+    </div>
+}
+else
+{
+    <p>Du har ej behörighet</p>
+}
 
 
 @code {
 
     public Residence residence = new();
     public int CategoryId{ get; set; }
-    public string AgentId { get; set; }
     public int MunicipalityId { get; set; }
-   
+    
+    
+    private void ResetForm()
+    {
+        residence = new Residence();
+    }
+
+    private void Abort()
+    {
+        NavigationStateService.NavigateBack();
+    }
 
     private async Task HandleFormSubmit(EditContext context)
     {              
-        residence.Agent = apiService.Agents.FirstOrDefault(s => s.Id == AgentId);
+        residence.Agent = apiService.Agents.FirstOrDefault(s => s.Id == AuthStateService?.currentUser?.AgentId);
         residence.Category = apiService.Categories.FirstOrDefault(s => s.Id == CategoryId);
         residence.Municipality = apiService.Municipality.FirstOrDefault(s => s.Id == MunicipalityId);
       
         if (await apiService.PostToApiAsync<Residence>(residence))
         {
-            navigationManager.NavigateTo("/residence");
+            navigationManager.NavigateTo($"/detailsagent/{AuthStateService?.currentUser?.AgentId}");
         }     
         //Redirecta till edit sida, för att fylla ut fullständig information!
     }
@@ -83,8 +144,7 @@
         apiService.Categories = await apiService.GetAllFromApiAsync<Category>();
         CategoryId = apiService.Categories[0].Id;
 
-        apiService.Agents = await apiService.GetAllFromApiAsync<Agent>();
-        AgentId = apiService.Agents[0].Id;
+        apiService.Agents = await apiService.GetAllFromApiAsync<Agent>();  
 
         apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
         MunicipalityId = apiService.Municipality[0].Id;
