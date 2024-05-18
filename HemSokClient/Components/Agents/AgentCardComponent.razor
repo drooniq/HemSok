@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
+@inject IAuthStateService AuthStateService
 
 @if (Agent != null)
 {
@@ -42,7 +43,7 @@
 }
 else
 {
-    <p>Mäklarna kommer vid midnatt</p>
+    <ErrorMessage Message="Mäklarna kommer vid midnatt"/>
 }
 
 @code {

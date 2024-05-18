@@ -19,9 +19,12 @@
     <div class="container">
         @foreach (var agent in agents)
         {
-            <div @onclick="@(() => NavigationStateService.NavigateTo($"/detailsagent/{agent.Id}"))">
-                <AgentCardComponent Agent="@agent" Residences="residences"></AgentCardComponent>
-            </div>
+            if (AuthStateService.IsSuperAdmin())
+            {
+                <div @onclick="@(() => NavigationStateService.NavigateTo($"/detailsagent/{agent.Id}"))">
+                    <AgentCardComponent Agent="@agent" Residences="residences"></AgentCardComponent>
+                </div>
+            }
         }
     </div>
 }
