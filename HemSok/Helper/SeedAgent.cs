@@ -28,9 +28,9 @@ namespace HemSok.Helper
                         Lastname = "Admin",
                         Agency = agencies[0],
                         Nickname = "Slimer",
-                        Email = "SuperAdmin@SuperAdmin.com",
-                        Username = "SuperAdmin@SuperAdmin.com",
-                        Password = "SuperAdmin@1234",
+                        Email = "super@super.se",
+                        Username = "super@super.se",
+                        Password = "Super@1",
                         Role = "SuperAdmin",
                         ImagePath = "http://www.solidimagearts.com/Digital/Digital_Images/slimer.jpg"
                     },

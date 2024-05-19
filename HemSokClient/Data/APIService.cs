@@ -71,29 +71,31 @@ namespace HemSokClient.Data
         }
 
         // Login logik för api
-
         public async Task<CurrentUser> LoginAsync(LoginModel model)
         {
             var response = await Factory.CreateClient("CustomClient")
                                         .PostAsync("api/account/login", JsonContent.Create(model));
-
+            
+            Console.WriteLine(response.ToString());
+            
             if (!response.IsSuccessStatusCode)
                 throw new UnauthorizedAccessException("Login failed.");
 
             var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
             if (content == null)
-                throw new InvalidDataException();          
+                throw new InvalidDataException();        
+            
             var agent = await GetFromApiAsync<Agent>("/api/agent/" + content.Id);
 
             var jwt = new JwtSecurityToken(content.JwtToken);
-            authStateService.currentUser = new CurrentUser
+            authStateService.Login( new CurrentUser
             {
                 AgentId = content.Id,
                 Role = jwt.Claims.First(s => s.Type == ClaimTypes.Role).Value,
                 loginResponse = content,
                 AgencyId = agent.Agency.Id
-             };
+             });
             return authStateService.currentUser;
         }      
         public async Task<bool> RegisterAsync(RegisterModel model)

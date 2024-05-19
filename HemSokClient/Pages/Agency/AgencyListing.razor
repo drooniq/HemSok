@@ -3,102 +3,65 @@
 @using System.Net.Http.Json
 @using System.Text.Json
 @inject IAPIService apiService
+@inject IAuthStateService AuthStateService
 @inject INavigationStateService NavigationStateService
 
 @* Author: Emil Waara*@
  <style>
-    body {
-        font-size: 0.7rem;
-    }
-
-    .btn {
-        font-size: 0.7rem;
-        padding: 5px;
-    }
-
     .agencyLogo {
         max-width: 6rem;
         border-radius: 10%;
         max-width: 4rem;
     }
+
+    .agenciesContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 80%;
+    }
+
+    .agencyButton {
+        padding: 15px;
+    }
+
+    .agencyMainContainer {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 15px;
+    }
 </style>
 
-<h3>Mäklarfirmor</h3>
-<button class="btn btn-primary" @onclick="GoToCreateAgencyPage">Lägg till ny mäklarfirma</button>
 
 @if (apiService.Agencies != null)
 {
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Namn            <i class="fa-solid fa-sort" @onclick="() => SortTable(0)"></i></th>
-                <th>Beskrivning     <i class="fa-solid fa-sort" @onclick="() => SortTable(1)"></i></th>
-                <th>Address         <i class="fa-solid fa-sort" @onclick="() => SortTable(2)"></i></th>
-                <th>Telefonnummer   <i class="fa-solid fa-sort" @onclick="() => SortTable(3)"></i></th>
-                <th>Email           <i class="fa-solid fa-sort" @onclick="() => SortTable(4)"></i></th>
-                <th>Webbsida        <i class="fa-solid fa-sort" @onclick="() => SortTable(5)"></i></th>
-                <th>Logo</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var agency in apiService.Agencies)
+    <div class="agencyMainContainer">
+
+        @if (AuthStateService.IsSuperAdmin())
+        {
+            <button class="btn btn-primary agencyButton" @onclick="GoToCreateAgencyPage">Skapa ny mäklarfirma</button>
+        }
+
+        <div class="agenciesContainer">
+            @foreach(var agency in apiService.Agencies)
             {
-                <tr class="row-hover" @onclick="() => GoToDetailsAgencyPage(agency.Id)">
-                    <td>@agency.Name</td>
-                    <td>@agency.Description</td>
-                    <td>@agency.Address</td>
-                    <td>@agency.PhoneNumber</td>
-                    <td>@agency.Email</td>
-                    <td>@agency.Website</td>
-                    <td><img class="agencyLogo"src="@agency.ImagePath" alt="Profilbild" style="" /></td>
-                    <td>
-                        <a class="btn btn-primary btn-sm" @onclick="@(() => Navigate("/editagency/" + @agency.Id))"><i class="fa-solid fa-pencil"></i></a>
-                        <a class="btn btn-secondary btn-sm" @onclick="@(() => Navigate("/agencydetails/" + @agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
-                        <a class="btn btn-danger btn-sm" @onclick="@(() => Navigate("/deleteagency/" + @agency.Id))"><i class="fa-regular fa-trash-can"></i></a>
-                    </td>
-                </tr>
+                <AgencyCard AgencyId="@agency.Id"/>
             }
-        </tbody>
-    </table>
+        </div>
+    </div>
 }
 else
 {
-    <p>Har inga uppgifter på några mäklarfirmor.</p>
+    <ErrorMessage Message="Tyvärr, det verkar inte finnas några mäklarbyråer att visa" />
 }
 
 
 @code {
-    private List<Residence> residences { get; set; }
-
     private void Navigate(string uri)
     {
         NavigationStateService.NavigateTo(uri);
-    }
-
-    protected void SortTable(int column)
-    {
-        switch(column)
-        {
-            case 0:
-                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Name).ToList();
-                break;
-            case 1:
-                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Description).ToList();
-                break;
-            case 2:
-                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Address).ToList();
-                break;
-            case 3:
-                apiService.Agencies = apiService.Agencies.OrderBy(x => x.PhoneNumber).ToList();
-                break;
-            case 4:
-                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Email).ToList();
-                break;
-            case 5:
-                apiService.Agencies = apiService.Agencies.OrderBy(x => x.Website).ToList();
-                break;
-        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -108,15 +71,11 @@ else
 
     private void GoToDetailsAgencyPage(int id)
     {       
-        Console.WriteLine("AgencyListing - before navigation to detailsAgency::");
-        Console.WriteLine(NavigationStateService.ToString());
         NavigationStateService.NavigateTo($"/agencydetails/{id.ToString()}");
     }
 
     private void GoToCreateAgencyPage()
     {
-        Console.WriteLine("AgencyListing - before navigation to createAgency::");
-        Console.WriteLine(NavigationStateService.ToString());
         NavigationStateService.NavigateTo("/addagency");
     }
 
