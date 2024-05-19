@@ -6,7 +6,7 @@ namespace HemSokClient.Data
     public interface INavigationStateService
     {
         string GetCurrentUri();
-        void NavigateBack();
+        bool NavigateBack();
         void NavigateTo(string uri);
         string ToString();
     }

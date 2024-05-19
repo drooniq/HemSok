@@ -3,139 +3,112 @@
 @inject INavigationStateService NavigationStateService
 
 <style>
-    .card {
-        width: 30rem;
-        height: 20rem;
-        margin: 1rem;
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
-        border: 1px solid black;
-        transition: 0.3s ease;
-        color: black;
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: rgba(255, 255, 255, 0.6);
-        border-radius: 15px;
-        overflow: hidden;
-        cursor: pointer;
+    .card-header {
+        display: flex;
+        align-items: center;
     }
 
-    .card:hover {
-        transform: translateY(-15px);
-        box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.6);
+    .card-header-left {
+        flex: 1;
+        padding-left: 10px;
     }
 
-    .card-body {
-        padding: 0.5rem;
+    .card-header-right img {
+        height: 3rem;
+        border-radius: 5px;
+        margin-right: 15px;
     }
 
     .card-footer {
+        align-items: center;
         padding: 0.5rem;
-        display: flex;
-        justify-content: right;
-        align-items: right;
         background-color: rgb(27, 29, 42);
-        border-bottom-left-radius: 15px; 
-        border-bottom-right-radius: 15px; 
     }
 
-        .card-footer a {
-            margin-left: 5px;
-        }
-
-    .card-title {
-        padding: 0px;
-        margin: 0px;
-        display: flex;
+    .card-footer-left {
     }
 
-    .card-title-left, .card-title-left h5 {
+    .card-footer-right {
         display: flex;
-        justify-content: center;
-        align-items: center;
         flex: 1;
-        font-size: x-large;
-        font-weight: 800;
-        padding: 5px;
-        height: 4rem;
+        justify-content: right;
     }
 
-    .card-title-right {
-        height: 4 rem;
-        display: flex;
-        align-items: center;
+    .card-footer a {
+        margin-left: 5px;
     }
 
-    .card-title-right img {
-        border-radius: 3px;
+    .card-footer-left, .card-footer-left a {
+        text-decoration: none;
+        color: white;
     }
 
-    .card-image-top {
-        max-height: 3rem;
-    }
-    
-    .card-text {
-        margin-top: 1rem;
+    .card-body {
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        text-align: center; 
     }
 
-    .card-text h3, h4, h5 {
+    .card-body-top {
+        height: 2.5rem;
         margin: 0px;
         padding: 0px;
     }
 
-    .card-text p {
-        margin-top: 0.5rem;
-    }
-
-    .card-text a {
-        color: darkblue;
-        text-decoration: none;
-    }
-
-    .card-text a:hover {
-        color: lightblue;
+    .card-body-bottom {
+        flex: 1;
     }
 </style>
 
 @if(agency != null)
 {
-    <div class="card" onclick="@GoDetails">
-        <div class="card-body">
-            <div class="card-title">
-                <div class="card-title-left">
-                    <h5>
-                        @agency.Name
-                    </h5>
-                </div>
-                <div class="card-title-right">
-                    <img src="@agency.ImagePath" alt="..." class="card-image-top" />
-                </div>
+    <div class="card" onclick="@GoDetails" style="width: 34rem; height: 17rem">
+
+        <div class="card-header card-dark" style="height: 5rem;">
+            <div class="card-header-left">
+                <h3>
+                    @agency.Name<br/>
+                </h3>
             </div>
-            <div class="card-text">
+
+            <div class="card-header-right">
+                <img src="@agency.ImagePath" alt="..." />
+            </div>
+        </div>
+
+        <div class="card-body card-light-transparent">
+            <div class="card-body-top">
                 <h3 style="text-align: center; font-weight: 900; margin: 0; padding: 0; margin-bottom: 0.5rem;">
                     @agency.PhoneNumber
                 </h3>
-                <h5 style="text-align: center;">
-                    <a><i class="fa-solid fa-globe"></i> @agency.Website</a>
-                </h5>
-                <h5 style="text-align: center;">
-                    <a style="text-decoration: none;" href="mailto: @agency.Email"><i class="fa-regular fa-envelope"></i>  @agency.Email</a>
-                </h5>
-                <p>
+            </div>
+            <div class="card-body-bottom">
+                <h5>
                     @agency.Description
-                </p>
+                </h5>
             </div>
         </div>
-        <div class="card-footer">
-            @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin())
-            {
-                <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/agencyedit/" + agency.Id))">Edit</a>
-            }
 
-            <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))">Details</a>
+        <div class="card-footer card-dark">
+            <div class="card-footer-left">
+                <a href="@agency.Website"><i class="fa-solid fa-globe"></i></a>
+                <a href="mailto: @agency.Email"><i class="fa-regular fa-envelope"></i></a>
+            </div>
 
-            @if (AuthStateService.IsSuperAdmin())
-            {
-                <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))">Delete</a>
-            }
+            <div class="card-footer-right">
+                @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin())
+                {
+                    <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/agencyedit/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
+                }
+
+                <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
+
+                @if (AuthStateService.IsSuperAdmin())
+                {
+                    <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
+                }
+            </div>
         </div>
     </div>
 }

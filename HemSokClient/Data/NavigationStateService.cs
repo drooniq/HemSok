@@ -25,15 +25,16 @@ namespace HemSokClient.Data
             return absoluteUri.AbsolutePath;
         }
 
-        public void NavigateBack()
+        public bool NavigateBack()
         {
             if (history.Count == 1)
-                return;
+                return false;
 
             history.Pop();
             var previous = history.Peek();
 
             navigationManager.NavigateTo(previous);
+            return true;
         }
 
         public void NavigateTo(string uri)
