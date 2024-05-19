@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 /*
  Author: Emil Waara
@@ -26,7 +27,7 @@ namespace HemSokClient.Data
 
         public void NavigateBack()
         {
-            if (history.Count <= 1)
+            if (history.Count == 1)
                 return;
 
             history.Pop();
@@ -38,7 +39,14 @@ namespace HemSokClient.Data
         public void NavigateTo(string uri)
         {
             history.Push(uri);
-            navigationManager.NavigateTo(uri);
+            if(uri.Contains(GetCurrentUri()))
+            {
+                navigationManager.NavigateTo(uri, forceLoad: true);
+            }
+            else
+            {
+                navigationManager.NavigateTo(uri);
+            }
         }
 
         public override string ToString()
