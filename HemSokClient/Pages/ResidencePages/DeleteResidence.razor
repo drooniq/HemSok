@@ -5,17 +5,24 @@
 @page "/deleteresidence/{id}"
 <PageTitle>Ta bort Bostad</PageTitle>
 @* Author: Marcus Karlsson*@
-@if (AuthStateService.IsLoggedIn())
-{
-    <h3style ="font-weight: 600; font-size:inherit; color: white;">Ta bort bostad!</h3style>
 
-    <pstyle ="font-weight: 600; font-size:inherit; color: white;">Är du säker på att du vill ta bort denna bostad?</pstyle>
+<style>
+    .deletecontainer{
+        display:flex;
+        flex-direction:row;
+    }
+</style>
+@if (AuthStateService.IsLoggedIn())
+{  
+
+    <p style ="font-weight: 600; font-size:inherit; color: white;">Är du säker på att du vill ta bort denna bostad?</p>
 @if (residence != null)
-{
-    <EditForm Model="@residence">
-        <button class="btn btn-danger" @onclick="DeleteResidences">Ta bort</button>
-    </EditForm>
-   
+{     
+             <div class="deletecontainer">
+            <button class="btn btn-danger btn-lg" @onclick="DeleteResidences">Ja! Ta Bort</button>  
+            <button style="margin-left:1rem;" type="button" class="btn btn-primary btn-lg" @onclick="Back">Nej! Gå Tillbaka</button>
+        </div>
+        <ResidenceCardComponent residence="residence"></ResidenceCardComponent>
 }
 else
 {
@@ -45,7 +52,10 @@ else
 
         // }
     }
-
+    private void Back()
+    {
+        NavigationStateService.NavigateBack();
+    }
     protected override async Task OnInitializedAsync()
     {
         if (!string.IsNullOrEmpty(Id))
