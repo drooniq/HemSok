@@ -1,7 +1,9 @@
 ﻿/*
  Author: Emil Waara
  */
+using HemSokClient.Models;
 using HemSokClient.Models.LoginModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace HemSokClient.Data
 {

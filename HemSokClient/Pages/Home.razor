@@ -1,5 +1,4 @@
 ﻿@page "/"
-@inject IAPIService APIService
 
 <PageTitle>HemSök</PageTitle>
 
@@ -55,39 +54,5 @@
             Allt ifrån villor till lägenheter.
             Vi har allt ni behöver för att hitta ert drömboende.
         </p>
-       @*  <p>
-            På denna sida kan ni söka efter bostäder till salu.
-            Allt ifrån villor till lägenheter.
-            Vi har allt ni behöver för att hitta ert drömboende.
-        </p>
-        <p>
-            På denna sida kan ni söka efter bostäder till salu.
-            Allt ifrån villor till lägenheter.
-            Vi har allt ni behöver för att hitta ert drömboende.
-        </p> *@
-
-        <AgencyCard AgencyId="4"></AgencyCard>
-        <AgencyCard AgencyId="5"></AgencyCard>
-        <div class="m-2">
-            <ErrorMessage Message="Nä nu!!" />
-            <SuccessMessage Message="Lyckan är gjord!"/>
-            <InfoMessage Message="Det hände en grej..."/>
-        </div>
     </div>
 </div>
-
-
-@* <Starting5Component numberOfObjects="5"></Starting5Component> *@
-@* <ShowResidenceComponent></ShowResidenceComponent> *@
-
-
-
-@code {
-
-    protected override async Task OnInitializedAsync()
-    {
-    }
-}
-
-
-

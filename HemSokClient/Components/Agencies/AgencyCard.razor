@@ -4,16 +4,18 @@
 
 <style>
     .card {
-        width: 36rem;
-        height: 22rem;
+        width: 30rem;
+        height: 20rem;
         margin: 1rem;
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
         border: 1px solid black;
         transition: 0.3s ease;
         color: black;
         font-family: Arial, Helvetica, sans-serif;
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.6);
         border-radius: 15px;
+        overflow: hidden;
+        cursor: pointer;
     }
 
     .card:hover {
@@ -26,28 +28,18 @@
     }
 
     .card-footer {
-        background-color: rgba(200,200,200,0.7);
         padding: 0.5rem;
         display: flex;
         justify-content: right;
         align-items: right;
+        background-color: rgb(27, 29, 42);
+        border-bottom-left-radius: 15px; /* Match the parent's border radius */
+        border-bottom-right-radius: 15px; /* Match the parent's border radius */
     }
 
-    .card-footer-image {
-        max-height: 2rem;
-        max-width: 4rem;
-        display: inline;
-    }
-
-    .left-footer {
-        padding: 0px;
-        flex: 1;
-    }
-
-    .right-footer {
-        padding: 0px;
-        max-width: 4rem;
-    }
+        .card-footer a {
+            margin-left: 5px;
+        }
 
     .card-title {
         padding: 0px;
@@ -60,47 +52,52 @@
         justify-content: center;
         align-items: center;
         flex: 1;
-        font-size: xx-large;
+        font-size: x-large;
         font-weight: 800;
         padding: 5px;
+        height: 4rem;
     }
 
     .card-title-right {
-        max-width: 10rem;
+        height: 4 rem;
+        display: flex;
+        align-items: center;
     }
 
     .card-title-right img {
-        border-radius: 10px;
+        border-radius: 3px;
+    }
+
+    .card-image-top {
+        max-height: 3rem;
     }
     
+    .card-text {
+        margin-top: 1rem;
+    }
+
     .card-text h3, h4, h5 {
         margin: 0px;
         padding: 0px;
     }
 
     .card-text p {
-        font-size: 1.2rem;
+        margin-top: 0.5rem;
     }
 
     .card-text a {
         color: darkblue;
+        text-decoration: none;
     }
 
     .card-text a:hover {
         color: lightblue;
     }
-
-    .card-footer a {
-        margin-left: 5px;
-    }
-
 </style>
 
 @if(agency != null)
 {
-    <div class="card">
-        <div class="card-img-container">
-        </div>
+    <div class="card" onclick="@GoDetails">
         <div class="card-body">
             <div class="card-title">
                 <div class="card-title-left">
@@ -109,39 +106,37 @@
                     </h5>
                 </div>
                 <div class="card-title-right">
-                    <h5>
-                        <img src="@agency.ImagePath" alt="..." class="card-img-top" />
-                    </h5>
+                    <img src="@agency.ImagePath" alt="..." class="card-image-top" />
                 </div>
             </div>
             <div class="card-text">
-                <h3 style="text-align: center; font-weight: 900; margin: 0; padding: 0;">
+                <h3 style="text-align: center; font-weight: 900; margin: 0; padding: 0; margin-bottom: 0.5rem;">
                     @agency.PhoneNumber
                 </h3>
-                <h4 style="font-size: 1rem;text-align: center;">
-                    <a style="text-decoration: none;"><i class="fa-solid fa-globe"></i> @agency.Website</a>
-                </h4>
-                <h4 style="font-size: 1rem;text-align: center;">
+                <h5 style="text-align: center;">
+                    <a><i class="fa-solid fa-globe"></i> @agency.Website</a>
+                </h5>
+                <h5 style="text-align: center;">
                     <a style="text-decoration: none;" href="mailto: @agency.Email"><i class="fa-regular fa-envelope"></i>  @agency.Email</a>
-                </h4>
+                </h5>
                 <p>
                     @agency.Description
                 </p>
             </div>
         </div>
-            <div class="card-footer">
-                @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin())
-                {
-                    <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/agencyedit/" + agency.Id))">Edit</a>
-                }
+        <div class="card-footer">
+            @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin())
+            {
+                <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/agencyedit/" + agency.Id))">Edit</a>
+            }
 
-                <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))">Details</a>
+            <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))">Details</a>
 
-                @if (AuthStateService.IsSuperAdmin())
-                {
-                    <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))">Delete</a>
-                }
-            </div>
+            @if (AuthStateService.IsSuperAdmin())
+            {
+                <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))">Delete</a>
+            }
+        </div>
     </div>
 }
 
@@ -156,6 +151,11 @@
     {
         agency = await APIService.GetFromApiAsync<Agency>("/api/agency/" + AgencyId);
         GetAgent();
+    }
+
+    public void GoDetails()
+    {
+        NavigationStateService.NavigateTo("/agencydetails/" + agency?.Id);
     }
 
     private async Task GetAgent()
