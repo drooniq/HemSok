@@ -1,97 +1,101 @@
 ﻿@inject IAPIService apiService
 @inject NavigationManager navigationManager
 @inject IAuthStateService AuthStateService
+@inject INavigationStateService NavigationStateService
 @page "/editresidence/{id}"
 
 @* Author: Marcus Karlsson*@
 @if (AuthStateService.IsLoggedIn())
 {
-<h3>Fyll i all information om bostaden</h3>
+    <div class="card">
+        <div class="editinfores">
+            <h3>Fyll i all information om bostaden</h3>
+            <EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+                <ValidationSummary></ValidationSummary>
+                <InputText id="StreetName" @bind-Value="@residence.StreetName"></InputText> <label for="StreetName">Address</label>
+                <br /> <br />
+                <InputText id="City" @bind-Value="@residence.City"></InputText>
+                <label for="City">Stad </label>
+                <br /> <br />
+                <InputText id="ZipCode" @bind-Value="@residence.ZipCode"></InputText>
+                <label for="ZipCode">Post Nummer</label>
+                <br />   <br />
+                <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice"></InputNumber>
+                <label for="ListingPrice">Utgångspris</label>
+                <br /> <br />
+                @if (apiService.Categories != null)
+                {
+                   
+                    <InputSelect @bind-Value="CategoryId">
+                        @foreach (var c in apiService.Categories)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </InputSelect> <label>Välj Kategori</label>
+                }
+                <br /> <br />
+                @if (apiService.Municipality != null)
+                {
+                   
+                    <InputSelect @bind-Value="MunicipalityId">
+                        @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </InputSelect>
+                    <label>Välj Kommun </label>
+                }
+                <br /> <br />
+                <InputNumber id="Rooms" @bind-Value="@residence.Rooms"></InputNumber>
+                <label for="Rooms">Antal Rum </label>
+                <br /> <br />
+                <InputNumber id="ConstructionYear" @bind-Value="@residence.ConstructionYear"></InputNumber>
+                <label for="ConstructionYear">Byggår</label>
+                <br /> <br />
+                <InputNumber id="LivingArea" @bind-Value="@residence.LivingArea"></InputNumber>
+                <label for="LivingArea">Boarea </label>
+                <br /> <br />
+                
+                <InputNumber id="BiArea" @bind-Value="@residence.BiArea"></InputNumber>
+                <label for="BiArea">Biarea </label>
+                <br /> <br />              
+                <InputNumber id="PlotArea" @bind-Value="@residence.PlotArea"></InputNumber>
+                <label for="PlotArea">Tomtarea</label>
+                <br /> <br />           
+                <InputNumber id="MonthlyFee" @bind-Value="@residence.MonthlyFee"></InputNumber>
+                <label for="MonthlyFee">Månadskostnad</label>
+                <br /> <br />              
+                <InputNumber id="OperationCost" @bind-Value="@residence.OperationCost"></InputNumber>
+                <label for="OperationCost">Driftkostnad</label>
+                <br /> <br />            
+                <InputText id="Description" @bind-Value="@residence.Description"></InputText>
+                <label for="Description">Beskrivning</label>
+                <br /> <br />
+                <CascadingValue Value="@residence">
+                    <AddImageComponent></AddImageComponent>
+                </CascadingValue>
+                <button type="submit" class="btn btn-success">Verkställ</button>
+                <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
 
-<EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
-    <DataAnnotationsValidator></DataAnnotationsValidator>
-    <ValidationSummary></ValidationSummary>
-    <label for="StreetName">Address: </label>
-    <InputText id="StreetName" @bind-Value="@residence.StreetName"></InputText>
-    <br /> <br />
-    <label for="City">Stad: </label>
-    <InputText id="City" @bind-Value="@residence.City"></InputText>
-    <br /> <br />
-    <label for="ZipCode">Post Nummer: </label>
-    <InputText id="ZipCode" @bind-Value="@residence.ZipCode"></InputText>
-    <br />
-    <label for="ListingPrice">Utgångspris: </label>
-    <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice"></InputNumber>
-    <br /> <br />
-    @if (apiService.Categories!=null)
-    {
-        <label>Välj Kategori: </label>
-        <InputSelect @bind-Value="CategoryId">
-            @foreach (var c in apiService.Categories)
-            {
-                <option value="@c.Id">@c.Name</option>
-            }
-        </InputSelect>
-    }   
-    <br /> <br />
-    @if (apiService.Agents!=null)
-    {
-        <label>Välj Mäklare: </label>
-        <InputSelect @bind-Value="AgentId">
-            @foreach (var c in apiService.Agents)
-            {
-                <option value="@c.Id">@c.FirstName @c.LastName</option>
-            }
-        </InputSelect>
-    } 
-    <br /> <br />
-    @if (apiService.Municipality!=null)
-    {
-        <label>Välj Kommun: </label>
-        <InputSelect @bind-Value="MunicipalityId">
-            @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
-            {
-                <option value="@c.Id">@c.Name</option>
-            }
-        </InputSelect>
-    }  
-    <br /> <br />
-    <label for="Rooms">Antal Rum: </label>
-    <InputNumber id="Rooms" @bind-Value="@residence.Rooms"></InputNumber>
-    <br /> <br />
-    <label for="ConstructionYear">Byggår: </label>
-    <InputNumber id="ConstructionYear" @bind-Value="@residence.ConstructionYear"></InputNumber>
-    <br /> <br />
-    <label for="LivingArea">Boarea: </label>
-    <InputNumber id="LivingArea" @bind-Value="@residence.LivingArea"></InputNumber>
-    <br /> <br />
-    <label for="BiArea">Biarea: </label>
-    <InputNumber id="BiArea" @bind-Value="@residence.BiArea"></InputNumber>
-    <br /> <br />
-    <label for="PlotArea">Tomtarea: </label>
-    <InputNumber id="PlotArea" @bind-Value="@residence.PlotArea"></InputNumber>
-    <br /> <br />
-    <label for="MonthlyFee">Månadskostnad: </label>
-    <InputNumber id="MonthlyFee" @bind-Value="@residence.MonthlyFee"></InputNumber>
-    <br /> <br />
-    <label for="OperationCost">Driftkostnad: </label>
-    <InputNumber id="OperationCost" @bind-Value="@residence.OperationCost"></InputNumber>
-    <br /> <br />
-    <label for="Description">Beskrivning: </label>
-    <InputText id="Description" @bind-Value="@residence.Description"></InputText>
-    <br /> <br />
-    <CascadingValue Value="@residence">
-        <AddImageComponent></AddImageComponent>
-    </CascadingValue>
-    <button type="submit">Submit</button>
-
-    </EditForm>
+            </EditForm>
+        </div>
+    </div>
 }
 else
 {
     <p>Du har inte spökenas tillåtelse att gå hit.</p>
 }
-
+<style>
+    .card {
+        width: 65rem;
+        height: 100rem;
+        margin: 1rem;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
+        border: 1px solid black;
+        transition: 0.3s ease;
+    }
+</style>
 
 @code {
 
@@ -112,26 +116,25 @@ else
 
         if (await apiService.PutToApiAsync<Residence>(residence))
         {
-            navigationManager.NavigateTo("/residence");
-        }       
+            navigationManager.NavigateTo($"/detailsagent/{AuthStateService?.currentUser?.AgentId}");
+        }
 
-        //Redirecta till edit sida, för att fylla ut fullständig information!
     }
-
+    private void Abort()
+    {
+        NavigationStateService.NavigateBack();
+    }
     protected override async Task OnInitializedAsync()
     {
         if (!string.IsNullOrEmpty(Id))
-        {      
-            residence = await apiService.GetFromApiAsync<Residence>("api/residence/" + Id);     
+        {
+            residence = await apiService.GetFromApiAsync<Residence>("api/residence/" + Id);
         }
         apiService.Categories = await apiService.GetAllFromApiAsync<Category>();
         CategoryId = residence.Category.Id;
 
-        apiService.Agents = await apiService.GetAllFromApiAsync<Agent>();
-        AgentId = residence.Agent.Id;
-
         apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
         MunicipalityId = residence.Municipality.Id;
- 
+
     }
 }

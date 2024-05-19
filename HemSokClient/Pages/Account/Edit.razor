@@ -132,13 +132,13 @@
 }
 else
 {
-        <p>Kunde inte hitta någon mäklare med det IDt, eller så saknas ID.</p>
+        <ErrorMessage Message="Kunde inte hitta någon mäklare med det IDt, eller så saknas ID."/>
     }
 
 }
 else
 {
-    <p>Du har inte spökenas tillåtelse att gå hit.</p>
+    <ErrorMessage Message="Du har inte spökenas tillåtelse att gå hit." />
 }
 @code {
     [Parameter]

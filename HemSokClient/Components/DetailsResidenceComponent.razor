@@ -1,6 +1,7 @@
 ﻿@inject NavigationManager NavigationManager
 @inject IAPIService apiService
 @inject IAuthStateService AuthStateService
+@inject INavigationStateService NavigationStateService
 
 @* Author: Marcus Karlsson*@
 
@@ -52,7 +53,8 @@
                                 <br />
                                 <br />
                             }     
-                    }            
+                    }
+                        <button type="button" class="btn btn-primary" @onclick="Back">Tillbaka</button>
             </div>
         </div>
         </div>
@@ -106,7 +108,10 @@ else
     {
         NavigationManager.NavigateTo($"/deleteresidence/{id.ToString()}");
     }
-
+    private void Back()
+    {
+        NavigationStateService.NavigateBack();
+    }
     private void GoToEditResidence(int id)
     {
         NavigationManager.NavigateTo($"/editresidence/{id.ToString()}");

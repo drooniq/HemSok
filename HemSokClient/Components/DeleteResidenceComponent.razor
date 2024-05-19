@@ -6,9 +6,9 @@
 @* Author: Marcus Karlsson*@
 @if (AuthStateService.IsLoggedIn())
 {
-<h3>Ta bort bostad!</h3>
+    <h3style ="font-weight: 600; font-size:inherit; color: white;">Ta bort bostad!</h3style>
 
-<p>Är du säker på att du vill ta bort denna bostad?</p>
+    <pstyle ="font-weight: 600; font-size:inherit; color: white;">Är du säker på att du vill ta bort denna bostad?</pstyle>
 @if (residence != null)
 {
     <EditForm Model="@residence">
@@ -37,7 +37,7 @@ else
         // var post = await httpClient.DeleteAsync($"api/Residence/{residence.Id}");
         if (await apiService.DeleteFromApiAsync<Residence>("api/Residence/" + residence.Id, residence))
          {
-             navigationManager.NavigateTo("/residence");
+            navigationManager.NavigateTo("/filterresidences");
          }
         // else
         // {
