@@ -1,8 +1,9 @@
 ﻿@inject NavigationManager navigationManager
 @inject IAPIService apiService
 @inject IAuthStateService AuthStateService
+@inject INavigationStateService NavigationStateService
 @page "/deleteresidence/{id}"
-
+<PageTitle>Ta bort Bostad</PageTitle>
 @* Author: Marcus Karlsson*@
 @if (AuthStateService.IsLoggedIn())
 {
@@ -12,7 +13,7 @@
 @if (residence != null)
 {
     <EditForm Model="@residence">
-        <button class="btn btn-danger" @onclick="DeleteResidence">Ta bort</button>
+        <button class="btn btn-danger" @onclick="DeleteResidences">Ta bort</button>
     </EditForm>
    
 }
@@ -32,7 +33,7 @@ else
 
     private Residence? residence;
 
-    private async Task DeleteResidence()
+    private async Task DeleteResidences()
     {     
         // var post = await httpClient.DeleteAsync($"api/Residence/{residence.Id}");
         if (await apiService.DeleteFromApiAsync<Residence>("api/Residence/" + residence.Id, residence))
