@@ -20,7 +20,7 @@ namespace HemSok.Helper
                     {
                         Category = categories[2],
                         StreetName = "Godegård 52",
-                        City = "",
+                        City = "Motala",
                         ZipCode = "12345",
                         Municipality = municipalities[53],
                         Agent = agents[4],
@@ -121,33 +121,6 @@ namespace HemSok.Helper
                                                         "https://bilder.hemnet.se/images/1024x/db/d1/dbd11aac3552c04f8e3df2f0a3f6ecdb.jpg",
                                                         "https://bilder.hemnet.se/images/1024x/9c/78/9c78fe598b457ce2ad5a2350dd3010cf.jpg",
                                                         "https://bilder.hemnet.se/images/1024x/92/50/9250cccd2635ae6807698f64b3fbb7de.jpg" }
-                    },
-                    new Residence
-                    {
-                        Category = categories[2],
-                        StreetName = "Borgvattnet 760",
-                        City = "Stugun",
-                        ZipCode = "83076",
-                        Municipality = municipalities[253],
-                        Agent = agents[8],
-                        ListingPrice = 395000,
-                        Rooms = 6,
-                        LivingArea = 140,
-                        BiArea = 100,
-                        PlotArea =  6338,
-                        MonthlyFee = 0,
-                        OperationCost = 4300,
-                        ConstructionYear = 1876,
-                        Description = "Välkommen till Borgvattnet 760, hem för den historiska och spännande Borgvattnets Prästgård. Denna anrika byggnad, belägen i den pittoreska byn Borgvattnet, cirka 10 mil från Östersund, erbjuder en unik affärsmöjlighet för den rätta köparen. Byggd 1876, är denna prästgård känd för sina övernaturliga fenomen och har varit en populär destination för de som söker spänning och äventyr. Med rumsbokning tillgänglig för de modiga, erbjuder denna fastighet en unik inkomstmöjlighet. Utöver Prästgården, ingår också Prästgårdens Café, som är öppet under sommaren. Här kan gäster njuta av en fika i en avkopplande atmosfär. Fastigheten erbjuder en rad faciliteter för gäster, inklusive ett fullt utrustat kök och matsal. Med en by av cirka 70 fasta invånare, är Borgvattnet en idyllisk plats att driva en verksamhet. För mer information om denna unika möjlighet, vänligen kontakta oss. Missa inte chansen att äga en bit av Sveriges spökhistoria! 🏰👻",
-                        ImagePaths = new List<string> { "https://www.borgvattnet.eu/awesome/2020/06/Borgvattnet-Pra%CC%88stga%CC%8Ard-2020-892x594.jpg",
-                                                        "https://www.borgvattnet.eu/awesome/2020/06/Borgvattnet-Pra%CC%88stga%CC%8Ard-Utsida-2020-892x595.jpg",
-                                                        "https://www.borgvattnet.eu/awesome/2020/06/Borgvattnet-Pra%CC%88stga%CC%8Ard-Entre-Nedre-Plan-892x595.jpg",
-                                                        "https://www.borgvattnet.eu/awesome/2020/06/Expeditionen-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x593.jpg",
-                                                        "https://www.borgvattnet.eu/awesome/2020/06/Rosa-Rummet-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x595.jpg",
-                                                        "https://www.borgvattnet.eu/awesome/2020/06/Borgvattnet-Pra%CC%88stga%CC%8Ard-Nedre-Plan-Stora-Salen-892x595.jpg",
-                                                        "https://www.borgvattnet.eu/awesome/2020/06/Gra%CC%8Aterskornas-Rum-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x595.jpg",
-                                                        "https://www.borgvattnet.eu/awesome/2020/06/Bla%CC%8A-Rummet-Pra%CC%88stga%CC%8Arden-892x595.jpg",
-                                                        "https://www.borgvattnet.eu/awesome/2020/06/Gula-Rummet-Borgvattnet-Pra%CC%88stga%CC%8Ard-892x595.jpg"}
                     },
                     new Residence
                     {

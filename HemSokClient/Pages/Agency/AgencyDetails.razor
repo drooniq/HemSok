@@ -5,26 +5,6 @@
 
 @* Author: Emil Waara*@
 <style>
-    .card {
-        width: 30rem;
-        height: 20rem;
-        margin: 1rem;
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
-        border: 1px solid black;
-        transition: 0.3s ease;
-        color: black;
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: rgba(255, 255, 255, 0.6);
-        border-radius: 15px;
-        overflow: hidden;
-        cursor: pointer;
-    }
-
-        .card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.6);
-        }
-
     .card-body {
         padding: 0.5rem;
     }
@@ -99,7 +79,7 @@
 
 @if (agency != null)
 {
-    <div class="card">
+    <div class="card card-dark-transparent" style="width: 40rem; height: 20rem;">
         <div class="card-body">
             <div class="card-title">
                 <div class="card-title-left">
@@ -129,18 +109,30 @@
         <div class="card-footer">
             @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin())
             {
-                <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/agencyedit/" + agency.Id))">Edit</a>
+                <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/agencyedit/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
             }
 
-            <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))">Details</a>
+            <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
 
             @if (AuthStateService.IsSuperAdmin())
             {
-                <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))">Delete</a>
+                <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
             }
         </div>
     </div>
-}
+@*     <div class="agentsDisplay" style="display: flex; flex-direction: row;">
+        @if (agents.Count > 0)
+        {
+            @foreach (var agent in agents)
+            {
+                if (agent.Agency.Id == agency.Id)
+                {
+                    <AgentCardComponent Agent="@agent" />
+                }
+            }
+        }
+    </div>
+ *@}
 else
 {
     <ErrorMessage Message="Tyvärr, det verkar inte finnas någon mäklarbyrå med det IDt" />
@@ -153,11 +145,12 @@ else
     public int Id { get; set; }
 
     private Agency agency { get; set; }
+    private List<Agent>? agents = new List<Agent>();
 
     protected override async Task OnInitializedAsync()
     {
-        //apiService.Agencies = await apiService.GetAllFromApiAsync<Agency>();
         agency = await apiService.GetFromApiAsync<Agency>("api/agency/" + Id);
+        agents = (await apiService.GetAllFromApiAsync<Agent>()).Where(a=>a.Agency.Id == agency.Id).ToList();
     }
 
     private void NavigateToPage(string uri)
@@ -167,8 +160,10 @@ else
 
     private void ReturnToAgencyListing()
     {
-        Console.WriteLine("Navigating back");
-        NavigationStateService.NavigateBack();
+        if (!NavigationStateService.NavigateBack())
+        {
+            NavigationStateService.NavigateTo("/agencylisting");   
+        }
     }
 }
 
