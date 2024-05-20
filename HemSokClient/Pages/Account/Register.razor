@@ -132,6 +132,7 @@
     private async Task HandleSubmit()
     {
         try
+
         {
             registerModel.AgencyId = AgencyId.ToString();
             if (!await APIService.RegisterAsync(registerModel))
