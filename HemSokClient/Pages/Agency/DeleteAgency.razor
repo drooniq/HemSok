@@ -3,85 +3,20 @@
 @inject INavigationStateService NavigationStateService
 
 @* Author: Emil Waara*@
-<style>
-    body {
-        font-size: 0.7rem;
-    }
-
-    .btn {
-        font-size: 0.7rem;
-        padding: 5px;
-    }
-
-    .agencyLogo {
-        max-width: 16rem;
-        border-radius: 10%;
-    }
-
-    .form-control {
-        font-size: 0.7rem;
-    }
-
-    .small {
-        width: 100%;
-    }
-
-    .editContainer {
-        display: flex;
-    }
-
-    .leftColumn {
-        width: 40%;
-    }
-
-    .rightColumn {
-        width: 60%;
-        padding-left: 20px;
-        display: flex;
-        justify-content: left;
-        align-items: center;
-    }
-</style>
-
 @if (agency != null)
 {
-    <h3>Are you sure you want to delete: @agency.Name</h3>
+    <h3 style="color: white">Are you sure you want to delete:</h3>
 
-    <table class="table table-hover">
-        <tr>
-            <td><strong>Description:</strong></td>
-            <td>@agency.Description</td>
-        </tr>
-        <tr>
-            <td><strong>Adress:</strong></td>
-            <td>@agency.Address</td>
-        </tr>
-        <tr>
-            <td><strong>Telefonnummer:</strong></td>
-            <td>@agency.PhoneNumber</td>
-        </tr>
-        <tr>
-            <td><strong>Email:</strong></td>
-            <td>@agency.Email</td>
-        </tr>
+    <AgencyCard AgencyId=@Id ShowCrud="false" />
 
-        <tr>
-            <td><strong>Webbsida:</strong></td>
-            <td>@agency.Website</td>
-        </tr>
-
-        <tr>
-            <td><strong>Logo:</strong></td>
-            <td><img src="@agency.ImagePath" alt="Profilbild" style="max-width: 6rem; border-radius: 10%;" /></td>
-        </tr>
-    </table>
-
-    <button class="btn btn-danger" @onclick="HandleValidSubmit">Ta bort</button>
-    <button class="btn btn-secondary" @onclick="CancelDeletion">Avbryt</button>
+    <div class="ButtonContainer" style="display: flex; flex-direction: row">
+        <button class="btn btn-danger" style="margin-right: 10px" @onclick="HandleValidSubmit">Ta bort</button>
+        <button class="btn btn-secondary" @onclick="CancelDeletion">Avbryt</button>
+    </div>
 }
 else
 {
-    <p>Hittar ej mäklarfirma som har det IDt</p>
+    <ErrorMessage Message="Hittar ej mäklarfirma som har det IDt" />
 }
 
 

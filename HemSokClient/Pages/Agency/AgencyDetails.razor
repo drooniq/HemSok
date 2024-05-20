@@ -111,7 +111,7 @@
 
                     @if (AuthStateService.IsSuperAdmin())
                     {
-                        <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
+                        <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/deleteagency/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
                     }
             </div>
         </div>
