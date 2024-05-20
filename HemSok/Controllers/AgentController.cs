@@ -74,7 +74,7 @@ namespace HemSok.Controllers
 
             await agentRepository.AddAsync(agent);
 
-            agencyRepository.Entry(agent.Agency, EntityState.Unchanged);
+            agencyRepository.Entry(agent?.Agency, EntityState.Unchanged);
 
             await agentRepository.SaveChangesAsync();
 
