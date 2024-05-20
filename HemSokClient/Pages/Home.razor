@@ -1,10 +1,10 @@
 ﻿@page "/"
 <PageTitle>HemSök</PageTitle>
 
-<style>
+@* <style>
     .homeContainer {
         display: flex;
-        justify-content: center;
+        justify-content: end;
         align-items: center;
         height: 100vh;
     }
@@ -26,7 +26,7 @@
     }
 
     .homeLeft img {
-        width: 50%;
+        width: 100%;
     }
 
     .homeRight h1 {
@@ -41,69 +41,26 @@
         padding: 20px;
         font-size: 1.5rem;
     }
-</style>
-
+</style> *@
+@* 
 <div class="homeContainer">
     <div class="homeLeft">
         <img src="/images/ghost2.png" />
     </div>
     <div class="homeRight">
-        @*         <h1 class="homeRight">Välkommen till Hemsök(t)</h1>
-        <p>På denna sida kan ni söka efter bostäder till salu.
-        Allt ifrån villor till lägenheter.
-        Vi har allt ni behöver för att hitta ert drömboende.
-        </p> *@
-
-@*         <div class="card" style="width: 45rem; height: 30rem;">
-            <div class="card-header card-dark" style="justify-content: center; height: 5rem;">
-                <h1>
-                    Välkommen till Hemsök(t)
-                </h1>
-            </div>
-
-            <div class="card-body card-light-transparent">
-                <div style="display: flex; justify-content: center; align-items: center">
-                    <p>På denna sida kan ni söka efter bostäder till salu.
-                        Allt ifrån villor till lägenheter.
-                        Vi har allt ni behöver för att hitta ert drömboende.
-                    </p>
-                </div>
-            </div>
-
-            <div class="card-footer card-dark">
-                <div style="display: flex; justify-content: center; align-items: center">
-                    Created by Emil W, Marcus K, Fredrik B
-                </div>
-            </div>
+        <div class="textContent">
+            <h1>Välkommen till Hemsök!</h1>
+            <p>Kliv in i en värld av övernaturliga fastigheter, där varje hus har sin egen spökande historia och varje mäklare bär på en hemlighet som får det att krypa längs ryggraden. Vår spöklika plattform är fylld med bostadsannonser som skulle kunna få vilken morgonskymning som helst att kännas som midnatt.</p>
+            <p>Glöm bort de vanliga mäklarbyråerna – här på Hemsök välkomnar vi dig med öppna armar... och kanske några viftande spökarmar också! Utforska våra hemska och fasansfulla hem, om du vågar. Vem vet, kanske hittar du ditt perfekta skräckhus bland våra skrämmande annonser.</p>
+            <p>Så var beredd på att ge dig in i det okända och utforska denna spöklika värld. Vem vet vilka mörka hemligheter som väntar bakom varje hörn? Kom in om du törs, och låt oss hjälpa dig att hitta ditt drömhem... eller din värsta mardröm!</p>
         </div>
- *@
+        <img src="/images/startpage.jpg" class="backgroundImage" />
+    </div>
+</div> *@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div class="startpageContainer">
+    <img src="/images/startpage.jpg" class="startpageImage" />
+    <div class="ghostContainer">
+        <img src="/images/ghost2.png" class="ghostImage" />
     </div>
 </div>
