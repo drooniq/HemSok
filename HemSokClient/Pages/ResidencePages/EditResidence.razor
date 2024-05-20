@@ -109,6 +109,7 @@ else
 
     private async Task HandleFormSubmit(EditContext context)
     {
+        //AgentId = residence.Agent.Id;
         residence.Agent = apiService.Agents.FirstOrDefault(s => s.Id == AgentId);
         residence.Category = apiService.Categories.FirstOrDefault(s => s.Id == CategoryId);
         residence.Municipality = apiService.Municipality.FirstOrDefault(s => s.Id == MunicipalityId);

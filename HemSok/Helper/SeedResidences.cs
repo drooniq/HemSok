@@ -129,7 +129,7 @@ namespace HemSok.Helper
                         City = "Vikarbyn",
                         ZipCode = "79570",
                         Municipality = municipalities[225],
-                        Agent = agents[23],
+                        Agent = agents[5],
                         ListingPrice = 35000000,
                         Rooms = 6,
                         LivingArea = 200,
@@ -237,7 +237,6 @@ namespace HemSok.Helper
                                                         "https://bilder.hemnet.se/images/itemgallery_cut/a3/10/a3108cd00f1cd53f7da987609812e4c1.jpg",
                                                         "https://bilder.hemnet.se/images/itemgallery_cut/58/4a/584a104d06cb38895c4fcd759b230010.jpg"}
                     },
-                    // För Mäklare [2]
                     new Residence
                     {
                         Category = categories[0],
@@ -262,7 +261,6 @@ namespace HemSok.Helper
                                                         "https://bilder.hemnet.se/images/itemgallery_cut/b8/ef/b8ef51df91dd612bfb6a60a0bd955e76.jpg",
                                                         "https://bilder.hemnet.se/images/itemgallery_cut/22/33/2233627285059d00774f15cc72457288.jpg"}
                     },
-                    // För Mäklare [1]
                     new Residence
                     {
                         Category = categories[3],
