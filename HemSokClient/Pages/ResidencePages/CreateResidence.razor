@@ -10,55 +10,50 @@
 @* Author: Marcus Karlsson, Emil Waara*@
 <PageTitle>Skapa Ny Bostad</PageTitle>
 @page "/createresidence"
+
+<style>
+    .login-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        width: 400px;
+    }
+
+        .login-container form input[type="text"],
+        .login-container form input[type="password"],
+        .login-container form button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .login-container form select {
+            width: 53%;
+            height: 2rem;
+            border: 1px solid #000;
+        }
+
+    .content {
+        position: relative;
+        height: 500px;
+        padding: 20px;
+    }
+
+    .validation-message {
+        color: red;
+    }
+</style>
+
 @if (AuthStateService.IsLoggedIn())
 {
-    <style>
-        body {
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
-        }
-
-        .login-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            width: 400px;
-        }
-
-            .login-container form input[type="text"],
-            .login-container form input[type="password"],
-            .login-container form button {
-                width: 100%;
-                margin-bottom: 15px;
-                padding: 10px;
-                border: 1px solid #000;
-                border-radius: 5px;
-                box-sizing: border-box;
-            }
-
-            .login-container form select {
-                width: 53%;
-                height: 2rem;
-                border: 1px solid #000;
-            }
-
-        .content {
-            position: relative;
-            height: 500px;
-            padding: 20px;
-        }
-
-        .validation-message {
-            color: red;
-        }
-    </style>
-
     <div class="content">
         <div class="login-container">
             <EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
