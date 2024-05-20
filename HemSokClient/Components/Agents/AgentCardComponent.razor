@@ -1,41 +1,44 @@
 ﻿@inject NavigationManager NavigationManager
+@inject IAuthStateService AuthStateService
+@inject INavigationStateService NavigationStateService
 
+@* Author: Fredrik Blixt, Emil Waara *@
 @if (Agent != null)
 {
-    <div class="card m-3 rounded">
-        <div class="card-img">
-            <div class="img-container">
-                <img src="@Agent.ImagePath" alt="Profilbild" class="m-1" />
-            </div>
+    <div class="agentcard" onclick="@GoDetails" style="width: 20rem; height: 25rem">
+
+        <div class="agent-header">
+            <img src="@Agent?.ImagePath" alt="Profilbild" />
         </div>
-        <div class="card-body">
-            <div class="card-title text-center">
-                <h5 class="mt-1">@Agent.FirstName @Agent.LastName</h5>
-                <p class ="mb-1">"@Agent.Nickname"</p>
-                @if (NavigationManager.Uri.Contains("detailsagent"))
-                {
-                    <p><a href="mailto:@Agent.Email">@Agent.Email</a></p>
-                    <div class="phone-section">
-                        <i class="fas fa-phone-alt"></i>
-                        <p>@Agent.PhoneNumber</p>
-                    </div>
-                }
-                else if (NavigationManager.Uri.Contains("/agent"))
-                {
-                    <small class="text-muted">@Residences?.Count(r => r.Agent.Id == Agent.Id) objekt till salu</small>
-                }
-                else
-                {
-                    <img src="~/icon-192.png" alt="No info" style="max-height:fit-content" ; />
-                }
-            </div>
+
+        <div class="agent-body card-light-transparent">
+            <h5>@Agent?.FirstName @Agent?.LastName</h5>
+            <p>"@Agent?.Nickname"</p>
+            <small class="">@Residences?.Count(r => r.Agent.Id == Agent?.Id) objekt till salu</small>
         </div>
-        <div class="card-footer">
-            <div class="left-footer">
-                <small class="text-muted">@Agent.Agency.Name</small>
+
+        <div class="agent-footer card-dark-transparent">
+            <div class="agent-footer-left">
+                @Agent?.Agency?.Name
             </div>
-            <div class="right-footer">
-                <img src="@Agent.Agency.ImagePath" alt="Logotyp" class="card-footer-image" />
+
+            <div class="agent-footer-right">
+                <img src="@Agent?.Agency?.ImagePath" alt="Logotyp" class="card-footer-image" />
+
+@*                 @if (ShowCrud)
+                {
+                    @if (AuthStateService.IsSuperAdmin() || (AuthStateService.IsAdmin() && AuthStateService.currentUser?.AgencyId == agency?.Id))
+                    {
+                        <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/editagency/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
+                    }
+
+                    <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
+
+                    @if (AuthStateService.IsSuperAdmin())
+                    {
+                        <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/deleteagency/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
+                    }
+                } *@
             </div>
         </div>
     </div>
@@ -49,102 +52,82 @@ else
     [Parameter]
     public Agent? Agent { get; set; }
     [Parameter]
-    public List<Residence>? Residences { get; set; }
-}
-<style>
-    .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: normal;
-    }
+    public List<Residence>? Residences { get; set; } = new List<Residence>();
 
-    .card {
-        width: 18rem;
-        height: 22rem;
+
+    public void GoDetails()
+    {
+        NavigationStateService.NavigateTo("/detailsagent/" + Agent?.Id);
+    }
+}
+
+<style>
+    .agentcard {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow:hidden;
+        margin: 0px;
+        padding: 0px;
+        margin: 15px;
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
         border: 1px solid black;
         transition: 0.3s ease;
+        border-radius: 15px;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: rgba(0,0,0,0);
         cursor: pointer;
-        overflow: hidden;
-        background: linear-gradient(217deg, rgba(135, 206, 250, 0.8), rgba(173, 216, 230, 0.8) 70.71%), linear-gradient(127deg, rgba(173, 216, 230, 0), rgba(255, 255, 255, 0.9) 70.71%);
     }
 
-        .card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.6);
-        }
-
-    .card-body {
-        padding: 0.5rem;
-        height: 35%;
-        overflow: auto;
+    .agentcard:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.6);
     }
 
-    .card-footer {
-        background-color: rgba(200,200,200,0.7);
-        padding: 0.5rem;
+    .agent-header {
         display: flex;
+        justify-items: center;
         align-items: center;
-        height: 15%;
-    }
-
-    .card-footer-image {
-        max-height: 2rem;
-        max-width: 4rem;
-        display: inline;
-    }
-
-    .left-footer {
+        height: 10rem;
+        margin: 0px;
         padding: 0px;
-        flex: 1;
     }
 
-    .right-footer {
-        padding: 0px;
-        max-width: 4rem;
-    }
-
-    .card-title {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card-title-left {
-        flex: 1;
-    }
-
-    .card-img {
-        height: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .img-container {
-        width: auto;
-        height: 90%;
+    .agent-header img {
+        max-height: 8rem;
+        max-width: 8rem;
         border-radius: 50%;
-        overflow: hidden;
-        position: relative;
+    }
+
+    .agent-footer {
         display: flex;
-        justify-content: center;
         align-items: center;
+        height: 3rem;
+        width: 100%;
+        padding: 0.5rem;
     }
 
-        .img-container img {
-            width: auto;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+    .agent-footer img {
+        max-height: 5rem;
+        max-width: 3rem;
+    }
 
-    .phone-section {
+    .agent-footer-left {
+    }
+
+    .agent-footer-right {
         display: flex;
-        justify-content: center;
+        flex: 1;
+        justify-content: right;
     }
 
-        .phone-section i {
-            margin-right: 5px;
-        }
-
+    .agent-body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
 </style>

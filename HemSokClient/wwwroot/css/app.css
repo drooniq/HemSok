@@ -266,7 +266,7 @@ code {
     height: 31%;
     width: 80%;
     margin-bottom: 0.5rem;
-    margin-inline: rem;
+/*    margin-inline: rem;*/
     font-family: Roboto;
 }
 
@@ -371,6 +371,12 @@ code {
     display: flex;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+
+.containerCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #loading {

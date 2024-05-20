@@ -14,9 +14,9 @@
 
 @* <button class="btn btn-primary btn-sm" @onclick="@(() =>NavigationStateService.NavigateTo("/register"))">Skapa ny mäklare</button> *@
 
-@if (agents != null)
+@if (agents != null && residences != null)
 {
-    <div class="container">
+    <div class="containerCenter" style="flex-direction: row; flex-wrap: wrap">
         @foreach (var agent in agents)
         {
             <div @onclick="@(() => NavigationStateService.NavigateTo($"/detailsagent/{agent.Id}"))">
@@ -39,7 +39,7 @@ else
         try
         {
             agents = await apiService.GetAllFromApiAsync<Agent>();
-            residences = await apiService.GetAllFromApiAsync<Residence>();
+            residences = (await apiService.GetAllFromApiAsync<Residence>());
         }
         catch (Exception ex)
         {

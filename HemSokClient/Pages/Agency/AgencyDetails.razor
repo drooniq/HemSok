@@ -103,28 +103,31 @@
             <div class="card-footer-right">
                     @if (AuthStateService.IsSuperAdmin() || (AuthStateService.IsAdmin() && AuthStateService.currentUser?.AgencyId == agency?.Id))
                     {
-                        <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/editagency/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a class="btn btn-success" @onclick="@(e => NavigateToPage("/register/" + agency.Id))"><i class="fa-solid fa-user-plus"></i></a>
+                        <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/editagency/" + Id))"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="btn btn-success" @onclick="@(e => NavigateToPage("/register/" + Id))"><i class="fa-solid fa-user-plus"></i></a>
                     }
 
-                    <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
+                    <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + Id))"><i class="fa-solid fa-circle-info"></i></a>
 
                     @if (AuthStateService.IsSuperAdmin())
                     {
-                        <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/deleteagency/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
+                        <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/deleteagency/" + Id))"><i class="fa-solid fa-trash-can"></i></a>
                     }
             </div>
         </div>
     </div>
+
+    <button class="btn btn-primary" @onclick="ReturnToAgencyListing">Gå Tillbaka</button>
+
     <div class="agentsDisplay" style="display: flex; flex-direction: row;">
-        @if (agents.Count > 0)
+        @if (agents?.Count > 0)
         {
             @foreach (var agent in agents)
             {
-                if (agent.Agency.Id == agency.Id)
+                 if (agent?.Agency?.Id == Id)
                 {
-@*                     <AgentCardComponent Agent="@agent" /> *@
-                }
+                     <AgentCardComponent Agent="@agent" /> 
+                } 
             }
         }
     </div>
@@ -133,8 +136,6 @@ else
 {
     <ErrorMessage Message="Tyvärr, det verkar inte finnas någon mäklarbyrå med det IDt" />
 }
-
-<button class="btn btn-primary" @onclick="ReturnToAgencyListing">Gå Tillbaka</button>
 
 @code {
     [Parameter]
@@ -146,7 +147,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         agency = await apiService.GetFromApiAsync<Agency>("api/agency/" + Id);
-        //agents = (await apiService.GetAllFromApiAsync<Agent>()).Where(a=>a.Agency.Id == agency.Id).ToList();
+        agents = await apiService.GetAllFromApiAsync<Agent>();
+        AuthStateService.LoadCurrentUserFromLocalStorage();
     }
 
     private void NavigateToPage(string uri)
