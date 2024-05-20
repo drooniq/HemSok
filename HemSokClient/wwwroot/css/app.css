@@ -412,3 +412,106 @@ code {
         width: 100%;
     }
 }
+
+/*.homeContainer {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 100vh;
+}
+
+.homeLeft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+}
+
+.homeRight {
+    display: flex;
+    justify-content: left;
+    width: 60%;
+    flex-wrap: wrap;
+    padding: 20px;
+    color: white;
+}
+
+.homeLeft img {
+    width: 100%;
+}
+
+.homeRight h1 {
+    font-size: 3rem;
+    display: block;
+    margin: 0px;
+}
+
+.homeRight p {
+    display: block;
+    margin: 0px;
+    padding: 20px;
+    font-size: 1.5rem;
+}*/
+
+/*.homeLeft img {
+    width: 5%;
+    transition: width 1s ease;
+}
+
+
+@keyframes growImage {
+    from {
+        width: 10%;
+    }
+
+    to {
+        width: 60%; 
+    }
+}
+
+.homeLeft img {
+    animation: growImage 1s forwards;
+}*/
+
+/*html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;*/ /* Förhindra scrollning */
+    /*height: 100%;
+}*/
+
+.startpageContainer {
+    position: fixed; /* Fixera elementet */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Dölj överflödigt innehåll */
+}
+
+.startpageImage {
+    position: absolute; /* Absolut positionering för att täcka hela skärmen */
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%; /* Minsta bredd för att täcka hela skärmen */
+    min-height: 100%; /* Minsta höjd för att täcka hela skärmen */
+    max-width: none; /* Ingen maxbredd för att låta bilden sträcka sig utöver skärmen */
+    max-height: none; /* Ingen maxhöjd för att låta bilden sträcka sig utöver skärmen */
+}
+
+.ghostContainer {
+    position: absolute;
+    top: 55%; /* Justera position relativt "startpage.png" */
+    left: 65%; /* Justera position relativt "startpage.png" */
+    transform: translate(-50%, -50%);
+}
+
+.ghostImage {
+    width: 33%; /* Justera storlek efter behov */
+    opacity: 0.7; /* Justera genomskinligheten (0.0 till 1.0, där 1.0 är helt opak) */
+    filter: blur(1px); /* Justera suddigheten (ange suddighet i px) */
+}
+
+
+
