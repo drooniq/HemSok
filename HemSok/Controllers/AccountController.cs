@@ -82,24 +82,28 @@ namespace HemSok.Controllers
         {
             var existingUser = await userManager.FindByEmailAsync(registerDTO.Email);
 
-            if (existingUser != null) return Conflict("User already exists");           
+            if (existingUser != null) return Conflict("User already exists");
 
             var newUser = new Agent()
             {
-                Email = registerDTO.Email,               
+                Email = registerDTO.Email,
                 UserName = $"{registerDTO.Firstname}{registerDTO.Lastname}",
                 FirstName = registerDTO.Firstname,
-                LastName = registerDTO.Lastname
+                LastName = registerDTO.Lastname,
+                PhoneNumber = registerDTO.Phonenumber
             };
 
-            if (registerDTO.agency != null)
-                newUser.Agency = await agencyRepository.GetAsync(int.Parse(registerDTO.agency));            
+            if (registerDTO.AgencyId != null)
+                newUser.Agency = await agencyRepository.GetAsync(int.Parse(registerDTO.AgencyId));
 
             var result = await userManager.CreateAsync(newUser, registerDTO.Password);
 
             if (result.Succeeded)
             {
-                var role = await userManager.AddToRoleAsync(newUser, "Agent");
+                string newRole = registerDTO.Role == null ? "Agent" : registerDTO.Role;
+
+                var role = await userManager.
+                    AddToRoleAsync(newUser, newRole);
 
                 if (role.Succeeded)               
                     return Ok("New user created");

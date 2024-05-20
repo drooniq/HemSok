@@ -104,6 +104,7 @@
                     @if (AuthStateService.IsSuperAdmin() || (AuthStateService.IsAdmin() && AuthStateService.currentUser?.AgencyId == agency?.Id))
                     {
                         <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/editagency/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="btn btn-success" @onclick="@(e => NavigateToPage("/register/" + agency.Id))"><i class="fa-solid fa-user-plus"></i></a>
                     }
 
                     <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
@@ -145,7 +146,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         agency = await apiService.GetFromApiAsync<Agency>("api/agency/" + Id);
-        agents = (await apiService.GetAllFromApiAsync<Agent>()).Where(a=>a.Agency.Id == agency.Id).ToList();
+        //agents = (await apiService.GetAllFromApiAsync<Agent>()).Where(a=>a.Agency.Id == agency.Id).ToList();
     }
 
     private void NavigateToPage(string uri)

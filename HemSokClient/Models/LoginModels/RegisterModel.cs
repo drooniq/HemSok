@@ -25,6 +25,7 @@ namespace HemSokClient.Models.LoginModels
         public string Lastname { get; set; }
         [Phone]
         public string? PhoneNumber { get; set; }
-        public string? agency { get; set; }
+        public string? AgencyId { get; set; }
+        public string Role { get; set; } = string.Empty;
     }
 }
