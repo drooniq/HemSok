@@ -113,9 +113,10 @@ code {
     border-color: grey;
     font-family: Roboto;
 }
-.containerres:hover{
-    background-color:lightgray;
-}
+
+    .containerres:hover {
+        background-color: lightgray;
+    }
 
 .left {
     border-top-left-radius: 2rem;
@@ -214,11 +215,11 @@ code {
     height: 40%;
     width: 80%;
     margin-bottom: 0.5rem;
-    margin-inline: 10rem;   
-    font-family: Roboto;   
+    margin-inline: 10rem;
+    font-family: Roboto;
 }
 
-.detailsleft {   
+.detailsleft {
     width: auto;
     height: 100%;
 }
@@ -229,6 +230,7 @@ code {
     display: flex;
     flex-direction: column;
 }
+
 .detailstop {
     display: flex;
     height: 10%;
@@ -258,8 +260,8 @@ code {
     width: 40%;
     padding: 10px;
 }
+
 .piccontainer {
-    
     display: flex;
     height: 31%;
     width: 80%;
@@ -267,10 +269,12 @@ code {
     margin-inline: rem;
     font-family: Roboto;
 }
-.pictureSlider {   
+
+.pictureSlider {
     width: 100%;
     height: 100%;
 }
+
 .agentinfo {
     padding-top: 2rem;
     width: 80%;
@@ -278,26 +282,30 @@ code {
     display: flex;
     flex-direction: column;
 }
+
 .infopics {
     width: 50%;
     padding: 10px;
 }
+
 .infotext {
     padding: 10px;
     width: 60%;
     font-size: large;
 }
+
 .agentPicDetails {
     width: 70%;
     height: auto;
     border-radius: 1rem;
-    padding-bottom:1rem;
+    padding-bottom: 1rem;
 }
+
 .AgencypicDetails {
     width: 90%;
     height: auto;
-   
 }
+
 .nav-link.active, UserArea.active {
     background-color: forestgreen;
     border-radius: 5px;
@@ -363,4 +371,44 @@ code {
     display: flex;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+    #loading img {
+        width: 16rem;
+        height: auto;
+    }
+
+#loading-bar {
+    width: 100%;
+    height: 1rem;
+    background-color: #e0e0e0;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+    #loading-bar div {
+        width: 0;
+        height: 100%;
+        background-color: #1b6ec2;
+        animation: load 3s linear forwards;
+    }
+
+@keyframes load {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
 }
