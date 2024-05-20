@@ -8,86 +8,179 @@
 @* Author: Marcus Karlsson*@
 @if (AuthStateService.IsLoggedIn())
 {
-    <div class="card">
-        <div class="editinfores">
-            <h3>Fyll i all information om bostaden</h3>
+    <div class="editresidencecontent">
+        <div class="editresidence-container">
             <EditForm Model="@residence" OnValidSubmit="HandleFormSubmit">
                 <DataAnnotationsValidator></DataAnnotationsValidator>
                 <ValidationSummary></ValidationSummary>
-                <InputText id="StreetName" @bind-Value="@residence.StreetName"></InputText> <label for="StreetName">Address</label>
-                <br /> <br />
-                <InputText id="City" @bind-Value="@residence.City"></InputText>
-                <label for="City">Stad </label>
-                <br /> <br />
-                <InputText id="ZipCode" @bind-Value="@residence.ZipCode"></InputText>
-                <label for="ZipCode">Post Nummer</label>
-                <br />   <br />
-                <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice"></InputNumber>
-                <label for="ListingPrice">Utgångspris</label>
-                <br /> <br />
-                @if (apiService.Categories != null)
-                {
-                   
-                    <InputSelect @bind-Value="CategoryId">
-                        @foreach (var c in apiService.Categories)
+                <div class="editresidence-header">
+                    <img src="/images/ghost1.png" alt="Ghost" style="display: inline; width: 100px; height: 100px;" />
+                    <h4 style="display:inline; color:white"><strong>Registrera Bostad</strong></h4>
+                </div>
+                <div class="form-columns">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <InputText id="StreetName" @bind-Value="@residence.StreetName"></InputText>
+                            <label for="StreetName">Address</label>
+                        </div>
+                        <div class="form-group">
+                            <InputText id="City" @bind-Value="@residence.City"></InputText>
+                            <label for="City">Stad </label>
+                        </div>
+                        <div class="form-group">
+                            <InputText id="ZipCode" @bind-Value="@residence.ZipCode"></InputText>
+                            <label for="ZipCode">Post Nummer</label>
+                        </div>
+                        <div class="form-group">
+                            <InputNumber id="ListingPrice" @bind-Value="@residence.ListingPrice" placeholder="Utgångspris"></InputNumber>
+                            <label for="ListingPrice">Utgångspris</label>
+                        </div>
+                        @if (apiService.Categories != null)
                         {
-                            <option value="@c.Id">@c.Name</option>
+                            <div class="form-group">
+                                <InputSelect @bind-Value="CategoryId">
+                                    @foreach (var c in apiService.Categories)
+                                    {
+                                        <option value="@c.Id">@c.Name</option>
+                                    }
+                                </InputSelect>
+                                <label for="CategoryId">Välj Kategori</label>
+                            </div>
                         }
-                    </InputSelect> <label>Välj Kategori</label>
-                }
-                <br /> <br />
-                @if (apiService.Municipality != null)
-                {
-                   
-                    <InputSelect @bind-Value="MunicipalityId">
-                        @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
+                        @if (apiService.Municipality != null)
                         {
-                            <option value="@c.Id">@c.Name</option>
+                            <div class="form-group">
+                                <InputSelect @bind-Value="MunicipalityId">
+                                    @foreach (var c in apiService.Municipality.OrderBy(s => s.Name))
+                                    {
+                                        <option value="@c.Id">@c.Name</option>
+                                    }
+                                </InputSelect>
+                                <label for="MunicipalityId">Välj Kommun</label>
+                            </div>
                         }
-                    </InputSelect>
-                    <label>Välj Kommun </label>
-                }
-                <br /> <br />
-                <InputNumber id="Rooms" @bind-Value="@residence.Rooms"></InputNumber>
-                <label for="Rooms">Antal Rum </label>
-                <br /> <br />
-                <InputNumber id="ConstructionYear" @bind-Value="@residence.ConstructionYear"></InputNumber>
-                <label for="ConstructionYear">Byggår</label>
-                <br /> <br />
-                <InputNumber id="LivingArea" @bind-Value="@residence.LivingArea"></InputNumber>
-                <label for="LivingArea">Boarea </label>
-                <br /> <br />
-                
-                <InputNumber id="BiArea" @bind-Value="@residence.BiArea"></InputNumber>
-                <label for="BiArea">Biarea </label>
-                <br /> <br />              
-                <InputNumber id="PlotArea" @bind-Value="@residence.PlotArea"></InputNumber>
-                <label for="PlotArea">Tomtarea</label>
-                <br /> <br />           
-                <InputNumber id="MonthlyFee" @bind-Value="@residence.MonthlyFee"></InputNumber>
-                <label for="MonthlyFee">Månadskostnad</label>
-                <br /> <br />              
-                <InputNumber id="OperationCost" @bind-Value="@residence.OperationCost"></InputNumber>
-                <label for="OperationCost">Driftkostnad</label>
-                <br /> <br />            
-                <InputText id="Description" @bind-Value="@residence.Description"></InputText>
-                <label for="Description">Beskrivning</label>
-                <br /> <br />
-                <CascadingValue Value="@residence">
-                    <AddImageComponent></AddImageComponent>
-                </CascadingValue>
-                <button type="submit" class="btn btn-success">Verkställ</button>
-                <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
+                    </div>
+                    <div class="form-column">
+                        <div class="form-group">
+                            <InputNumber id="Rooms" @bind-Value="@residence.Rooms"></InputNumber>
+                            <label for="Rooms">Antal Rum</label>
+                        </div>
+                        <div class="form-group">
+                            <InputNumber id="ConstructionYear" @bind-Value="@residence.ConstructionYear"></InputNumber>
+                            <label for="ConstructionYear">Byggår</label>
+                        </div>
+                        <div class="form-group">
+                            <InputNumber id="LivingArea" @bind-Value="@residence.LivingArea"></InputNumber>
+                            <label for="LivingArea">Boarea</label>
+                        </div>
+                        <div class="form-group">
+                            <InputNumber id="BiArea" @bind-Value="@residence.BiArea"></InputNumber>
+                            <label for="BiArea">Biarea</label>
+                        </div>
+                        <div class="form-group">
+                            <InputNumber id="PlotArea" @bind-Value="@residence.PlotArea"></InputNumber>
+                            <label for="PlotArea">Tomtarea</label>
+                        </div>
+                        <div class="form-group">
+                            <InputNumber id="MonthlyFee" @bind-Value="@residence.MonthlyFee"></InputNumber>
+                            <label for="MonthlyFee">Månadskostnad</label>
+                        </div>
+                        <div class="form-group">
+                            <InputNumber id="OperationCost" @bind-Value="@residence.OperationCost"></InputNumber>
+                            <label for="OperationCost">Driftkostnad</label>
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="Description">Beskrivning</label>
+                            <InputTextArea id="Description" @bind-Value="@residence.Description" style="width: 100%; height: 100%;"></InputTextArea>
+                        </div>
+                    </div>
+                </div>
 
+                <CascadingValue Value="@residence">
+                        <AddImageComponent></AddImageComponent>
+                </CascadingValue>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-success">Spara ändringar</button>
+                    <button type="button" class="btn btn-danger" @onclick="Abort">Avbryt</button>
+                </div>
             </EditForm>
         </div>
     </div>
 }
 else
 {
-    <p>Du har inte spökenas tillåtelse att gå hit.</p>
+    <InfoMessage Message="Du har inte spökenas tillåtelse att gå hit." />
 }
+
 <style>
+    .editresidence-container {
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        width: 100vh;
+        margin: 0 auto;
+    }
+
+        .editresidence-container form select {
+        width: 57%;
+        height: 2rem;
+        border: 1px solid #000;
+    }
+
+    .editresidencecontent {
+        width: 100vh;
+    }
+
+    .validation-message {
+        color: red;
+    }
+
+    .form-columns {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .form-column {
+        flex: 1;
+        padding: 5px;
+        margin: 0;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        font-size: inherit;
+        color: white;
+        padding-left: 1rem;
+    }
+
+    .editresidence-header img {
+        display: inline;
+        width: 100px;
+        height: 100px;
+    }
+
+    .editresidence-header h4 {
+        display: inline;
+        color: white;
+    }
+</style>
+
+@* <style>
     .card {
         width: 65rem;
         height: 100rem;
@@ -96,7 +189,7 @@ else
         border: 1px solid black;
         transition: 0.3s ease;
     }
-</style>
+</style> *@
 
 @code {
 
@@ -137,6 +230,9 @@ else
 
         apiService.Municipality = await apiService.GetAllFromApiAsync<Municipality>();
         MunicipalityId = residence.Municipality.Id;
+
+        apiService.Agents = await apiService.GetAllFromApiAsync<Agent>();
+        AgentId = residence.Agent.Id;
 
     }
 }
