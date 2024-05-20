@@ -5,134 +5,129 @@
 
 @* Author: Emil Waara*@
 <style>
-    .card-body {
-        padding: 0.5rem;
+    .card:hover {
+        transform: translateY(0);
     }
 
-    .card-footer {
-        padding: 0.5rem;
+    .card-header {
         display: flex;
-        justify-content: right;
-        align-items: right;
-        background-color: rgb(27, 29, 42);
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-    }
-
-        .card-footer a {
-            margin-left: 5px;
-        }
-
-    .card-title {
-        padding: 0px;
-        margin: 0px;
-        display: flex;
-    }
-
-    .card-title-left, .card-title-left h5 {
-        display: flex;
-        justify-content: center;
         align-items: center;
-        flex: 1;
-        font-size: x-large;
-        font-weight: 800;
-        padding: 5px;
         height: 4rem;
     }
 
-    .card-title-right {
-        height: 4 rem;
-        display: flex;
+    .card-header-left {
+        flex: 1;
+        padding-left: 10px;
+        font-size: larger;
+    }
+
+    .card-header-right img {
+        height: 3rem;
+        border-radius: 5px;
+        margin-right: 15px;
+    }
+
+    .card-footer {
         align-items: center;
+        padding: 0.5rem;
+        background-color: rgb(27, 29, 42);
     }
 
-        .card-title-right img {
-            border-radius: 3px;
-        }
-
-    .card-image-top {
-        max-height: 3rem;
+    .card-footer-left {
     }
 
-    .card-text {
-        margin-top: 1rem;
+    .card-footer-right {
+        display: flex;
+        flex: 1;
+        justify-content: right;
     }
 
-        .card-text h3, h4, h5 {
-            margin: 0px;
-            padding: 0px;
-        }
+    .card-footer a {
+        margin-left: 5px;
+    }
 
-        .card-text p {
-            margin-top: 0.5rem;
-        }
+    .card-footer-left, .card-footer-left a {
+        text-decoration: none;
+        color: white;
+    }
 
-        .card-text a {
-            color: darkblue;
-            text-decoration: none;
-        }
+    .card-body {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
 
-            .card-text a:hover {
-                color: lightblue;
-            }
+    .card-body-top {
+        height: 2.5rem;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .card-body-bottom {
+        flex: 1;
+    }
 </style>
 
 @if (agency != null)
 {
-    <div class="card card-dark-transparent" style="width: 40rem; height: 20rem;">
-        <div class="card-body">
-            <div class="card-title">
-                <div class="card-title-left">
-                    <h5>
-                        @agency.Name
-                    </h5>
-                </div>
-                <div class="card-title-right">
-                    <img src="@agency.ImagePath" alt="..." class="card-image-top" />
-                </div>
+    <div class="card card-dark-transparent" style="width: 40rem; height: 30rem">
+        <div class="card-header card-dark">
+            <div class="card-header-left">
+                @agency.Name
             </div>
-            <div class="card-text">
-                <h3 style="text-align: center; font-weight: 900; margin: 0; padding: 0; margin-bottom: 0.5rem;">
-                    @agency.PhoneNumber
-                </h3>
-                <h5 style="text-align: center;">
-                    <a><i class="fa-solid fa-globe"></i> @agency.Website</a>
-                </h5>
-                <h5 style="text-align: center;">
-                    <a style="text-decoration: none;" href="mailto: @agency.Email"><i class="fa-regular fa-envelope"></i>  @agency.Email</a>
-                </h5>
-                <p>
-                    @agency.Description
-                </p>
+            <div class="card-header-right">
+                <img src="@agency.ImagePath" alt="..." class="card-image-top" />
             </div>
         </div>
-        <div class="card-footer">
-            @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin())
-            {
-                <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/agencyedit/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
-            }
+        <div class="card-body card-dark-transparent">
+            <h3 style="text-align: center; font-weight: 900; margin: 0; padding: 0; margin-bottom: 0.5rem;">
+                @agency.PhoneNumber
+            </h3><br />
+            <h5 style="text-align: center;">
+                <a><i class="fa-solid fa-globe"></i> @agency.Website</a>
+            </h5>
+            <h5 style="text-align: center;">
+                <a style="text-decoration: none;" href="mailto: @agency.Email"><i class="fa-regular fa-envelope"></i>  @agency.Email</a>
+            </h5>
+            <p>
+                @agency.Description
+            </p>
+        </div>
+        <div class="card-footer card-dark">
+            <div class="card-footer-left">
+                <a href="@agency.Website"><i class="fa-solid fa-globe"></i></a>
+                <a href="mailto: @agency.Email"><i class="fa-regular fa-envelope"></i></a>
+            </div>
 
-            <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
+            <div class="card-footer-right">
+                    @if (AuthStateService.IsSuperAdmin() || (AuthStateService.IsAdmin() && AuthStateService.currentUser?.AgencyId == agency?.Id))
+                    {
+                        <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/editagency/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
+                    }
 
-            @if (AuthStateService.IsSuperAdmin())
-            {
-                <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
-            }
+                    <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
+
+                    @if (AuthStateService.IsSuperAdmin())
+                    {
+                        <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
+                    }
+            </div>
         </div>
     </div>
-@*     <div class="agentsDisplay" style="display: flex; flex-direction: row;">
+    <div class="agentsDisplay" style="display: flex; flex-direction: row;">
         @if (agents.Count > 0)
         {
             @foreach (var agent in agents)
             {
                 if (agent.Agency.Id == agency.Id)
                 {
-                    <AgentCardComponent Agent="@agent" />
+@*                     <AgentCardComponent Agent="@agent" /> *@
                 }
             }
         }
     </div>
- *@}
+}
 else
 {
     <ErrorMessage Message="Tyvärr, det verkar inte finnas någon mäklarbyrå med det IDt" />

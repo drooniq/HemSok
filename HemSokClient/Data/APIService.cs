@@ -76,8 +76,6 @@ namespace HemSokClient.Data
             var response = await Factory.CreateClient("CustomClient")
                                         .PostAsync("api/account/login", JsonContent.Create(model));
             
-            Console.WriteLine(response.ToString());
-            
             if (!response.IsSuccessStatusCode)
                 throw new UnauthorizedAccessException("Login failed.");
 

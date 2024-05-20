@@ -18,7 +18,8 @@ namespace HemSokClient.Handlers
         }
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (authStateService != null && authStateService.currentUser != null )
+            authStateService.LoadCurrentUserFromLocalStorage();
+            if (authStateService.IsLoggedIn() )
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authStateService.currentUser.loginResponse.JwtToken);
             }

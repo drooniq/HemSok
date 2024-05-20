@@ -17,11 +17,11 @@ namespace HemSokClient
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             // Register services
-            builder.Services.AddTransient<AuthenticationHandler>();
             builder.Services.AddScoped<INavigationStateService, NavigationStateService>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddScoped<IAuthStateService, AuthStateService>();
             builder.Services.AddScoped<IAPIService, APIService>();
+            builder.Services.AddTransient<AuthenticationHandler>();
 
             // Configure HttpClient
             builder.Services.AddHttpClient("CustomClient", client =>
@@ -36,7 +36,12 @@ namespace HemSokClient
             var authStateService = host.Services.GetRequiredService<IAuthStateService>() as AuthStateService;
             if (authStateService != null)
             {
+                Console.WriteLine("Program.cs = AuthStateService is not null");
                 await authStateService.InitializeAsync();
+            }
+            else
+            {
+                Console.WriteLine("Program.cs = AuthStateService is null");
             }
 
             // Run the host
