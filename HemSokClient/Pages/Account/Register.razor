@@ -116,15 +116,8 @@ else
     private async Task HandleSubmit()
     {
         try
-        {
-            var adminAgent = APIService.Agents.First(s => s.Id == AuthStateService.currentUser.AgentId);
-            if (adminAgent == null)
-            {
-                ResetForm();
-            }
-            else
-            {
-                registerModel.agency = adminAgent.Agency.Id.ToString();
+        {            
+                registerModel.agency = AuthStateService?.currentUser?.AgencyId.ToString();
                 if (!await APIService.RegisterAsync(registerModel))
                 {
                     // failed to register user.
@@ -132,8 +125,7 @@ else
                 }
                 await JSRuntime.InvokeVoidAsync("alert", "Mäklaren har skapats.");
                 // Redirect to home page or another authorized page
-                NavigationStateService.NavigateBack();
-            }
+                NavigationStateService.NavigateBack();         
 
         }
         catch (Exception ex)
