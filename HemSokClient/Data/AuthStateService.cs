@@ -67,7 +67,7 @@ namespace HemSokClient.Data
             }
         }
 
-        private async Task LoadCurrentUserFromLocalStorage()
+        public async Task LoadCurrentUserFromLocalStorage()
         {
             var json = await _localStorage.GetItemAsync<string>(CurrentUserKey);
             if (!string.IsNullOrEmpty(json))

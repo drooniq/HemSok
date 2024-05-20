@@ -97,16 +97,19 @@
             </div>
 
             <div class="card-footer-right">
-                @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin())
+                @if (ShowCrud)
                 {
-                    <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/agencyedit/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
-                }
+                    @if (AuthStateService.IsSuperAdmin() || (AuthStateService.IsAdmin() && AuthStateService.currentUser?.AgencyId == agency?.Id))
+                    {
+                        <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/editagency/" + agency.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
+                    }
 
-                <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
+                    <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/agencydetails/" + agency.Id))"><i class="fa-solid fa-circle-info"></i></a>
 
-                @if (AuthStateService.IsSuperAdmin())
-                {
-                    <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
+                    @if (AuthStateService.IsSuperAdmin())
+                    {
+                        <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/agencydelete/" + agency.Id))"><i class="fa-solid fa-trash-can"></i></a>
+                    }
                 }
             </div>
         </div>
@@ -116,6 +119,8 @@
 @code {
     [Parameter]
     public int AgencyId { get; set; }
+    [Parameter]
+    public bool ShowCrud { get; set; } = true;
 
     private Agency? agency;
     private Agent? agent;

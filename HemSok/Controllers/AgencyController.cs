@@ -62,7 +62,7 @@ namespace HemSok.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
-            return Ok();
+            return Ok(agency);
         }
 
         // POST: api/Agency

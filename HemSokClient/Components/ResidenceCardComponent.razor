@@ -138,17 +138,17 @@
             <div class="card-footer-right">
                 @if (ShowCrud)
                 {
-                    @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin() || AuthStateService.currentUser.AgencyId == @residence.Agent.Agency.Id)
-                    {
-                        <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/editresidence/" + residence.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
-                    }
+                @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin() || AuthStateService.currentUser?.AgencyId == @residence.Agent?.Agency?.Id)
+                {
+                    <a class="btn btn-primary" @onclick="@(e => NavigateToPage("/editresidence/" + residence.Id))"><i class="fa-solid fa-pen-to-square"></i></a>
+                }
 
                     <a class="btn btn-secondary" @onclick="@(e => NavigateToPage("/residencedetails/" + residence.Id))"><i class="fa-solid fa-circle-info"></i></a>
 
-                    @if (AuthStateService.IsSuperAdmin() || AuthStateService.currentUser.AgencyId == @residence.Agent.Agency.Id)
-                    {
-                        <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/deleteresidence/" + residence.Id))"><i class="fa-solid fa-trash-can"></i></a>
-                    }
+                @if (AuthStateService.IsSuperAdmin() || AuthStateService.currentUser?.AgencyId == @residence?.Agent?.Agency.Id)
+                {
+                    <a class="btn btn-danger" @onclick="@(e => NavigateToPage("/deleteresidence/" + residence.Id))"><i class="fa-solid fa-trash-can"></i></a>
+                }
                 }
             </div>
         </div>
