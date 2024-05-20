@@ -67,7 +67,6 @@
 
 @if (agency != null)
 {
-
     <div class="card" style="width: 70rem; height: 40rem">
         <div class="card-header card-dark" style="height: 5rem;">
             <span>@agency.Name</span>
@@ -156,11 +155,8 @@ else
     {
         if (formIsChanged)
         {
-            Console.WriteLine(agency.Id);
-            Console.WriteLine(agency.Description);
             if (await apiService.PutToApiAsync<Agency>(agency))
             {
-                Console.WriteLine("Successfully updated agency");
                 NavigationStateService.NavigateBack();
             }
             else
