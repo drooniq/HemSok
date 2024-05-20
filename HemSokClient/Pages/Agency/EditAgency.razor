@@ -5,118 +5,127 @@
 
 @* Author: Emil Waara*@
 <style>
-    body {
-        font-size: 0.7rem;
+    .card:hover {
+        transform: translateY(0);
     }
 
-    .btn {
-        font-size: 0.7rem;
-        padding: 5px;
+    .card {
+        display: flex;
+        flex-direction: column;
     }
 
-    .agencyLogo {
-        max-width: 16rem;
-        border-radius: 10%;
+    .card-header {
+        display: flex;
+        width: 100%;
+        header: 5rem;
+        justify-content: center;
+        align-items: center;
+        font-size: xx-large;
     }
-
-    .form-control {
-        font-size: 0.7rem;
-    }
-
-    .small {
+    .card-body {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
         width: 100%;
     }
 
-    .editContainer {
+    .card-body-left {
         display: flex;
+        flex-direction: column;
+        margin: 0px;
+        padding: 0px;
+        width: 50%;
     }
 
-    .leftColumn {
-        width: 40%;
+    .card-body-left label {
+        justify-items: left;
     }
 
-    .rightColumn {
-        width: 60%;
-        padding-left: 20px;
+    .card-body-right {
         display: flex;
-        justify-content: left;
+        justify-content: center;
         align-items: center;
+        width: 50%;
+        height: 100%;
+    }
+
+    .card-body-right img {
+        width: 70%;
+        height: 70%;
+    }
+
+    .card-body-left form-control {
+        width: 100%;
+    }
+
+    .card-body-left button, .card-body-left a {
+        margin-top: 10px;
+        margin-right: 10px;
     }
 </style>
 
 @if (agency != null)
 {
-    <h3>Mäklarfirman: @agency.Name</h3>
 
-    <div class="editContainer">
-        <div class="leftColumn">
-        <EditForm Model="@agency" OnValidSubmit="@HandleValidSubmit">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-
-            <div class="form-group">
-                <label for="name">Name:</label>
-                    <InputText id="name" class="form-control small" @bind-Value="@agency.Name" @oninput="HandleChange"/>
-                <ValidationMessage For="@(() => agency.Name)" />
-            </div>
-
-            <div class="form-group">
-                <label for="description">Description:</label>
-                    <InputText id="description" class="form-control small" @bind-Value="@agency.Description" @oninput="HandleChange" />
-                <ValidationMessage For="@(() => agency.Description)" />
-            </div>
-
-            <div class="form-group">
-                <label for="address">Address:</label>
-                    <InputText id="address" class="form-control small" @bind-Value="@agency.Address" @oninput="HandleChange" />
-                <ValidationMessage For="@(() => agency.Address)" />
-            </div>
-
-            <div class="form-group">
-                <label for="phoneNumber">Phone Number:</label>
-                    <InputText id="phoneNumber" class="form-control small" @bind-Value="@agency.PhoneNumber" @oninput="HandleChange" />
-                <ValidationMessage For="@(() => agency.PhoneNumber)" />
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                    <InputText id="email" class="form-control small" @bind-Value="@agency.Email" @oninput="HandleChange" />
-                <ValidationMessage For="@(() => agency.Email)" />
-            </div>
-
-            <div class="form-group">
-                <label for="website">Website:</label>
-                    <InputText id="website" class="form-control small" @bind-Value="@agency.Website" @oninput="HandleChange" />
-                <ValidationMessage For="@(() => agency.Website)" />
-            </div>
-
-            <div class="form-group" style="margin-bottom: 10px">
-                <label for="imagePath">Image Path:</label>
-                    <InputText id="imagePath" class="form-control small" @bind-Value="@agency.ImagePath" @oninput="HandleChange" />
-                <ValidationMessage For="@(() => agency.ImagePath)" />
-            </div>
-                @if (formIsChanged)
-                {
-                    <button type="submit" class="btn btn-success">Spara</button>
-                }
-                else
-                {
-                    <button type="submit" class="btn btn-secondary">Spara</button>
-                }
-                <a class="btn btn-primary" @onclick="@(() => NavigateBack())">Avbryt</a>
-            </EditForm>
+    <div class="card" style="width: 70rem; height: 40rem">
+        <div class="card-header card-dark" style="height: 5rem;">
+            <span>@agency.Name</span>
         </div>
-        <div class="rightColumn">
-            @if (agency.ImagePath != null)
-            {
-                <img class="agencyLogo" src="@agency.ImagePath" alt="Profilbild" />
-            }
+
+        <div class="card-body card-dark-transparent">
+            <div class="card-body-left">
+                <EditForm Model="@agency" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                        <label for="name">Name:</label>
+                        <InputText id="name" class="form-control" @bind-Value="@agency.Name" @oninput="HandleChange" />
+                        <ValidationMessage For="@(() => agency.Name)" />
+
+                        <label for="description">Description:</label>
+                        <textarea id="description" class="form-control" @bind="agency.Description" @oninput="HandleChange"></textarea>
+                        <ValidationMessage For="@(() => agency.Description)" />
+
+                        <label for="address">Address:</label>
+                        <InputText id="address" class="form-control small" @bind-Value="@agency.Address" @oninput="HandleChange" />
+                        <ValidationMessage For="@(() => agency.Address)" />
+
+                        <label for="phoneNumber">Phone Number:</label>
+                        <InputText id="phoneNumber" class="form-control small" @bind-Value="@agency.PhoneNumber" @oninput="HandleChange" />
+                        <ValidationMessage For="@(() => agency.PhoneNumber)" />
+
+                        <label for="email">Email:</label>
+                        <InputText id="email" class="form-control small" @bind-Value="@agency.Email" @oninput="HandleChange" />
+                        <ValidationMessage For="@(() => agency.Email)" />
+
+                        <label for="website">Website:</label>
+                        <InputText id="website" class="form-control small" @bind-Value="@agency.Website" @oninput="HandleChange" />
+                        <ValidationMessage For="@(() => agency.Website)" />
+
+                        <label for="imagePath">Image Path:</label>
+                        <InputText id="imagePath" class="form-control small" @bind-Value="@agency.ImagePath" @oninput="HandleChange" />
+                        <ValidationMessage For="@(() => agency.ImagePath)" />
+                    @if (formIsChanged)
+                    {
+                        <button type="submit" class="btn btn-success">Spara</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-secondary">Spara</button>
+                    }
+                    <a class="btn btn-primary" @onclick="@(() => NavigateBack())">Avbryt</a>
+                </EditForm>
+            </div>
+            <div class="card-body-right">
+                <img src="@agency.ImagePath" alt="..." />
+            </div>
         </div>
     </div>
 }
 else
 {
-    <p>Hittar ej någon mäklarfirma som har det IDt</p>
+    <ErrorMessage Message="Tyvärr, det verkar inte finnas någon mäklarbyrå att visa" />
 }
 
 @code
@@ -147,9 +156,8 @@ else
     {
         if (formIsChanged)
         {
-
-         
-
+            Console.WriteLine(agency.Id);
+            Console.WriteLine(agency.Description);
             if (await apiService.PutToApiAsync<Agency>(agency))
             {
                 Console.WriteLine("Successfully updated agency");
@@ -157,7 +165,7 @@ else
             }
             else
             {
-           
+                Console.WriteLine("Something went wrong when updating agency");
             }
         }
     }

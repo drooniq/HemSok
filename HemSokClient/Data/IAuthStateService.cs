@@ -19,5 +19,6 @@ namespace HemSokClient.Data
         bool IsSuperAdmin();
         void Login(CurrentUser user);
         void Logout();
+        Task LoadCurrentUserFromLocalStorage();
     }
 }
