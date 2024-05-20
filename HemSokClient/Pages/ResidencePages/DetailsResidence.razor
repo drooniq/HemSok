@@ -24,7 +24,7 @@
 
 @if (residence != null)
 {
-    <div style="width: 65rem;height: 120rem;" class="card card-light-transparent">
+    <div style="width: 70rem;height: 100rem;" class="card card-light-transparent">
     <div class="piccontainer">       
         <div class="pictureSlider">
             <CascadingValue Value="@residence.ImagePaths">
@@ -34,7 +34,7 @@
         <div class="agentinfo">
             <h3>Ansvarig mäklare</h3>
             <div class="detailstop">
-                <div class="infotext">
+                <div class="infotext" style="margin-right: 60px">
                     <p style="font-weight: 500; font-size:larger;">@residence.Agent.FirstName @residence.Agent.LastName</p>
                     <p >@residence.Agent.PhoneNumber</p>
                     <p >@residence.Agent.Email</p>
