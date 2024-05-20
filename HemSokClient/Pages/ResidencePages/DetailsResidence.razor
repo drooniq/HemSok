@@ -8,19 +8,23 @@
 @page "/residencedetails/{id}"
 <PageTitle>Bostadsdetaljer</PageTitle>
 <style>
-    .card {
+  /*   .card {
         width: 65rem;
         height: 120rem;
         margin: 1rem;
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
         border: 1px solid black;
-        transition: 0.3s ease;
-    }
+        transition: 0.3s ease; */
+
+  /*   } */ 
+  .card:hover{
+      transform:translateY(0);
+  }
 </style>
 
 @if (residence != null)
 {
-     <div class="card">
+    <div style="width: 65rem;height: 120rem;" class="card card-light-transparent">
     <div class="piccontainer">       
         <div class="pictureSlider">
             <CascadingValue Value="@residence.ImagePaths">
