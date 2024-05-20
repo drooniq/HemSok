@@ -1,4 +1,4 @@
-﻿@page "/register"
+﻿@page "/register/{agencyid:int}"
 @using System.ComponentModel.DataAnnotations;
 @using System.Net.Http
 @using System.Net.Http.Json
@@ -11,12 +11,6 @@
 
 @* Author: Emil Waara *@
 <style>
-    body {
-        width: 100vw;
-        height: 100vh;
-        background: linear-gradient(217deg, rgba(7, 9, 92, 1), rgba(123, 65, 161, 0) 70.71%), linear-gradient(127deg, rgba(160, 190, 235, 0.8), rgba(2, 19, 44, 0.8) 70.71%);
-    }
-
     .login-container {
         position: fixed;
         top: 50%;
@@ -51,11 +45,7 @@
     }
 </style>
 
-@if (!AuthStateService.IsAdmin() || !AuthStateService.IsSuperAdmin())
-{
-    <ErrorMessage Message="Du har inte behörighet att komma åt denna sida."/>
-}
-else
+@if ((AuthStateService.IsAdmin() && (AuthStateService.currentUser.AgencyId == AgencyId)) || AuthStateService.IsSuperAdmin())
 {
     <div class="content">
         <div class="login-container">
@@ -82,9 +72,20 @@ else
                 <ValidationMessage For="@(() => registerModel.Lastname)" />
                 <InputText type="text" @bind-Value="registerModel.Lastname" placeholder="Lastname" />
 
-
                 <ValidationMessage For="@(() => registerModel.PhoneNumber)" />
                 <InputText type="text" @bind-Value="registerModel.PhoneNumber" placeholder="Phonenumber" />
+
+                @if (AuthStateService.IsSuperAdmin() || AuthStateService.IsAdmin())
+                {
+                    <InputSelect ValueChanged="@((string value)=>ChooseRole(value))" ValueExpression="@(()=>registerModel.Role)" Value="registerModel.Role" class="form-control" style="height: 2.7rem; margin-bottom: 15px">
+                        <option value="">Välj mäklarens roll..</option>
+
+                        @foreach (var role in Roles)
+                        {
+                            <option value="@role">@role</option>
+                        }
+                    </InputSelect>
+                }
 
                 <button type="submit" class="btn btn-success">Registrera mäklaren</button>
                 <button type="button" class="btn btn-primary" @onclick="ResetForm">Rensa formuläret</button>
@@ -92,15 +93,30 @@ else
             </EditForm>
         </div>
     </div>
+} else
+{
+    <ErrorMessage Message="Du har inte behörighet att komma åt denna sida." />
 }
 
+
 @code {
+    [Parameter]
+    public int AgencyId { get; set; }
+
     private RegisterModel registerModel = new RegisterModel();
     private List<Agency> Agencies = null;
+
+    private List<string> Roles = new List<string> { UserRoles.Agent, UserRoles.Admin };
 
     protected override async Task OnInitializedAsync()
     {
         Agencies = await APIService.GetAllFromApiAsync<Agency>();
+        AuthStateService.LoadCurrentUserFromLocalStorage();
+    }
+
+    private void ChooseRole(string Role)
+    {
+        registerModel.Role = Role;
     }
 
     private void ResetForm()
@@ -117,24 +133,17 @@ else
     {
         try
         {
-            var adminAgent = APIService.Agents.First(s => s.Id == AuthStateService.currentUser.AgentId);
-            if (adminAgent == null)
+            registerModel.AgencyId = AgencyId.ToString();
+            if (!await APIService.RegisterAsync(registerModel))
             {
-                ResetForm();
+                // failed to register user.
+                await JSRuntime.InvokeVoidAsync("alert", "Något gick fel.");
             }
             else
-            {
-                registerModel.agency = adminAgent.Agency.Id.ToString();
-                if (!await APIService.RegisterAsync(registerModel))
-                {
-                    // failed to register user.
-                    await JSRuntime.InvokeVoidAsync("alert", "Något gick fel.");
-                }
                 await JSRuntime.InvokeVoidAsync("alert", "Mäklaren har skapats.");
-                // Redirect to home page or another authorized page
-                NavigationStateService.NavigateBack();
-            }
 
+            // Redirect to home page or another authorized page
+            NavigationStateService.NavigateTo("/agencydetails/" + AgencyId);
         }
         catch (Exception ex)
         {
